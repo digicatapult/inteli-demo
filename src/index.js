@@ -18,11 +18,11 @@ let props = {}
 switch (process.env.REACT_APP_VITALAM_DEMO_PERSONA) {
   case 'cust':
     App = CustomerApp
-    document.title = 'Craft Works | Customer'
+    document.title = 'BAE Systems | Customer'
     break
   case 'am':
     App = AdditiveManufacturerApp
-    document.title = 'Aero | AM'
+    document.title = 'Maher | AM'
     break
   case 'lab':
     App = LaboratoryApp
