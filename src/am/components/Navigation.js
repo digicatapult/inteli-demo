@@ -22,16 +22,16 @@ const useStyles = makeStyles((theme) => ({
     textDecoration: 'none',
     color: 'white',
   },
-  navActive: {
-    '& div': {
-      background: theme.palette.primary.dark,
-    },
-  },
   navButton: {
     marginBottom: '16px',
     textDecoration: 'none',
     color: 'white',
     width: '100%',
+    '&.active': {
+      '& div': {
+        background: theme.palette.primary.dark,
+      },
+    },
   },
   navButtonWrapping: {
     width: '100%',
@@ -84,7 +84,7 @@ const Navigation = () => {
   return (
     <Toolbar className={classes.root}>
       <div className={classes.logo}>
-        <img src={images.logoAM}></img>
+        <img src={images.maher}></img>
       </div>
       <NavLink
         to="/app/orders"
