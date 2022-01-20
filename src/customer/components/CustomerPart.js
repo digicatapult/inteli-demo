@@ -18,7 +18,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { addOrder } from '../../features/ordersSlice'
 import { useApi, identities } from '../../utils'
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   card: {
     padding: '30px',
   },
@@ -29,6 +29,7 @@ const useStyles = makeStyles({
   },
   backButton: {
     textDecoration: 'none',
+    color: theme.palette.primary.main,
   },
   orderButton: {
     width: 250,
@@ -41,7 +42,7 @@ const useStyles = makeStyles({
   inline: {
     display: 'inline',
   },
-})
+}))
 
 const DetailRow = ({ title, value }) => {
   const classes = useStyles()

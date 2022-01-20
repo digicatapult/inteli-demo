@@ -12,9 +12,10 @@ import makeStyles from '@material-ui/core/styles/makeStyles'
 import { useSelector } from 'react-redux'
 import OrderStatusProgressBar from './OrderStatusProgressBar'
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   backButton: {
     textDecoration: 'none',
+    color: theme.palette.primary.main,
   },
   order: {
     width: '100%',
@@ -31,7 +32,7 @@ const useStyles = makeStyles({
   details: {
     marginRight: 24,
   },
-})
+}))
 
 const DetailRow = ({ title, value }) => {
   const classes = useStyles()
