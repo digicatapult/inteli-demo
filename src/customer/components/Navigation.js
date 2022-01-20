@@ -20,6 +20,9 @@ const useStyles = makeStyles((theme) => ({
     alignContent: 'center',
     textDecoration: 'none',
     color: 'white',
+    '& img': {
+      height: 'inherit',
+    },
   },
   navActive: {
     borderBottom: '1px white solid',
@@ -72,7 +75,6 @@ const Navigation = () => {
     <Toolbar className={classes.root}>
       <div className={classes.logo}>
         <img src={images.logoCust}></img>
-        <Typography variant="h6">Craft Works</Typography>
       </div>
       <NavLink
         to="/app/customer-parts"
