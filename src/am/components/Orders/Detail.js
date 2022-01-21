@@ -14,6 +14,7 @@ import { markOrderRead } from '../../../features/readOrdersSlice'
 import OrderStatus from './Status'
 import AcceptOrderAction from './AcceptAction'
 import ManufactureOrderAction from './ManufactureAction'
+import Attachment from '../Attachment'
 
 const useStyles = makeStyles({
   root: {
@@ -136,6 +137,12 @@ const OrderDetail = ({ order }) => {
             </Grid>
             <Grid item xs={6}>
               <Box>
+                <DetailRow
+                  title="Customer name"
+                  value={
+                    order.CustomerDetails ? 'not empty' : 'no customer details'
+                  }
+                ></DetailRow>
                 <Typography variant="subtitle2">Shipping Address:</Typography>
                 <Typography variant="subtitle1" color="textSecondary">
                   Digital Catapult
@@ -151,8 +158,34 @@ const OrderDetail = ({ order }) => {
                 </Typography>
               </Box>
             </Grid>
+            <Container className={classes.buttonWrapper}>
+              <Grid item xs={6}>
+                <Box>
+                  <DetailRow
+                    title="Customer name"
+                    value={
+                      order.CustomerDetails
+                        ? 'not empty'
+                        : 'no customer details'
+                    }
+                  ></DetailRow>
+                  <Typography variant="subtitle2">Shipping Address:</Typography>
+                </Box>
+              </Grid>
+            </Container>
           </Grid>
         </Grid>
+      </Grid>
+      <Grid
+        container
+        alignItems="center"
+        className={`${classes.row} ${classes.header}`}
+      >
+        <Box className={classes.attachment}>
+          <DetailRow title="Attached Documents"></DetailRow>
+          <Attachment name="Requirements.PDF" downloadData={null} />
+          <Attachment name="CAD" downloadData={null} />
+        </Box>
       </Grid>
       <Container className={classes.buttonWrapper}>
         <Action order={order} />
