@@ -13,6 +13,7 @@ import { useDispatch } from 'react-redux'
 import { markOrderRead } from '../../../features/readOrdersSlice'
 import OrderStatus from './Status'
 import AcceptOrderAction from './AcceptAction'
+import RejectAction from './RejectAction'
 import ManufactureOrderAction from './ManufactureAction'
 import Attachment from '../Attachment'
 
@@ -90,6 +91,9 @@ const OrderDetail = ({ order }) => {
       Action = EmptyAction
       break
     case 'ManufacturingOrder':
+      Action = EmptyAction
+      break
+    default:
       Action = EmptyAction
       break
   }
@@ -175,9 +179,24 @@ const OrderDetail = ({ order }) => {
           <Attachment name="CAD" downloadData={null} />
         </Box>
       </Grid>
-      <Container className={classes.buttonWrapper}>
-        <Action order={order} />
-      </Container>
+      <Grid
+        container
+        alignItems="left"
+        className={`${classes.row} ${classes.header}`}
+      >
+        <Grid item xs={6}>
+          <Container
+            className={`${classes.buttonWrapper} ${classes.rejectButton}`}
+          >
+            <RejectAction />
+          </Container>
+        </Grid>
+        <Grid item xs={6}>
+          <Container className={classes.buttonWrapper}>
+            <Action order={order} />
+          </Container>
+        </Grid>
+      </Grid>
     </Paper>
   )
 }
