@@ -40,6 +40,9 @@ const useStyles = makeStyles({
   inline: {
     display: 'inline',
   },
+  attachment: {
+    width: '100%',
+  },
 })
 
 const DetailRow = ({ title, value }) => {
@@ -158,21 +161,6 @@ const OrderDetail = ({ order }) => {
                 </Typography>
               </Box>
             </Grid>
-            <Container className={classes.buttonWrapper}>
-              <Grid item xs={6}>
-                <Box>
-                  <DetailRow
-                    title="Customer name"
-                    value={
-                      order.CustomerDetails
-                        ? 'not empty'
-                        : 'no customer details'
-                    }
-                  ></DetailRow>
-                  <Typography variant="subtitle2">Shipping Address:</Typography>
-                </Box>
-              </Grid>
-            </Container>
           </Grid>
         </Grid>
       </Grid>
