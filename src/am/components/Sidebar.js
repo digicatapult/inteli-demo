@@ -9,7 +9,7 @@ const useStyles = makeStyles({
     height: '100vh',
     top: 0,
     left: 0,
-    background: 'rgb(48,48,48)',
+    background: '#303030',
   },
 })
 
