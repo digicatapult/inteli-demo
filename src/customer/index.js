@@ -10,7 +10,7 @@ import Router from './router'
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: 'rgb(31, 145, 139)',
+      main: '#1f918b',
     },
   },
 })
