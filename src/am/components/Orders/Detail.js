@@ -175,8 +175,8 @@ const OrderDetail = ({ order }) => {
       >
         <Box className={classes.attachment}>
           <DetailRow title="Attached Documents"></DetailRow>
-          <Attachment name="Requirements.PDF" downloadData={null} />
-          <Attachment name="CAD" downloadData={null} />
+          <Attachment name="Requirements.PDF" />
+          <Attachment name="CAD" />
         </Box>
       </Grid>
       <Grid
