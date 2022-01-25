@@ -74,6 +74,8 @@ const OrderDetail = ({ test }) => {
     dispatch(markTestRead(test.id))
   }, [test, dispatch])
 
+  console.log(test.testReport)
+
   return (
     <Paper className={classes.root} elevation={0}>
       <Grid

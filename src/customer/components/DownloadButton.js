@@ -30,6 +30,8 @@ const DownloadButton = (props) => {
   )
   const classes = useStyles()
 
+  console.log(selectedLabTest.testReport)
+
   if (statusIndex && selectedLabTest && selectedLabTest.testReport) {
     return (
       <Grid
