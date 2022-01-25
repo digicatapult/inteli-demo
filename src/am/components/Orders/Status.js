@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 'auto',
     marginRight: 'auto',
     textAlign: 'center',
-    color: 'white',
+    color: '#ffffff',
   },
   statusRequested: {
     background: theme.palette.statusRequested.main,

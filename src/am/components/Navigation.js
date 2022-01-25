@@ -20,12 +20,12 @@ const useStyles = makeStyles((theme) => ({
     display: 'grid',
     alignContent: 'center',
     textDecoration: 'none',
-    color: 'white',
+    color: '#ffffff',
   },
   navButton: {
     marginBottom: '16px',
     textDecoration: 'none',
-    color: 'white',
+    color: '#ffffff',
     width: '100%',
     '&.active': {
       '& div': {
