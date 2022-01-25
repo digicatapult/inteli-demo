@@ -8,10 +8,9 @@ networks:
 services:
 
   node-eve:
-    image: ghcr.io/digicatapult/vitalam-node:v2.5.1
+    image: ghcr.io/digicatapult/vitalam-node:v2.7.0
     container_name: node-eve
-    command: /bin/sh -c "
-      ./vitalam-node
+    command:
       --base-path /data/
       --eve
       --node-key ${NODE_EVE_KEY}
@@ -19,7 +18,7 @@ services:
       --chain local
       --unsafe-ws-external
       --unsafe-rpc-external
-      --rpc-cors all"
+      --rpc-cors all
     ports:
       - 30336:30333
       - 9947:9944
@@ -43,7 +42,7 @@ services:
     networks: ['am']
 
   api-eve:
-    image: ghcr.io/digicatapult/vitalam-api:v2.4.1
+    image: ghcr.io/digicatapult/vitalam-api:v2.6.0
     container_name: api-eve
     ports:
       - 3004:3001

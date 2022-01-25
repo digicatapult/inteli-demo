@@ -13,10 +13,9 @@ networks:
 
 services:
   node-charlie:
-    image: ghcr.io/digicatapult/vitalam-node:v2.5.1
+    image: ghcr.io/digicatapult/vitalam-node:v2.7.0
     container_name: node-charlie
-    command: /bin/sh -c "
-      ./vitalam-node
+    command:
       --base-path /data/
       --charlie
       --node-key ${NODE_CHARLIE_KEY}
@@ -25,7 +24,7 @@ services:
       --chain local
       --unsafe-ws-external
       --unsafe-rpc-external
-      --rpc-cors all"
+      --rpc-cors all
     ports:
       - 30335:30333
       - 9946:9944
@@ -49,7 +48,7 @@ services:
     networks: ['ipfs', 'lab']
 
   api-charlie:
-    image: ghcr.io/digicatapult/vitalam-api:v2.4.1
+    image: ghcr.io/digicatapult/vitalam-api:v2.6.0
     container_name: api-charlie
     ports:
       - 3003:3001

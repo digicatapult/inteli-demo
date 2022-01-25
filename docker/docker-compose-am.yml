@@ -13,10 +13,9 @@ networks:
 
 services:
   node-bob:
-    image: ghcr.io/digicatapult/vitalam-node:v2.5.1
+    image: ghcr.io/digicatapult/vitalam-node:v2.7.0
     container_name: node-bob
-    command: /bin/sh -c "
-      ./vitalam-node
+    command:
       --base-path /data/
       --bob
       --node-key ${NODE_BOB_KEY}
@@ -25,7 +24,7 @@ services:
       --chain local
       --unsafe-ws-external
       --unsafe-rpc-external
-      --rpc-cors all"
+      --rpc-cors all
     ports:
       - 30334:30333
       - 9945:9944
@@ -49,7 +48,7 @@ services:
     networks: ['ipfs', 'am']
 
   api-bob:
-    image: ghcr.io/digicatapult/vitalam-api:v2.4.1
+    image: ghcr.io/digicatapult/vitalam-api:v2.6.0
     container_name: api-bob
     ports:
       - 3002:3001
