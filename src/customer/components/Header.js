@@ -6,7 +6,7 @@ import { AppBar, makeStyles } from '@material-ui/core'
 const useStyles = makeStyles({
   root: {
     height: '60px',
-    background: 'rgb(255,0,51)',
+    background: '#ff0033',
   },
 })
 

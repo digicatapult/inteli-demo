@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme) => ({
     height: '3ch',
     borderRadius: '12px',
     textAlign: 'center',
-    color: 'white',
+    color: '#ffffff',
   },
   statusRequested: {
     background: theme.palette.statusRequested.main,

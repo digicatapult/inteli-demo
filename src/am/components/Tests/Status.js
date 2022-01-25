@@ -10,7 +10,7 @@ const useStyles = makeStyles({
     marginLeft: 'auto',
     marginRight: 'auto',
     textAlign: 'center',
-    color: 'white',
+    color: '#ffffff',
   },
   statusPassed: {
     background: '#8EC8C4',
