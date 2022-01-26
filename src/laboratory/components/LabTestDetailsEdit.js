@@ -99,34 +99,48 @@ const LabTestDetailsEdit = ({ id }) => {
   const handleChange = (event) => {
     setLabTestReason(event.target.value)
   }
-  const createFormData = (inputs, file) => {
+  const createFormData = (inputs, fileObject) => {
+    console.log(fileObject)
     const formData = new FormData()
     const outputs = [
       {
-        owner: identities.am,
-        metadataFile: 'file',
+        roles: { Owner: identities.am },
+        metadata: {
+          type: { type: 'LITERAL', value: 'POWDER_TEST' },
+          status: { type: 'LITERAL', value: 'result' },
+          overallResult: { type: 'LITERAL', value: labTestPassOrFail },
+          testReason: {
+            type: 'LITERAL',
+            value: labTestReason ? labTestReason : '',
+          },
+          testReport: { type: 'FILE', value: fileObject.fileName },
+        },
+        parent_index: 0,
       },
     ]
 
     formData.set('request', JSON.stringify({ inputs, outputs }))
-    formData.set('file', file, 'file')
+    formData.set('files', new Blob(fileObject.fileContent), fileObject.fileName)
 
     return formData
   }
 
   const onSubmit = async () => {
     setIsSubmitting(true)
-    const base64 = u8Array2base64URI(fileObject)
-    const fileData = {
-      type: 'PowderTestResult',
-      overallResult: labTestPassOrFail,
-      testReason: labTestReason ? labTestReason : '',
-      testReport: /*prefix +*/ base64,
-    }
-    const file = new Blob([JSON.stringify(fileData)])
-    const formData = createFormData([id], file)
+    //const base64 = u8Array2base64URI(fileObject)
+    // const fileData = {
+    //   type: 'PowderTestResult',
+    //   overallResult: labTestPassOrFail,
+    //   testReason: labTestReason ? labTestReason : '',
+    //   testReport: /*prefix +*/ base64,
+    // }
+    //const file = new Blob([JSON.stringify(fileData)])
+    const formData = createFormData([id], fileObject)
+    console.log(formData)
     const response = await api.runProcess(formData)
-    const token = { id: id, latestId: response[0], ...fileData }
+    console.log(response)
+    const token = { id: id, latestId: response[0] }
+    //const token = { id: id, latestId: response[0], ...fileData }
     dispatch(updateLabTest(token))
     navigate('/app/tested/' + id)
   }

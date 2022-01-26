@@ -27,6 +27,40 @@ const useFetchWrapper = () => {
   return wrappedFetch
 }
 
+const useNewFetchWrapper = () => {
+  const dispatch = useDispatch()
+
+  const newWrappedFetch = async (url, options) => {
+    let request
+    try {
+      request = await fetch(url, options)
+      if (request.ok) {
+        dispatch(updateNetworkStatus(true))
+      } else {
+        dispatch(updateNetworkStatus(false))
+      }
+    } catch (err) {
+      dispatch(updateNetworkStatus(false))
+      throw err
+    }
+
+    if (
+      request.headers.get('content-type') === 'application/json; charset=utf-8'
+    ) {
+      return request.json()
+    } else if (
+      request.headers.get('content-type') === 'text/plain; charset=utf-8'
+    ) {
+      return request.text()
+    } else {
+      const file = await request.blob()
+      console.log(file.type)
+      return URL.createObjectURL(file)
+    }
+  }
+  return newWrappedFetch
+}
+
 const checkJwt = (token) => {
   if (!token) return false
   try {
@@ -40,6 +74,7 @@ const checkJwt = (token) => {
 
 const useApi = () => {
   const wrappedFetch = useFetchWrapper()
+  const newWrappedFetch = useNewFetchWrapper()
 
   const getAuthToken = async () => {
     let token = localStorage.getItem('token')
@@ -100,16 +135,43 @@ const useApi = () => {
         },
       }
     )
-    token.metadata = await wrappedFetch(
-      `http://${API_HOST}:${API_PORT}/v2/item/${id}/metadata`,
-      {
-        method: 'GET',
-        mode: 'cors',
-        cache: 'no-cache',
-        headers: {
-          Authorization: `Bearer ${await getAuthToken()}`,
-        },
-      }
+    // temporary catch old style metadata
+    if (!token.metadata_keys.includes('')) {
+      await getNewMetadata(token)
+    } else {
+      console.log(token)
+      token.metadata = await wrappedFetch(
+        `http://${API_HOST}:${API_PORT}/v2/item/${id}/metadata`,
+        {
+          method: 'GET',
+          mode: 'cors',
+          cache: 'no-cache',
+          headers: {
+            Authorization: `Bearer ${await getAuthToken()}`,
+          },
+        }
+      )
+      console.log(token)
+    }
+
+    return token
+  }
+
+  const getNewMetadata = async (token) => {
+    await Promise.all(
+      token.metadata_keys.map(async (metadata_key) => {
+        token.metadata[metadata_key] = await newWrappedFetch(
+          `http://${API_HOST}:${API_PORT}/v2/item/${token.id}/metadata/${metadata_key}`,
+          {
+            method: 'GET',
+            mode: 'cors',
+            cache: 'no-cache',
+            headers: {
+              Authorization: `Bearer ${await getAuthToken()}`,
+            },
+          }
+        )
+      })
     )
     return token
   }

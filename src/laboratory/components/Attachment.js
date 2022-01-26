@@ -39,34 +39,36 @@ const useStyles = makeStyles({
 })
 
 const Attachment = ({ name, downloadData }) => {
+  if (downloadData) console.log(downloadData.type)
+
   const classes = useStyles()
   const [url, setURL] = useState('')
 
   useEffect(() => {
-    const dataURItoObjectURL = (dataURI) => {
-      if (!dataURI) {
-        return ''
-      } else {
-        const [dataURIHeader, dataBase64] = dataURI.split(',')
+    // const dataURItoObjectURL = (dataURI) => {
+    //   if (!dataURI) {
+    //     return ''
+    //   } else {
+    //     const [dataURIHeader, dataBase64] = dataURI.split(',')
 
-        const byteString = atob(dataBase64)
-        const mimeString = dataURIHeader.split(':')[1].split(';')[0]
+    //     const byteString = atob(dataBase64)
+    //     const mimeString = dataURIHeader.split(':')[1].split(';')[0]
 
-        const ab = new ArrayBuffer(byteString.length)
-        const ia = new Uint8Array(ab)
-        for (let i = 0; i < byteString.length; i++) {
-          ia[i] = byteString.charCodeAt(i)
-        }
+    //     const ab = new ArrayBuffer(byteString.length)
+    //     const ia = new Uint8Array(ab)
+    //     for (let i = 0; i < byteString.length; i++) {
+    //       ia[i] = byteString.charCodeAt(i)
+    //     }
 
-        const blob = new Blob([ab], { type: mimeString })
-        const url = URL.createObjectURL(blob)
+    //     const blob = new Blob([ab], { type: mimeString })
+    //     const url = URL.createObjectURL(blob)
 
-        return url
-      }
-    }
+    //     return url
+    //   }
+    // }
 
-    const url = dataURItoObjectURL(downloadData)
-    setURL(url)
+    //const url = dataURItoObjectURL(downloadData)
+    setURL(downloadData)
 
     return () => {
       URL.revokeObjectURL(url)

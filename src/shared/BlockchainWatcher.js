@@ -68,8 +68,8 @@ const BlockchainWatcher = ({ children }) => {
                 addOrder({
                   id: token.id,
                   latestId: token.id,
-                  owner: token.roles.Admin,
-                  latestOwner: token.roles.Admin,
+                  owner: token.roles.Owner,
+                  latestOwner: token.roles.Owner,
                   ...token.metadata,
                 })
               )
@@ -79,7 +79,7 @@ const BlockchainWatcher = ({ children }) => {
                 updateOrder({
                   id: findOriginalId(orders, token),
                   latestId: token.id,
-                  latestOwner: token.roles.Admin,
+                  latestOwner: token.roles.Owner,
                   ...token.metadata,
                 })
               )
@@ -89,7 +89,7 @@ const BlockchainWatcher = ({ children }) => {
                 updateOrder({
                   id: findOriginalId(orders, token),
                   latestId: token.id,
-                  latestOwner: token.roles.Admin,
+                  latestOwner: token.roles.Owner,
                   ...token.metadata,
                 })
               )
@@ -101,9 +101,9 @@ const BlockchainWatcher = ({ children }) => {
                   latestId: token.id,
                   owner:
                     findOriginalId(powders, token) === token.id
-                      ? token.roles.Admin
+                      ? token.roles.Owner
                       : undefined,
-                  latestOwner: token.roles.Admin,
+                  latestOwner: token.roles.Owner,
                   ...token.metadata,
                 })
               )
@@ -113,8 +113,8 @@ const BlockchainWatcher = ({ children }) => {
                 addLabTest({
                   id: token.id,
                   latestId: token.id,
-                  owner: token.roles.Admin,
-                  latestOwner: token.roles.Admin,
+                  owner: token.roles.Owner,
+                  latestOwner: token.roles.Owner,
                   ...token.metadata,
                 })
               )
@@ -124,7 +124,17 @@ const BlockchainWatcher = ({ children }) => {
                 updateLabTest({
                   id: findOriginalId(labTests, token),
                   latestId: token.id,
-                  latestOwner: token.roles.Admin,
+                  latestOwner: token.roles.Owner,
+                  ...token.metadata,
+                })
+              )
+              break
+            case 'POWDER_TEST':
+              dispatch(
+                updateLabTest({
+                  id: findOriginalId(labTests, token),
+                  latestId: token.id,
+                  latestOwner: token.roles.Owner,
                   ...token.metadata,
                 })
               )

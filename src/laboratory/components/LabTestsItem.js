@@ -34,10 +34,11 @@ const useStyles = makeStyles(() => ({
 }))
 
 const LabTestsItem = (props) => {
-  const { selectedId, type, sent, id, powderReference } = props
-  const tested = type === 'PowderTestResult'
+  const { selectedId, status, id, powderReference } = props
+  console.log(props)
+  const tested = status !== 'request'
   const selected = selectedId === id ? true : false
-  const status = tested ? 'tested' : sent ? 'sent' : 'requested'
+  const statusText = tested ? 'tested' : 'requested'
   const classes = useStyles()
   return (
     <NavLink
@@ -54,7 +55,7 @@ const LabTestsItem = (props) => {
             <Typography>{powderReference}</Typography>
           </Grid>
           <Grid item xs={4}>
-            <LabTestStatus labTestStatus={status} />
+            <LabTestStatus labTestStatus={statusText} />
           </Grid>
         </Grid>
       </Paper>
