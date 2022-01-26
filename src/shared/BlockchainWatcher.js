@@ -119,20 +119,10 @@ const BlockchainWatcher = ({ children }) => {
                 })
               )
               break
-            case 'PowderTestResult':
-              dispatch(
-                updateLabTest({
-                  id: findOriginalId(labTests, token),
-                  latestId: token.id,
-                  latestOwner: token.roles.Owner,
-                  ...token.metadata,
-                })
-              )
-              break
             case 'POWDER_TEST':
               dispatch(
                 updateLabTest({
-                  id: findOriginalId(labTests, token),
+                  id: token.original_id,
                   latestId: token.id,
                   latestOwner: token.roles.Owner,
                   ...token.metadata,

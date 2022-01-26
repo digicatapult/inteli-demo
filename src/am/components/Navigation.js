@@ -61,7 +61,9 @@ const Navigation = () => {
   const customerOrders = useSelector((state) => state.customerOrders)
   const powders = useSelector((state) => state.powders)
   const testResults = useSelector((state) =>
-    state.labTests.filter(({ type }) => type === 'PowderTestResult')
+    state.labTests.filter(
+      ({ type, status }) => type === 'POWDER_TEST' && status === 'result'
+    )
   )
 
   const hasNewOrder = customerOrders.some(

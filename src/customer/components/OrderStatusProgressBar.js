@@ -37,8 +37,10 @@ const OrderStatusProgressBar = (props) => {
 
   const selectedLabTest = useSelector((state) =>
     state.labTests.find(
-      ({ powderId, type }) =>
-        type === 'PowderTestResult' && powderId === orderPowderId
+      ({ powderId, type, status }) =>
+        type === 'POWDER_TEST' &&
+        status === 'result' &&
+        powderId === orderPowderId
     )
   )
 

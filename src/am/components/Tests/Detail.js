@@ -103,7 +103,11 @@ const OrderDetail = ({ test }) => {
           <Typography variant="body1" className={classes.fontBold}>
             Reason:
           </Typography>
-          <Typography>{testReason}</Typography>
+          {testReason?.url ? (
+            <Attachment name={testReason.name} downloadData={testReason.url} />
+          ) : (
+            <Typography>No reason given</Typography>
+          )}
         </Grid>
       </Grid>
 
@@ -130,11 +134,17 @@ const OrderDetail = ({ test }) => {
           </Box>
         ))}
         <Box className={classes.attachment}>
-          <DetailRow title="Attached Documents"></DetailRow>
-          <Attachment
-            name="Powder test results.PDF"
-            downloadData={testReport}
-          />
+          {testReport?.url ? (
+            <>
+              <DetailRow title="Attached Documents"></DetailRow>
+              <Attachment
+                name={testReport.name}
+                downloadData={testReport.url}
+              />
+            </>
+          ) : (
+            <DetailRow title="Report" value="No report"></DetailRow>
+          )}
         </Box>
       </Box>
     </Paper>

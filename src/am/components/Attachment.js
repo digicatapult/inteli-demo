@@ -43,36 +43,13 @@ const Attachment = ({ name, downloadData }) => {
   const [url, setURL] = useState('')
 
   useEffect(() => {
-    const dataURItoObjectURL = (dataURI) => {
-      if (!dataURI) {
-        return ''
-      } else {
-        const [dataURIHeader, dataBase64] = dataURI.split(',')
-
-        const byteString = atob(dataBase64)
-        const mimeString = dataURIHeader.split(':')[1].split(';')[0]
-
-        const ab = new ArrayBuffer(byteString.length)
-        const ia = new Uint8Array(ab)
-        for (let counter = 0; counter < byteString.length; counter++) {
-          ia[counter] = byteString.charCodeAt(counter)
-        }
-
-        const blob = new Blob([ab], { type: mimeString })
-        const url = URL.createObjectURL(blob)
-
-        return url
-      }
-    }
-
-    const url = dataURItoObjectURL(downloadData)
-    setURL(url)
+    setURL(downloadData)
 
     return () => {
       URL.revokeObjectURL(url)
       setURL('')
     }
-  }, [downloadData, setURL])
+  }, [downloadData, url])
 
   return (
     <Box className={classes.attachmentContainer}>

@@ -31,10 +31,10 @@ const useNewFetchWrapper = () => {
   const dispatch = useDispatch()
 
   const newWrappedFetch = async (url, options) => {
-    let request
+    let response
     try {
-      request = await fetch(url, options)
-      if (request.ok) {
+      response = await fetch(url, options)
+      if (response.ok) {
         dispatch(updateNetworkStatus(true))
       } else {
         dispatch(updateNetworkStatus(false))
@@ -44,27 +44,26 @@ const useNewFetchWrapper = () => {
       throw err
     }
 
-    if (
-      request.headers.get('content-type') === 'application/json; charset=utf-8'
-    ) {
-      return request.json()
-    } else if (
-      request.headers.get('content-type') === 'text/plain; charset=utf-8'
-    ) {
-      return request.text()
-    } else {
-      const file = await request.blob()
-      const a = request.headers.get('content-disposition')
-      console.log(a)
-      const filename = request.headers
-        .get('content-disposition')
-        .split('filename=')[1]
-        .replace(/['"]/g, '')
+    const contentType = response.headers.get('content-type')
+    switch (contentType) {
+      case 'application/json; charset=utf-8':
+        return response.json()
+      case 'text/plain; charset=utf-8':
+        return response.text()
+      case 'application/octet-stream': {
+        const file = await response.blob()
+        const filename = response.headers
+          .get('content-disposition')
+          .split('filename=')[1]
+          .replace(/['"]/g, '')
 
-      return {
-        url: URL.createObjectURL(file),
-        name: filename,
+        return {
+          url: URL.createObjectURL(file),
+          name: filename,
+        }
       }
+      default:
+        return response.json()
     }
   }
   return newWrappedFetch
@@ -144,11 +143,8 @@ const useApi = () => {
         },
       }
     )
-    console.log(token)
     // temporary catch old style metadata
-    if (!token.metadata_keys.includes('')) {
-      await getNewMetadata(token)
-    } else {
+    if (token.metadata_keys.includes('')) {
       token.metadata = await wrappedFetch(
         `http://${API_HOST}:${API_PORT}/v2/item/${id}/metadata`,
         {
@@ -160,6 +156,8 @@ const useApi = () => {
           },
         }
       )
+    } else {
+      await getNewMetadata(token)
     }
 
     return token

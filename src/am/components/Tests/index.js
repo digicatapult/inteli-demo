@@ -11,7 +11,9 @@ import Header from '../Header'
 const LabTests = () => {
   const params = useParams()
   const labTests = useSelector((state) =>
-    state.labTests.filter(({ type }) => type === 'PowderTestResult')
+    state.labTests.filter(
+      (test) => test.type === 'POWDER_TEST' && test.status === 'result'
+    )
   )
 
   const selectedTest = params.testId

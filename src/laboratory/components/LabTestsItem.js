@@ -35,7 +35,7 @@ const useStyles = makeStyles(() => ({
 
 const LabTestsItem = (props) => {
   const { selectedId, type, sent, status, id, powderReference } = props
-  const tested = type === 'PowderTestResult' || status === 'result'
+  const tested = type === 'POWDER_TEST' && status === 'result'
   const selected = selectedId === id ? true : false
   const statusText = tested ? 'tested' : sent ? 'sent' : 'requested'
   const classes = useStyles()

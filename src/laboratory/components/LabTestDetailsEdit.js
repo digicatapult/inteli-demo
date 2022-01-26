@@ -63,7 +63,7 @@ const LabTestDetailsEdit = ({ id }) => {
   const [labTestReason, setLabTestReason] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const [fileObject, setFileObject] = useState(null)
+  const [reportFile, setReportFile] = useState(null)
 
   const api = useApi()
   const dispatch = useDispatch()
@@ -86,7 +86,7 @@ const LabTestDetailsEdit = ({ id }) => {
           fileType: type,
           fileContent: reader.result,
         }
-        setFileObject(obj)
+        setReportFile(obj)
       }
       reader.readAsArrayBuffer(file)
     },
@@ -98,8 +98,7 @@ const LabTestDetailsEdit = ({ id }) => {
   const handleChange = (event) => {
     setLabTestReason(event.target.value)
   }
-  const createFormData = (inputs, fileObject) => {
-    console.log(fileObject)
+  const createFormData = (inputs, files) => {
     const formData = new FormData()
     const outputs = [
       {
@@ -108,46 +107,58 @@ const LabTestDetailsEdit = ({ id }) => {
           type: { type: 'LITERAL', value: 'POWDER_TEST' },
           status: { type: 'LITERAL', value: 'result' },
           overallResult: { type: 'LITERAL', value: labTestPassOrFail },
-          testReason: {
-            type: 'LITERAL',
-            value: labTestReason ? labTestReason : '',
-          },
-          testReport: { type: 'FILE', value: fileObject.fileName },
+          ...(files.reportFile
+            ? {
+                testReport: {
+                  type: 'FILE',
+                  value: files.reportFile.fileName,
+                },
+              }
+            : {}),
+          ...(files.labTestReason
+            ? {
+                testReason: {
+                  type: 'FILE',
+                  value: 'testReason.txt',
+                },
+              }
+            : {}),
         },
         parent_index: 0,
       },
     ]
 
     formData.set('request', JSON.stringify({ inputs, outputs }))
-    const blob = new Blob([fileObject.fileContent], {
-      type: fileObject.fileType,
-    })
-    formData.set('files', blob, fileObject.fileName)
+
+    if (files.reportFile) {
+      const blob = new Blob([files.reportFile.fileContent], {
+        type: files.reportFile.fileType,
+      })
+      formData.append('files', blob, files.reportFile.fileName)
+    }
+
+    if (files.labTestReason) {
+      const blob = new Blob([files.labTestReason], {
+        type: 'text/plain',
+      })
+      formData.append('files', blob, 'testReason.txt')
+    }
 
     return formData
   }
 
   const onSubmit = async () => {
     setIsSubmitting(true)
-    //const base64 = u8Array2base64URI(fileObject)
-    // const fileData = {
-    //   type: 'PowderTestResult',
-    //   overallResult: labTestPassOrFail,
-    //   testReason: labTestReason ? labTestReason : '',
-    //   testReport: /*prefix +*/ base64,
-    // }
-    //const file = new Blob([JSON.stringify(fileData)])
-    const formData = createFormData([id], fileObject)
-    console.log(formData)
+
+    const formData = createFormData([id], { reportFile, labTestReason })
     const response = await api.runProcess(formData)
-    console.log(response)
     const token = { id: id, latestId: response[0] }
-    //const token = { id: id, latestId: response[0], ...fileData }
+
     dispatch(updateLabTest(token))
     navigate('/app/tested/' + id)
   }
 
-  const hasFile = fileObject !== null
+  const hasFile = reportFile !== null
 
   return (
     <Grid container spacing={0} className={classes.root}>
@@ -195,8 +206,8 @@ const LabTestDetailsEdit = ({ id }) => {
                   Attached documents
                 </Typography>
                 <Attachment
-                  name={fileObject.fileName}
-                  downloadData={fileObject}
+                  name={reportFile.fileName}
+                  downloadData={reportFile}
                 />
               </>
             )}

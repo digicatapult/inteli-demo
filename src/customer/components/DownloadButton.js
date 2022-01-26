@@ -24,8 +24,10 @@ const DownloadButton = (props) => {
   const { statusIndex, orderPowderId } = props
   const selectedLabTest = useSelector((state) =>
     state.labTests.find(
-      ({ powderId, type }) =>
-        type === 'PowderTestResult' && powderId === orderPowderId
+      ({ powderId, type, status }) =>
+        type === 'POWDER_TEST' &&
+        status === 'result' &&
+        powderId === orderPowderId
     )
   )
   const classes = useStyles()
@@ -60,8 +62,8 @@ const DownloadButton = (props) => {
         </Grid>
         <Grid item xs={4}>
           <Download
-            name="Powder test results.pdf"
-            downloadData={selectedLabTest.testReport}
+            name={selectedLabTest.testReport.name}
+            downloadData={selectedLabTest.testReport.url}
           />
         </Grid>
       </Grid>

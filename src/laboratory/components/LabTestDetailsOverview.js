@@ -22,7 +22,6 @@ const LabTestDetailsOverview = ({
   changeIsEditMode,
 }) => {
   const classes = useStyles()
-  console.log('testReport', testReport)
   return (
     <Grid container spacing={0} className={classes.root}>
       <Grid xs={12}>
@@ -74,14 +73,21 @@ const LabTestDetailsOverview = ({
             <Grid container className={classes.border}>
               <LabTestRow title={'Test Results'} value={''} bold={true} />
               <LabTestRow title={'Passed/Failed'} value={overallResult} />
-              <LabTestRow title={'Reason'} value={testReason} />
-              {testReport ? (
+              {testReason?.url ? (
+                <Attachment
+                  name={testReason.name}
+                  downloadData={testReason.url}
+                />
+              ) : (
+                <LabTestRow title={'Reason'} value="No reason given" />
+              )}
+              {testReport?.url ? (
                 <Attachment
                   name={testReport.name}
                   downloadData={testReport.url}
                 />
               ) : (
-                <></>
+                <LabTestRow title={'Report'} value="No report" />
               )}
             </Grid>
           ) : (
