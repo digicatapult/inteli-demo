@@ -70,7 +70,7 @@ const EmptyAction = () => {
 }
 
 const getTotalCost = (price, quantity) => {
-  cost = '0.00'
+  let cost = '0.00'
 
   if (price && quantity) {
     cost = price * quantity
