@@ -69,11 +69,22 @@ const EmptyAction = () => {
   return <></>
 }
 
+const getTotalCost = (price, quantity) => {
+  cost = '0.00'
+
+  if (price && quantity) {
+    cost = price * quantity
+    cost = `${cost}.00`
+  }
+
+  return cost
+}
+
 const OrderDetail = ({ order }) => {
   const classes = useStyles()
   const dispatch = useDispatch()
 
-  const { partId, image, name, material, alloy } = order.orderDetails
+  const { partId, image, name, material, alloy, price } = order.orderDetails
 
   useEffect(() => {
     dispatch(markOrderRead(order.id))
@@ -140,6 +151,11 @@ const OrderDetail = ({ order }) => {
                 <DetailRow title="Quantity" value={1}></DetailRow>
                 <DetailRow title="Material" value={material}></DetailRow>
                 <DetailRow title="Alloy" value={alloy}></DetailRow>
+                <DetailRow title="Unit Price" value={price}></DetailRow>
+                <DetailRow
+                  title="Total Cost"
+                  value={getTotalCost(price, quantity)}
+                ></DetailRow>
               </Box>
             </Grid>
             <Grid item xs={6}>
