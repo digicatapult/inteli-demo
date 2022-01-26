@@ -39,7 +39,6 @@ const useStyles = makeStyles({
 })
 
 const Attachment = ({ name, downloadData }) => {
-  if (downloadData) console.log(downloadData.type)
 
   const classes = useStyles()
   const [url, setURL] = useState('')

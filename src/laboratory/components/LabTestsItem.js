@@ -34,11 +34,10 @@ const useStyles = makeStyles(() => ({
 }))
 
 const LabTestsItem = (props) => {
-  const { selectedId, status, id, powderReference } = props
-  console.log(props)
-  const tested = status !== 'request'
+  const { selectedId, type, sent, status, id, powderReference } = props
+  const tested = type === 'PowderTestResult' || status === 'result'
   const selected = selectedId === id ? true : false
-  const statusText = tested ? 'tested' : 'requested'
+  const statusText = tested ? 'tested' : sent ? 'sent' : 'requested'
   const classes = useStyles()
   return (
     <NavLink

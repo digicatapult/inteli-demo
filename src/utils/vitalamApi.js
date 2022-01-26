@@ -54,8 +54,17 @@ const useNewFetchWrapper = () => {
       return request.text()
     } else {
       const file = await request.blob()
-      console.log(file.type)
-      return URL.createObjectURL(file)
+      const a = request.headers.get('content-disposition')
+      console.log(a)
+      const filename = request.headers
+        .get('content-disposition')
+        .split('filename=')[1]
+        .replace(/['"]/g, '')
+
+      return {
+        url: URL.createObjectURL(file),
+        name: filename,
+      }
     }
   }
   return newWrappedFetch
@@ -135,11 +144,11 @@ const useApi = () => {
         },
       }
     )
+    console.log(token)
     // temporary catch old style metadata
     if (!token.metadata_keys.includes('')) {
       await getNewMetadata(token)
     } else {
-      console.log(token)
       token.metadata = await wrappedFetch(
         `http://${API_HOST}:${API_PORT}/v2/item/${id}/metadata`,
         {
@@ -151,7 +160,6 @@ const useApi = () => {
           },
         }
       )
-      console.log(token)
     }
 
     return token

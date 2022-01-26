@@ -37,25 +37,25 @@ const useStyles = makeStyles({
   },
 })
 
-const u8Array2base64URI = (obj) => {
-  const type = obj.fileType
-  const ext = obj.fileExt
-  const u8 = obj.fileContent
+// const u8Array2base64URI = (obj) => {
+//   const type = obj.fileType
+//   const ext = obj.fileExt
+//   const u8 = obj.fileContent
 
-  const CHUNK_SZ = 0x8000
-  const parsedChunks = []
-  for (let i = 0; i < u8.length; i += CHUNK_SZ) {
-    parsedChunks.push(
-      String.fromCharCode.apply(null, u8.subarray(i, i + CHUNK_SZ))
-    )
-  }
-  const base64 = btoa(parsedChunks.join(''))
+//   const CHUNK_SZ = 0x8000
+//   const parsedChunks = []
+//   for (let i = 0; i < u8.length; i += CHUNK_SZ) {
+//     parsedChunks.push(
+//       String.fromCharCode.apply(null, u8.subarray(i, i + CHUNK_SZ))
+//     )
+//   }
+//   const base64 = btoa(parsedChunks.join(''))
 
-  const prefix = 'data:' + type + '/' + ext + ';base64,'
-  const base64URI = base64 ? prefix + base64 : ''
+//   const prefix = 'data:' + type + '/' + ext + ';base64,'
+//   const base64URI = base64 ? prefix + base64 : ''
 
-  return base64URI
-}
+//   return base64URI
+// }
 
 const LabTestDetailsEdit = ({ id }) => {
   const classes = useStyles()
@@ -80,12 +80,11 @@ const LabTestDetailsEdit = ({ id }) => {
       reader.onabort = () => console.log('File reading was aborted')
       reader.onerror = () => console.log('file reading has failed')
       reader.onload = () => {
-        const u8 = new Uint8Array(reader.result)
         const obj = {
           fileName: name,
           fileExt: ext,
           fileType: type,
-          fileContent: u8,
+          fileContent: reader.result,
         }
         setFileObject(obj)
       }
@@ -120,7 +119,10 @@ const LabTestDetailsEdit = ({ id }) => {
     ]
 
     formData.set('request', JSON.stringify({ inputs, outputs }))
-    formData.set('files', new Blob(fileObject.fileContent), fileObject.fileName)
+    const blob = new Blob([fileObject.fileContent], {
+      type: fileObject.fileType,
+    })
+    formData.set('files', blob, fileObject.fileName)
 
     return formData
   }
@@ -194,7 +196,7 @@ const LabTestDetailsEdit = ({ id }) => {
                 </Typography>
                 <Attachment
                   name={fileObject.fileName}
-                  downloadData={u8Array2base64URI(fileObject)}
+                  downloadData={fileObject}
                 />
               </>
             )}

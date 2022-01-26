@@ -22,6 +22,7 @@ const Tested = () => {
     )
   )
   const selectedTest = laboratoryTests.find((o) => o.id === selectedId)
+  console.log(selectedTest)
   return (
     <>
       {laboratoryTests.length ? (
