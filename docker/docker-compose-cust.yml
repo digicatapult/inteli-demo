@@ -35,7 +35,7 @@ services:
     networks: ['chain', 'cust']
 
   ipfs-alice:
-    image: ghcr.io/digicatapult/vitalam-ipfs:v1.0.0
+    image: ghcr.io/digicatapult/vitalam-ipfs:v1.1.0
     container_name: ipfs-alice
     ports:
       - 5001:5001
@@ -48,7 +48,7 @@ services:
     networks: ['ipfs', 'cust']
 
   api-alice:
-    image: ghcr.io/digicatapult/vitalam-api:v2.6.0
+    image: ghcr.io/digicatapult/vitalam-api:v2.6.2
     container_name: api-alice
     ports:
       - 3001:3001
