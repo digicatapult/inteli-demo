@@ -12,7 +12,7 @@ const LabTests = () => {
   const params = useParams()
   const labTests = useSelector((state) =>
     state.labTests.filter(
-      (test) => test.type === 'POWDER_TEST' && test.status === 'result'
+      ({ type, status }) => type === 'POWDER_TEST' && status === 'result'
     )
   )
 

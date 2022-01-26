@@ -103,7 +103,7 @@ const OrderDetail = ({ test }) => {
           <Typography variant="body1" className={classes.fontBold}>
             Reason:
           </Typography>
-          {testReason?.url ? (
+          {testReason ? (
             <Attachment name={testReason.name} downloadData={testReason.url} />
           ) : (
             <Typography>No reason given</Typography>
@@ -134,7 +134,7 @@ const OrderDetail = ({ test }) => {
           </Box>
         ))}
         <Box className={classes.attachment}>
-          {testReport?.url ? (
+          {testReport ? (
             <>
               <DetailRow title="Attached Documents"></DetailRow>
               <Attachment

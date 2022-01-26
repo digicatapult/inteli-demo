@@ -37,26 +37,6 @@ const useStyles = makeStyles({
   },
 })
 
-// const u8Array2base64URI = (obj) => {
-//   const type = obj.fileType
-//   const ext = obj.fileExt
-//   const u8 = obj.fileContent
-
-//   const CHUNK_SZ = 0x8000
-//   const parsedChunks = []
-//   for (let i = 0; i < u8.length; i += CHUNK_SZ) {
-//     parsedChunks.push(
-//       String.fromCharCode.apply(null, u8.subarray(i, i + CHUNK_SZ))
-//     )
-//   }
-//   const base64 = btoa(parsedChunks.join(''))
-
-//   const prefix = 'data:' + type + '/' + ext + ';base64,'
-//   const base64URI = base64 ? prefix + base64 : ''
-
-//   return base64URI
-// }
-
 const LabTestDetailsEdit = ({ id }) => {
   const classes = useStyles()
   const [labTestPassOrFail, setLabTestPassOrFail] = useState('')

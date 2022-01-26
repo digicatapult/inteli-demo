@@ -73,7 +73,7 @@ const LabTestDetailsOverview = ({
             <Grid container className={classes.border}>
               <LabTestRow title={'Test Results'} value={''} bold={true} />
               <LabTestRow title={'Passed/Failed'} value={overallResult} />
-              {testReason?.url ? (
+              {testReason ? (
                 <Attachment
                   name={testReason.name}
                   downloadData={testReason.url}
@@ -81,7 +81,7 @@ const LabTestDetailsOverview = ({
               ) : (
                 <LabTestRow title={'Reason'} value="No reason given" />
               )}
-              {testReport?.url ? (
+              {testReport ? (
                 <Attachment
                   name={testReport.name}
                   downloadData={testReport.url}
