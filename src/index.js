@@ -11,7 +11,6 @@ import BlockchainWatcher from './shared/BlockchainWatcher.js'
 
 const store = configureStore({
   reducer: rootReducer,
-  devTools: true,
 })
 
 let App = null
