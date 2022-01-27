@@ -84,8 +84,9 @@ const OrderDetail = ({ order }) => {
   const classes = useStyles()
   const dispatch = useDispatch()
 
-  const { partId, image, quantity, name, material, alloy, deliveredBy, price } =
+  const { partId, image, name, material, alloy, deliveredBy, price } =
     order.orderDetails
+  const quantity = order.quantity
 
   useEffect(() => {
     dispatch(markOrderRead(order.id))
