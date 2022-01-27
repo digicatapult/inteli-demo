@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import {
   Button,
@@ -16,7 +15,6 @@ import Attachment from './Attachment'
 import images from '../../images'
 import LabTestRow from './LabTestRow'
 import { identities, useApi } from '../../utils'
-import { updateLabTest } from '../../features/labTestsSlice'
 
 const useStyles = makeStyles({
   root: { marginTop: '40px', marginBottom: '40px', padding: '8px' },
@@ -46,7 +44,6 @@ const LabTestDetailsEdit = ({ id }) => {
   const [reportFile, setReportFile] = useState(null)
 
   const api = useApi()
-  const dispatch = useDispatch()
   const navigate = useNavigate()
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -57,8 +54,8 @@ const LabTestDetailsEdit = ({ id }) => {
       const images = ['png', 'gif', 'jpg']
       const type = images.includes(ext) ? 'image' : 'application'
       const reader = new FileReader()
-      reader.onabort = () => console.log('File reading was aborted')
-      reader.onerror = () => console.log('file reading has failed')
+      reader.onabort = () => console.error('File reading was aborted')
+      reader.onerror = () => console.error('file reading has failed')
       reader.onload = () => {
         const obj = {
           fileName: name,
@@ -131,10 +128,8 @@ const LabTestDetailsEdit = ({ id }) => {
     setIsSubmitting(true)
 
     const formData = createFormData([id], { reportFile, labTestReason })
-    const response = await api.runProcess(formData)
-    const token = { id: id, latestId: response[0] }
+    await api.runProcess(formData)
 
-    dispatch(updateLabTest(token))
     navigate('/app/tested/' + id)
   }
 
