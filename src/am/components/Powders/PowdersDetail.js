@@ -24,7 +24,7 @@ import Header from '../Header'
 import { markPowderRead } from '../../../features/readPowdersSlice'
 import { identities, useApi } from '../../../utils'
 import { upsertPowder } from '../../../features/powdersSlice'
-import { addLabTest } from '../../../features/labTestsSlice'
+import { upsertLabTest } from '../../../features/labTestsSlice'
 
 const useStyles = makeStyles({
   header: {
@@ -164,11 +164,12 @@ const PowdersDetail = () => {
     }
     const labTestToken = {
       id: response[0],
+      original_id: response[0],
       latestId: response[0],
       ...outputData[0],
     }
 
-    dispatch(addLabTest(labTestToken))
+    dispatch(upsertLabTest(labTestToken))
     dispatch(upsertPowder(powderToken))
 
     navigate('/app/powders')
