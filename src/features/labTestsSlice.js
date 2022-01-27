@@ -6,10 +6,10 @@ export const labTestsSlice = createSlice({
   reducers: {
     upsertLabTest: {
       reducer(state, action) {
-        // tokens for new assets have matching id and original_id
         const labTest = state.find(
           ({ id }) => id === action.payload.original_id
         )
+        // tokens for new assets have matching id and original_id
         if (action.payload.id === action.payload.original_id) {
           if (!labTest) {
             state.push(action.payload)
