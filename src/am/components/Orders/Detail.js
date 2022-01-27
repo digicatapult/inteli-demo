@@ -84,9 +84,9 @@ const OrderDetail = ({ order }) => {
   const classes = useStyles()
   const dispatch = useDispatch()
 
-  const { partId, image, name, material, alloy, deliveredBy, price } =
-    order.orderDetails
+  const { partId, image, name, material, alloy, price } = order.orderDetails
   const quantity = order.quantity
+  const deliveryBy = order.deliveryBy
 
   useEffect(() => {
     dispatch(markOrderRead(order.id))
@@ -153,7 +153,7 @@ const OrderDetail = ({ order }) => {
                 <DetailRow title="Quantity" value={quantity}></DetailRow>
                 <DetailRow title="Material" value={material}></DetailRow>
                 <DetailRow title="Alloy" value={alloy}></DetailRow>
-                <DetailRow title="Delivered By" value={deliveredBy}></DetailRow>
+                <DetailRow title="Delivery By" value={deliveryBy}></DetailRow>
                 <DetailRow title="Unit Price" value={price}></DetailRow>
                 <DetailRow
                   title="Total Cost"
