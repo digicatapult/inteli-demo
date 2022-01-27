@@ -23,8 +23,6 @@ import Header from '../Header'
 
 import { markPowderRead } from '../../../features/readPowdersSlice'
 import { identities, useApi } from '../../../utils'
-import { upsertPowder } from '../../../features/powdersSlice'
-import { addLabTest } from '../../../features/labTestsSlice'
 
 const useStyles = makeStyles({
   header: {
@@ -107,22 +105,35 @@ const PowdersDetail = () => {
     location,
   } = powder
 
-  const createFormData = (inputs, outputs) => {
+  const createFormData = (inputs) => {
     const formData = new FormData()
+    const outputs = [
+      {
+        roles: { Owner: labId },
+        metadata: {
+          type: { type: 'LITERAL', value: 'POWDER_TEST' },
+          status: { type: 'LITERAL', value: 'request' },
+          powderId: { type: 'TOKEN_ID', value: powder.id },
+          powderReference: { type: 'LITERAL', value: powderReference },
+          requiredTests: { type: 'FILE', value: 'testList.json' },
+        },
+      },
+      {
+        roles: { Owner: identities.am },
+        metadata: {
+          type: { type: 'LITERAL', value: 'POWDER' },
+          quantityKg: { type: 'LITERAL', value: quantityKg - 0.05 },
+        },
+        parent_index: 0,
+      },
+    ]
 
-    formData.set(
-      'request',
-      JSON.stringify({
-        inputs,
-        outputs: outputs.map(({ owner }, outputIndex) => ({
-          owner,
-          metadataFile: `file_${outputIndex}`,
-        })),
-      })
-    )
-    outputs.forEach(({ file }, outputIndex) => {
-      formData.set(`file_${outputIndex}`, file, `file_${outputIndex}`)
+    formData.set('request', JSON.stringify({ inputs, outputs }))
+
+    const blob = new Blob([JSON.stringify(testList)], {
+      type: 'application/json',
     })
+    formData.append('files', blob, 'testList.json')
 
     return formData
   }
@@ -130,46 +141,8 @@ const PowdersDetail = () => {
   const onChange = async () => {
     setIsFetching(true)
 
-    const outputData = [
-      {
-        type: 'PowderTestRequest',
-        powderId: powder.id,
-        powderReference,
-        requiredTests: testList,
-        owner: labId,
-      },
-      {
-        type: 'Powder',
-        powderReference,
-        material,
-        alloy,
-        quantityKg: quantityKg - 0.05,
-        particleSizeUm,
-        location,
-        owner: identities.am,
-      },
-    ]
-
-    const outputs = outputData.map(({ owner, ...obj }) => ({
-      owner,
-      file: new Blob([JSON.stringify(obj)]),
-    }))
-    const formData = createFormData([powder.latestId], outputs)
-    const response = await api.runProcess(formData)
-
-    const powderToken = {
-      id: powder.id,
-      latestId: response[1],
-      ...outputData[1],
-    }
-    const labTestToken = {
-      id: response[0],
-      latestId: response[0],
-      ...outputData[0],
-    }
-
-    dispatch(addLabTest(labTestToken))
-    dispatch(upsertPowder(powderToken))
+    const formData = createFormData([powder.latestId])
+    await api.runProcess(formData)
 
     navigate('/app/powders')
   }

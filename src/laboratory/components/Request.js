@@ -15,7 +15,10 @@ const RequestsAndRequest = () => {
   const selectedId = useParams().testId * 1 || null
   const laboratoryTests = useSelector((state) =>
     state.labTests.filter(
-      (o) => o.type === 'PowderTestRequest' && o.owner === identities.current
+      ({ type, status, owner }) =>
+        type === 'POWDER_TEST' &&
+        status === 'request' &&
+        owner === identities.current
     )
   )
   const selectedTest = laboratoryTests.find((o) => o.id === selectedId)
