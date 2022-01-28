@@ -84,9 +84,11 @@ const PowdersDetail = () => {
   const dispatch = useDispatch()
   const classes = useStyles()
   const { powder, labTest } = useSelector((state) => ({
-    powder: state.powders.find(({ id: powderId }) => id === powderId) || {},
-    labTest: state.labTests.find(({ powderId }) => id === powderId) || null,
+    powder: state.powders.find(({ original_id }) => id === original_id) || {},
+    labTest:
+      state.labTests.find(({ powderId }) => id.toString() === powderId) || null,
   }))
+
   const api = useApi()
 
   useEffect(() => {
@@ -109,7 +111,11 @@ const PowdersDetail = () => {
     const formData = new FormData()
     const outputs = [
       {
-        roles: { Owner: labId },
+        roles: {
+          Owner: labId,
+          AdditiveManufacturer: identities.am,
+          Laboratory: labId,
+        },
         metadata: {
           type: { type: 'LITERAL', value: 'POWDER_TEST' },
           status: { type: 'LITERAL', value: 'request' },
@@ -122,7 +128,7 @@ const PowdersDetail = () => {
         roles: { Owner: identities.am },
         metadata: {
           type: { type: 'LITERAL', value: 'POWDER' },
-          quantityKg: { type: 'LITERAL', value: quantityKg - 0.05 },
+          quantityKg: { type: 'LITERAL', value: `${quantityKg - 0.05}` },
         },
         parent_index: 0,
       },
@@ -141,7 +147,7 @@ const PowdersDetail = () => {
   const onChange = async () => {
     setIsFetching(true)
 
-    const formData = createFormData([powder.latestId])
+    const formData = createFormData([powder.id])
     await api.runProcess(formData)
 
     navigate('/app/powders')

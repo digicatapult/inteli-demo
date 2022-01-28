@@ -18,7 +18,7 @@ const Tested = () => {
       ({ type, status, roles }) =>
         type === 'POWDER_TEST' &&
         status === 'result' &&
-        roles.Owner === identities.am // temp, change to roles.lab === identities.current when PowderTestRequest updated with new roles
+        roles.Laboratory === identities.current
     )
   )
   const selectedTest = laboratoryTests.find((o) => o.id === selectedId)
