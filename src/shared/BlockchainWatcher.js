@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { addOrder, updateOrder } from '../features/ordersSlice'
 import { upsertPowder } from '../features/powdersSlice'
-import { addLabTest, updateLabTest } from '../features/labTestsSlice'
+import { upsertLabTest } from '../features/labTestsSlice'
 
 import { useApi } from '../utils'
 
@@ -109,22 +109,14 @@ const BlockchainWatcher = ({ children }) => {
               )
               break
             case 'PowderTestRequest':
-              dispatch(
-                addLabTest({
-                  id: token.id,
-                  latestId: token.id,
-                  owner: token.roles.Owner,
-                  latestOwner: token.roles.Owner,
-                  ...token.metadata,
-                })
-              )
-              break
             case 'POWDER_TEST':
+              console.log(token)
               dispatch(
-                updateLabTest({
-                  id: token.original_id,
-                  latestId: token.id,
-                  latestOwner: token.roles.Owner,
+                upsertLabTest({
+                  id: token.id,
+                  original_id: token.original_id,
+                  owner: token.roles.Owner,
+                  roles: token.roles,
                   ...token.metadata,
                 })
               )

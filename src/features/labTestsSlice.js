@@ -4,21 +4,24 @@ export const labTestsSlice = createSlice({
   name: 'labTests',
   initialState: [],
   reducers: {
-    addLabTest: {
+    upsertLabTest: {
       reducer(state, action) {
-        const labTest = state.find(({ id }) => id === action.payload.id)
-        if (!labTest) {
-          state.push(action.payload)
-        }
-      },
-    },
-    updateLabTest: {
-      reducer(state, action) {
-        const test = state.find(({ id }) => id === action.payload.id)
-        if (test) {
-          Object.assign(test, action.payload)
+        const labTest = state.find(
+          ({ id }) => id === action.payload.original_id
+        )
+        // tokens for new assets have matching id and original_id
+        if (action.payload.id === action.payload.original_id) {
+          if (!labTest) {
+            state.push(action.payload)
+          }
         } else {
-          console.error(`Error cannot find token with id ${action.payload.id}`)
+          if (labTest) {
+            Object.assign(labTest, action.payload)
+          } else {
+            console.error(
+              `Error cannot find token with id ${action.payload.original_id}`
+            )
+          }
         }
       },
     },
@@ -27,6 +30,6 @@ export const labTestsSlice = createSlice({
 
 export const { actions, reducer } = labTestsSlice
 
-export const { addLabTest, updateLabTest } = actions
+export const { upsertLabTest } = actions
 
 export default reducer
