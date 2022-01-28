@@ -20,15 +20,14 @@ init_data_with_curl() {
 	PORT=$2;
 	URL=http://${HOST}:${PORT}/v2/run-process; # URL=http://localhost:3001/v2/run-process;
 	OWNER=$3;
-	vitalamtmp=$4;
-	REQ00='{"inputs":[],"outputs":[{ "owner":"'${OWNER}'","metadataFile":"00.txt"}]}';
-	REQ01='{"inputs":[],"outputs":[{ "owner":"'${OWNER}'","metadataFile":"01.txt"}]}';
-	REQ02='{"inputs":[],"outputs":[{ "owner":"'${OWNER}'","metadataFile":"02.txt"}]}';
+	REQ00='{"inputs":[],"outputs":[{ "roles": { "Owner": "'${OWNER}'" }, "metadata": '${POWDER0}' }]}';
+	REQ01='{"inputs":[],"outputs":[{ "roles": { "Owner": "'${OWNER}'" }, "metadata": '${POWDER1}' }]}';
+	REQ02='{"inputs":[],"outputs":[{ "roles": { "Owner": "'${OWNER}'" }, "metadata": '${POWDER2}' }]}';
 	H1="Accept: application/json"
 	H2="Authorization: Bearer ${TOKEN}"
-	curl -X POST -H "$H1" -H "$H2" -F "request=${REQ00}" -F '00.txt=@'${vitalamtmp}'/00.txt' $URL; echo;
-	curl -X POST -H "$H1" -H "$H2" -F "request=${REQ01}" -F '01.txt=@'${vitalamtmp}'/01.txt' $URL; echo;
-	curl -X POST -H "$H1" -H "$H2" -F "request=${REQ02}" -F '02.txt=@'${vitalamtmp}'/02.txt' $URL; echo;
+	curl -X POST -H "$H1" -H "$H2" -F "request=${REQ00}" $URL; echo;
+	curl -X POST -H "$H1" -H "$H2" -F "request=${REQ01}" $URL; echo;
+	curl -X POST -H "$H1" -H "$H2" -F "request=${REQ02}" $URL; echo;
 }
 
 check_data_with_curl() {
@@ -46,49 +45,49 @@ check_data_with_curl() {
 }
 
 
-vitalamtmp=$(mktemp -d 2>/dev/null || mktemp -d -t 'vitalam-demo');
-
-cat <<EOT >> ${vitalamtmp}/00.txt
+POWDER0=$(cat <<-END
 {
-	"type": "Powder",
-	"powderReference": "MB000042",
-	"material": "Aluminium",
-	"alloy": "2014",
-	"quantityKg": 200,
-	"particleSizeUm": 37.4,
-	"location": "Powder Room"
+	"type": { "type": "LITERAL", "value": "POWDER" },
+	"powderReference": { "type": "LITERAL", "value": "MB000042" },
+	"material": { "type": "LITERAL", "value": "Aluminium" },
+	"alloy": { "type": "LITERAL", "value": "2014" },
+	"quantityKg": { "type": "LITERAL", "value": "200" },
+	"particleSizeUm": { "type": "LITERAL", "value": "37.4" },
+	"location": { "type": "LITERAL", "value": "Powder Room" }
 }
-EOT
+END
+)
 
-cat <<EOT >> ${vitalamtmp}/01.txt
+POWDER1=$(cat <<-END
 {
-	"type": "Powder",
-	"powderReference": "MB000055",
-	"material": "Titanium",
-	"alloy": "Ti-6Al-4V",
-	"quantityKg": 200,
-	"particleSizeUm": 37.4,
-	"location": "Powder Room"
+	"type": { "type": "LITERAL", "value": "POWDER" },
+	"powderReference": { "type": "LITERAL", "value": "MB000055" },
+	"material": { "type": "LITERAL", "value": "Titanium" },
+	"alloy": { "type": "LITERAL", "value": "Ti-6Al-4V" },
+	"quantityKg": { "type": "LITERAL", "value": "200" },
+	"particleSizeUm": { "type": "LITERAL", "value": "37.4" },
+	"location": { "type": "LITERAL", "value": "Powder Room" }
 }
-EOT
+END
+)
 
-cat <<EOT >> ${vitalamtmp}/02.txt
+POWDER2=$(cat <<-END
 {
-	"type": "Powder",
-	"powderReference": "MB000056",
-	"material": "Titanium",
-	"alloy": "Ti-6Al-4V",
-	"quantityKg": 100,
-	"particleSizeUm": 37.4,
-	"location": "Powder Room"
+	"type": { "type": "LITERAL", "value": "POWDER" },
+	"powderReference": { "type": "LITERAL", "value": "MB000056" },
+	"material": { "type": "LITERAL", "value": "Titanium" },
+	"alloy": { "type": "LITERAL", "value": "Ti-6Al-4V" },
+	"quantityKg": { "type": "LITERAL", "value": "100" },
+	"particleSizeUm": { "type": "LITERAL", "value": "37.4" },
+	"location": { "type": "LITERAL", "value": "Powder Room" }
 }
-EOT
+END
+)
 
 source .env;
 OWNER=5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty;
 get_token localhost $PORTAPI;
-init_data_with_curl localhost $PORTAPI $OWNER ${vitalamtmp};
+init_data_with_curl localhost $PORTAPI $OWNER;
 check_data_with_curl localhost $PORTAPI;
-rm ${vitalamtmp}/*; rmdir ${vitalamtmp};
 
 echo Done;
