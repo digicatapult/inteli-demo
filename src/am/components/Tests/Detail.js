@@ -52,7 +52,9 @@ const DetailRow = ({ title, value }) => {
 }
 
 const OrderDetail = ({ test }) => {
-  const { overallResult, testReason, testReport, powderId } = test
+  const {
+    metadata: { overallResult, testReason, testReport, powderId },
+  } = test
 
   const classes = useStyles()
   const dispatch = useDispatch()
@@ -104,7 +106,10 @@ const OrderDetail = ({ test }) => {
             Reason:
           </Typography>
           {testReason ? (
-            <Attachment name={testReason.name} downloadData={testReason.url} />
+            <Attachment
+              name={testReason.fileName}
+              downloadData={testReason.url}
+            />
           ) : (
             <Typography>No reason given</Typography>
           )}
@@ -138,7 +143,7 @@ const OrderDetail = ({ test }) => {
             <>
               <DetailRow title="Attached Documents"></DetailRow>
               <Attachment
-                name={testReport.name}
+                name={testReport.fileName}
                 downloadData={testReport.url}
               />
             </>

@@ -15,7 +15,9 @@ const RequestsAndRequest = () => {
   const selectedId = useParams().testId * 1 || null
   const laboratoryTests = useSelector((state) =>
     state.labTests.filter(
-      (o) => o.type === 'PowderTestRequest' && o.owner === identities.current
+      ({ roles, metadata }) =>
+        metadata.type === 'PowderTestRequest' &&
+        roles.Owner === identities.current // temp, change to roles.lab === identities.current when PowderTestRequest updated with new roles
     )
   )
   const selectedTest = laboratoryTests.find((o) => o.id === selectedId)
@@ -33,7 +35,7 @@ const RequestsAndRequest = () => {
             </LabTestsItemsWrapper>
           </Grid>
           <Grid item xs={6} xs-offset={1}>
-            {selectedId ? <LabTestDetails {...selectedTest} /> : null}
+            {selectedTest ? <LabTestDetails {...selectedTest} /> : null}
           </Grid>
           <Grid item xs={1} />
         </LabTestsWrapper>

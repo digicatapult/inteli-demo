@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import {
   Button,
@@ -15,6 +16,8 @@ import Attachment from './Attachment'
 import images from '../../images'
 import LabTestRow from './LabTestRow'
 import { identities, useApi, tokenTypes } from '../../utils'
+import { powderTestStatus } from '../../utils/statuses'
+import { upsertLabTest } from '../../features/labTestsSlice'
 
 const useStyles = makeStyles({
   root: { marginTop: '40px', marginBottom: '40px', padding: '8px' },
@@ -42,8 +45,10 @@ const LabTestDetailsEdit = ({ id }) => {
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const [reportFile, setReportFile] = useState(null)
+  let reasonFile = null
 
   const api = useApi()
+  const dispatch = useDispatch()
   const navigate = useNavigate()
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -57,11 +62,14 @@ const LabTestDetailsEdit = ({ id }) => {
       reader.onabort = () => console.error('File reading was aborted')
       reader.onerror = () => console.error('file reading has failed')
       reader.onload = () => {
+        const blob = new Blob([reader.result], {
+          type: type,
+        })
+        const url = URL.createObjectURL(blob)
         const obj = {
+          blob: blob,
           fileName: name,
-          fileExt: ext,
-          fileType: type,
-          fileContent: reader.result,
+          url: url,
         }
         setReportFile(obj)
       }
@@ -75,28 +83,28 @@ const LabTestDetailsEdit = ({ id }) => {
   const handleChange = (event) => {
     setLabTestReason(event.target.value)
   }
-  const createFormData = (inputs, files) => {
+  const createFormData = (inputs, roles, metadata) => {
     const formData = new FormData()
     const outputs = [
       {
-        roles: { Owner: identities.am },
+        roles: roles,
         metadata: {
-          type: { type: 'LITERAL', value: tokenTypes.powderTest },
-          status: { type: 'LITERAL', value: 'result' },
-          overallResult: { type: 'LITERAL', value: labTestPassOrFail },
-          ...(files.reportFile
+          type: { type: 'LITERAL', value: metadata.type },
+          status: { type: 'LITERAL', value: metadata.status },
+          overallResult: { type: 'LITERAL', value: metadata.overallResult },
+          ...(metadata.testReport
             ? {
                 testReport: {
                   type: 'FILE',
-                  value: files.reportFile.fileName,
+                  value: metadata.testReport.fileName,
                 },
               }
             : {}),
-          ...(files.labTestReason
+          ...(metadata.testReason
             ? {
                 testReason: {
                   type: 'FILE',
-                  value: 'testReason.txt',
+                  value: metadata.testReason.fileName,
                 },
               }
             : {}),
@@ -107,28 +115,55 @@ const LabTestDetailsEdit = ({ id }) => {
 
     formData.set('request', JSON.stringify({ inputs, outputs }))
 
-    if (files.reportFile) {
-      const blob = new Blob([files.reportFile.fileContent], {
-        type: files.reportFile.fileType,
-      })
-      formData.append('files', blob, files.reportFile.fileName)
+    if (metadata.testReport) {
+      formData.append('files', reportFile.blob, reportFile.fileName)
     }
 
-    if (files.labTestReason) {
-      const blob = new Blob([files.labTestReason], {
-        type: 'text/plain',
-      })
-      formData.append('files', blob, 'testReason.txt')
+    if (metadata.testReason) {
+      formData.append('files', reasonFile.blob, reasonFile.fileName)
     }
 
     return formData
   }
 
+  const createReasonFile = (labTestReason) => {
+    if (labTestReason) {
+      const blob = new Blob([labTestReason], {
+        type: 'text/plain',
+      })
+      const url = URL.createObjectURL(blob)
+      return {
+        blob: blob,
+        fileName: 'testReason.txt',
+        url: url,
+      }
+    } else {
+      return null
+    }
+  }
+
   const onSubmit = async () => {
+    reasonFile = createReasonFile(labTestReason)
+
+    const roles = { Owner: identities.am }
+    const metadata = {
+      type: tokenTypes.powderTest,
+      status: powderTestStatus.result,
+      overallResult: labTestPassOrFail,
+      ...(reportFile
+        ? { testReport: { fileName: reportFile.fileName, url: reportFile.url } }
+        : {}),
+      ...(reasonFile
+        ? { testReason: { fileName: reasonFile.fileName, url: reasonFile.url } }
+        : {}),
+    }
+
     setIsSubmitting(true)
 
-    const formData = createFormData([id], { reportFile, labTestReason })
-    await api.runProcess(formData)
+    const formData = createFormData([id], roles, metadata)
+    const response = await api.runProcess(formData)
+    const token = { id: response[0], original_id: id, roles, metadata }
+    dispatch(upsertLabTest(token))
 
     navigate('/app/tested/' + id)
   }
@@ -182,7 +217,7 @@ const LabTestDetailsEdit = ({ id }) => {
                 </Typography>
                 <Attachment
                   name={reportFile.fileName}
-                  downloadData={reportFile}
+                  downloadData={reportFile.url}
                 />
               </>
             )}

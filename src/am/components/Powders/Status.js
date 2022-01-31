@@ -27,10 +27,10 @@ const PowderStatus = ({ labTest }) => {
   let powderStatus = null
   if (labTest === null) {
     powderStatus = 'testRequired'
-  } else if (!labTest.overallResult) {
+  } else if (!labTest.metadata.overallResult) {
     powderStatus = 'testRequested'
   } else {
-    powderStatus = labTest.overallResult
+    powderStatus = labTest.metadata.overallResult
   }
 
   let statusText = null,

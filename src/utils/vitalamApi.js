@@ -51,15 +51,16 @@ const useNewFetchWrapper = () => {
       case 'text/plain; charset=utf-8':
         return response.text()
       case 'application/octet-stream': {
-        const file = await response.blob()
-        const filename = response.headers
+        const blob = await response.blob()
+        const url = URL.createObjectURL(blob)
+        const fileName = response.headers
           .get('content-disposition')
           .split('filename=')[1]
           .replace(/['"]/g, '')
 
         return {
-          url: URL.createObjectURL(file),
-          name: filename,
+          url: url,
+          fileName: fileName,
         }
       }
       default:

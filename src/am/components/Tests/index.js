@@ -14,7 +14,7 @@ const LabTests = () => {
   const params = useParams()
   const labTests = useSelector((state) =>
     state.labTests.filter(
-      ({ type, status }) =>
+      ({ metadata: { type, status } }) =>
         type === tokenTypes.powderTest && status === powderTestStatus.result
     )
   )

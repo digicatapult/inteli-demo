@@ -7,7 +7,7 @@ export const labTestsSlice = createSlice({
     upsertLabTest: {
       reducer(state, action) {
         const labTest = state.find(
-          ({ id }) => id === action.payload.original_id
+          ({ original_id }) => original_id === action.payload.original_id
         )
         // tokens for new assets have matching id and original_id
         if (action.payload.id === action.payload.original_id) {
@@ -16,7 +16,10 @@ export const labTestsSlice = createSlice({
           }
         } else {
           if (labTest) {
-            Object.assign(labTest, action.payload)
+            labTest.id = action.payload.id
+            labTest.original_id = action.payload.original_id
+            Object.assign(labTest.roles, action.payload.roles)
+            Object.assign(labTest.metadata, action.payload.metadata)
           } else {
             console.error(
               `Error cannot find token with id ${action.payload.original_id}`

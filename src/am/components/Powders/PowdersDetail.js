@@ -87,7 +87,8 @@ const PowdersDetail = () => {
   const classes = useStyles()
   const { powder, labTest } = useSelector((state) => ({
     powder: state.powders.find(({ id: powderId }) => id === powderId) || {},
-    labTest: state.labTests.find(({ powderId }) => id === powderId) || null,
+    labTest:
+      state.labTests.find(({ metadata }) => id === metadata.powderId) || null,
   }))
   const api = useApi()
 
@@ -165,8 +166,8 @@ const PowdersDetail = () => {
     const labTestToken = {
       id: response[0],
       original_id: response[0],
-      latestId: response[0],
-      ...outputData[0],
+      roles: { Owner: outputData[0].owner },
+      metadata: outputData[0],
     }
 
     dispatch(upsertLabTest(labTestToken))

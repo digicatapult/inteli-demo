@@ -34,16 +34,18 @@ const useStyles = makeStyles({
 })
 
 const OrderStatusProgressBar = (props) => {
+  console.log(props)
   const { orderType, orderPowderId } = props
 
   const selectedLabTest = useSelector((state) =>
     state.labTests.find(
-      ({ powderId, type, status }) =>
+      ({ metadata: { type, status, powderId } }) =>
         type === tokenTypes.powderTest &&
         status === powderTestStatus.result &&
         powderId === orderPowderId
     )
   )
+  console.log(selectedLabTest)
 
   const classes = useStyles()
 

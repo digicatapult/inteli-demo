@@ -63,7 +63,7 @@ const Navigation = () => {
   const powders = useSelector((state) => state.powders)
   const testResults = useSelector((state) =>
     state.labTests.filter(
-      ({ type, status }) =>
+      ({ metadata: { type, status } }) =>
         type === tokenTypes.powderTest && status === powderTestStatus.result
     )
   )

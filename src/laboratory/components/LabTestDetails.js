@@ -6,11 +6,13 @@ import LabTestDetailsOverview from './LabTestDetailsOverview'
 const LabTestDetails = (props) => {
   const {
     id,
-    powderReference,
-    requiredTests,
-    overallResult,
-    testReason,
-    testReport,
+    metadata: {
+      powderReference,
+      requiredTests,
+      overallResult,
+      testReason,
+      testReport,
+    },
   } = props
   const [isEditMode, setIsEditMode] = useState(false)
   return !isEditMode ? (

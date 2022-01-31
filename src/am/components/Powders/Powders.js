@@ -32,7 +32,8 @@ const Powders = () => {
       <Grid container direction="column">
         {[...powders].reverse().map((powder) => {
           const labTest =
-            labTests.find(({ powderId }) => powderId === powder.id) || null
+            labTests.find(({ metadata }) => metadata.powderId === powder.id) ||
+            null
           return <PowderRow key={powder.id} powder={powder} labTest={labTest} />
         })}
       </Grid>

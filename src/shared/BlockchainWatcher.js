@@ -110,14 +110,12 @@ const BlockchainWatcher = ({ children }) => {
               break
             case 'PowderTestRequest':
             case tokenTypes.powderTest:
-              console.log(token)
               dispatch(
                 upsertLabTest({
                   id: token.id,
                   original_id: token.original_id,
-                  owner: token.roles.Owner,
                   roles: token.roles,
-                  ...token.metadata,
+                  metadata: token.metadata,
                 })
               )
               break

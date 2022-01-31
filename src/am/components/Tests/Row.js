@@ -29,7 +29,10 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const TestRow = ({ test }) => {
-  const { id: testId, powderReference, overallResult: testStatus } = test
+  const {
+    id: testId,
+    metadata: { powderReference, overallResult },
+  } = test
   const classes = useStyles()
   const readTests = useSelector((state) => state.readTests)
 
@@ -54,7 +57,7 @@ const TestRow = ({ test }) => {
           <Typography>{powderReference}</Typography>
         </Grid>
         <Grid item xs={4} className={`${classes.rowItem}`}>
-          <TestStatus testStatus={testStatus} />
+          <TestStatus testStatus={overallResult} />
         </Grid>
       </Grid>
     </Paper>
