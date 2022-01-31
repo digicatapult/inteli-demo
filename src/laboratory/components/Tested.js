@@ -9,15 +9,15 @@ import LabTestsItem from './LabTestsItem'
 import LabTestsItemsWrapper from './LabTestsItemsWrapper'
 import LabTestsSearch from './LabTestsSearch'
 import LabTestsWrapper from './LabTestsWrapper'
-import { identities } from '../../utils'
+import { identities, tokenTypes, powderTestStatus } from '../../utils'
 
 const Tested = () => {
   const selectedId = useParams().testId * 1 || null
   const laboratoryTests = useSelector((state) =>
     state.labTests.filter(
       ({ type, status, roles }) =>
-        type === 'POWDER_TEST' &&
-        status === 'result' &&
+        type === tokenTypes.powderTest &&
+        status === powderTestStatus.result &&
         roles.Owner === identities.am // temp, change to roles.lab === identities.current when PowderTestRequest updated with new roles
     )
   )

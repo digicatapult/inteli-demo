@@ -14,7 +14,7 @@ import { useDropzone } from 'react-dropzone'
 import Attachment from './Attachment'
 import images from '../../images'
 import LabTestRow from './LabTestRow'
-import { identities, useApi } from '../../utils'
+import { identities, useApi, tokenTypes } from '../../utils'
 
 const useStyles = makeStyles({
   root: { marginTop: '40px', marginBottom: '40px', padding: '8px' },
@@ -81,7 +81,7 @@ const LabTestDetailsEdit = ({ id }) => {
       {
         roles: { Owner: identities.am },
         metadata: {
-          type: { type: 'LITERAL', value: 'POWDER_TEST' },
+          type: { type: 'LITERAL', value: tokenTypes.powderTest },
           status: { type: 'LITERAL', value: 'result' },
           overallResult: { type: 'LITERAL', value: labTestPassOrFail },
           ...(files.reportFile

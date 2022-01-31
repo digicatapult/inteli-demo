@@ -4,7 +4,7 @@ import { addOrder, updateOrder } from '../features/ordersSlice'
 import { upsertPowder } from '../features/powdersSlice'
 import { upsertLabTest } from '../features/labTestsSlice'
 
-import { useApi } from '../utils'
+import { useApi, tokenTypes } from '../utils'
 
 // will search for the equivalent token that exists in the list `items`
 // to the passed `token`
@@ -109,7 +109,7 @@ const BlockchainWatcher = ({ children }) => {
               )
               break
             case 'PowderTestRequest':
-            case 'POWDER_TEST':
+            case tokenTypes.powderTest:
               console.log(token)
               dispatch(
                 upsertLabTest({
