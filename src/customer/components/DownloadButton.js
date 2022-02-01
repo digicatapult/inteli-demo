@@ -36,7 +36,6 @@ const DownloadButton = (props) => {
     )
   )
   const classes = useStyles()
-  console.log(selectedLabTest)
   if (
     statusIndex &&
     selectedLabTest &&
