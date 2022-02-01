@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux'
 
 import DownloadButton from './DownloadButton'
 import ProgressBarSelector from './ProgressBarSelector'
+import { tokenTypes, powderTestStatus } from '../../utils'
 
 const useStyles = makeStyles({
   backButton: {
@@ -33,16 +34,18 @@ const useStyles = makeStyles({
 })
 
 const OrderStatusProgressBar = (props) => {
+  console.log(props)
   const { orderType, orderPowderId } = props
 
   const selectedLabTest = useSelector((state) =>
     state.labTests.find(
-      ({ powderId, type, status }) =>
-        type === 'POWDER_TEST' &&
-        status === 'result' &&
+      ({ metadata: { type, status, powderId } }) =>
+        type === tokenTypes.powderTest &&
+        status === powderTestStatus.result &&
         powderId === orderPowderId
     )
   )
+  console.log(selectedLabTest)
 
   const classes = useStyles()
 

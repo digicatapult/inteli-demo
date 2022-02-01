@@ -5,6 +5,7 @@ import { Toolbar, Typography, Box } from '@material-ui/core'
 import { useSelector } from 'react-redux'
 
 import logo from '../../images/maher.png'
+import { tokenTypes, powderTestStatus } from '../../utils'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -62,7 +63,8 @@ const Navigation = () => {
   const powders = useSelector((state) => state.powders)
   const testResults = useSelector((state) =>
     state.labTests.filter(
-      ({ type, status }) => type === 'POWDER_TEST' && status === 'result'
+      ({ metadata: { type, status } }) =>
+        type === tokenTypes.powderTest && status === powderTestStatus.result
     )
   )
 

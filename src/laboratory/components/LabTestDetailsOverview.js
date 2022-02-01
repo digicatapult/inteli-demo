@@ -75,7 +75,7 @@ const LabTestDetailsOverview = ({
               <LabTestRow title={'Passed/Failed'} value={overallResult} />
               {testReason ? (
                 <Attachment
-                  name={testReason.name}
+                  name={testReason.fileName}
                   downloadData={testReason.url}
                 />
               ) : (
@@ -83,7 +83,7 @@ const LabTestDetailsOverview = ({
               )}
               {testReport ? (
                 <Attachment
-                  name={testReport.name}
+                  name={testReport.fileName}
                   downloadData={testReport.url}
                 />
               ) : (

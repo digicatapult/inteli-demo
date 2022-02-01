@@ -86,7 +86,9 @@ const PowdersDetail = () => {
   const { powder, labTest } = useSelector((state) => ({
     powder: state.powders.find(({ original_id }) => id === original_id) || {},
     labTest:
-      state.labTests.find(({ powderId }) => id.toString() === powderId) || null,
+      state.labTests.find(
+        ({ metadata }) => id.toString() === metadata.powderId
+      ) || null,
   }))
 
   const api = useApi()
@@ -149,6 +151,9 @@ const PowdersDetail = () => {
 
     const formData = createFormData([powder.id])
     await api.runProcess(formData)
+
+    // dispatch(upsertLabTest(labTestToken))
+    // dispatch(upsertPowder(powderToken))
 
     navigate('/app/powders')
   }

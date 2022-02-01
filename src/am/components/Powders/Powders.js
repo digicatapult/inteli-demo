@@ -33,7 +33,8 @@ const Powders = () => {
         {[...powders].reverse().map((powder) => {
           const labTest =
             labTests.find(
-              ({ powderId }) => powderId === powder.original_id.toString()
+              ({ metadata }) =>
+                metadata.powderId === powder.original_id.toString()
             ) || null
           return (
             <PowderRow

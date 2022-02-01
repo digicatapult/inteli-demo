@@ -4,6 +4,8 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 
+import { tokenTypes, powderTestStatus } from '../../utils'
+
 const useStyles = makeStyles({
   download: {
     width: 405,
@@ -18,21 +20,28 @@ const useStyles = makeStyles({
   failText: {
     color: 'red',
   },
+  noReportText: {
+    textAlign: 'right',
+  },
 })
 
 const DownloadButton = (props) => {
   const { statusIndex, orderPowderId } = props
   const selectedLabTest = useSelector((state) =>
     state.labTests.find(
-      ({ powderId, type, status }) =>
-        type === 'POWDER_TEST' &&
-        status === 'result' &&
+      ({ metadata: { type, status, powderId } }) =>
+        type === tokenTypes.powderTest &&
+        status === powderTestStatus.result &&
         powderId === orderPowderId
     )
   )
   const classes = useStyles()
-
-  if (statusIndex && selectedLabTest && selectedLabTest.testReport) {
+  console.log(selectedLabTest)
+  if (
+    statusIndex &&
+    selectedLabTest &&
+    selectedLabTest.metadata.overallResult
+  ) {
     return (
       <Grid
         container
@@ -51,20 +60,28 @@ const DownloadButton = (props) => {
             <Typography
               variant="body2"
               className={
-                selectedLabTest.overallResult === 'passed'
+                selectedLabTest.metadata.overallResult === 'passed'
                   ? classes.passText
                   : classes.failText
               }
             >
-              {selectedLabTest.overallResult === 'passed' ? 'PASS' : 'FAIL'}
+              {selectedLabTest.metadata.overallResult === 'passed'
+                ? 'PASS'
+                : 'FAIL'}
             </Typography>
           </Grid>
         </Grid>
         <Grid item xs={4}>
-          <Download
-            name={selectedLabTest.testReport.name}
-            downloadData={selectedLabTest.testReport.url}
-          />
+          {selectedLabTest.metadata.testReport ? (
+            <Download
+              name={selectedLabTest.metadata.testReport.fileName}
+              downloadData={selectedLabTest.metadata.testReport.url}
+            />
+          ) : (
+            <Typography variant="body2" className={classes.noReportText}>
+              No report
+            </Typography>
+          )}
         </Grid>
       </Grid>
     )
