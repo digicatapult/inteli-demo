@@ -13,7 +13,9 @@ import { useDispatch } from 'react-redux'
 import { markOrderRead } from '../../../features/readOrdersSlice'
 import OrderStatus from './Status'
 import AcceptOrderAction from './AcceptAction'
+import RejectAction from './RejectAction'
 import ManufactureOrderAction from './ManufactureAction'
+import Attachment from '../Attachment'
 
 const useStyles = makeStyles({
   root: {
@@ -38,6 +40,9 @@ const useStyles = makeStyles({
   },
   inline: {
     display: 'inline',
+  },
+  attachment: {
+    width: '100%',
   },
 })
 
@@ -64,11 +69,24 @@ const EmptyAction = () => {
   return <></>
 }
 
+const getTotalCost = (price, quantity) => {
+  let cost = '0.00'
+
+  if (price && quantity) {
+    cost = price * quantity
+    cost = `${cost}.00`
+  }
+
+  return cost
+}
+
 const OrderDetail = ({ order }) => {
   const classes = useStyles()
   const dispatch = useDispatch()
 
-  const { partId, image, name, material, alloy } = order.orderDetails
+  const { partId, image, name, material, alloy, price } = order.orderDetails
+  const quantity = order.quantity
+  const deliveryBy = order.deliveryBy
 
   useEffect(() => {
     dispatch(markOrderRead(order.id))
@@ -86,6 +104,9 @@ const OrderDetail = ({ order }) => {
       Action = EmptyAction
       break
     case 'ManufacturingOrder':
+      Action = EmptyAction
+      break
+    default:
       Action = EmptyAction
       break
   }
@@ -129,13 +150,25 @@ const OrderDetail = ({ order }) => {
               <Box>
                 <DetailRow title="Part name" value={name}></DetailRow>
                 <DetailRow title="Part Number" value={partId}></DetailRow>
-                <DetailRow title="Quantity" value={1}></DetailRow>
+                <DetailRow title="Quantity" value={quantity}></DetailRow>
                 <DetailRow title="Material" value={material}></DetailRow>
                 <DetailRow title="Alloy" value={alloy}></DetailRow>
+                <DetailRow title="Delivery By" value={deliveryBy}></DetailRow>
+                <DetailRow title="Unit Price" value={price}></DetailRow>
+                <DetailRow
+                  title="Total Cost"
+                  value={getTotalCost(price, quantity)}
+                ></DetailRow>
               </Box>
             </Grid>
             <Grid item xs={6}>
               <Box>
+                <DetailRow
+                  title="Customer name"
+                  value={
+                    order.CustomerDetails ? 'not empty' : 'no customer details'
+                  }
+                ></DetailRow>
                 <Typography variant="subtitle2">Shipping Address:</Typography>
                 <Typography variant="subtitle1" color="textSecondary">
                   Digital Catapult
@@ -154,9 +187,35 @@ const OrderDetail = ({ order }) => {
           </Grid>
         </Grid>
       </Grid>
-      <Container className={classes.buttonWrapper}>
-        <Action order={order} />
-      </Container>
+      <Grid
+        container
+        alignItems="center"
+        className={`${classes.row} ${classes.header}`}
+      >
+        <Box className={classes.attachment}>
+          <DetailRow title="Attached Documents"></DetailRow>
+          <Attachment name="Requirements.PDF" />
+          <Attachment name="CAD" />
+        </Box>
+      </Grid>
+      <Grid
+        container
+        alignItems="left"
+        className={`${classes.row} ${classes.header}`}
+      >
+        <Grid item xs={6}>
+          <Container
+            className={`${classes.buttonWrapper} ${classes.rejectButton}`}
+          >
+            <RejectAction />
+          </Container>
+        </Grid>
+        <Grid item xs={6}>
+          <Container className={classes.buttonWrapper}>
+            <Action order={order} />
+          </Container>
+        </Grid>
+      </Grid>
     </Paper>
   )
 }

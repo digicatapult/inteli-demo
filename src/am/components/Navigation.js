@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     '&.active': {
       '& div': {
-        background: theme.palette.primary.dark,
+        background: '#0e88d9',
       },
     },
   },

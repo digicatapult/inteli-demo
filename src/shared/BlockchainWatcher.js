@@ -94,15 +94,13 @@ const BlockchainWatcher = ({ children }) => {
                 })
               )
               break
-            case 'Powder':
-            case 'POWDER':
+            case tokenTypes.powder:
               dispatch(
                 upsertPowder({
                   id: token.id,
                   original_id: token.original_id,
-                  owner: token.roles.Owner,
                   roles: token.roles,
-                  ...token.metadata,
+                  metadata: token.metadata,
                 })
               )
               break
