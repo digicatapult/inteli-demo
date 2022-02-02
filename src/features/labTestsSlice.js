@@ -17,7 +17,6 @@ export const labTestsSlice = createSlice({
         } else {
           if (labTest) {
             labTest.id = action.payload.id
-            labTest.original_id = action.payload.original_id
             Object.assign(labTest.roles, action.payload.roles)
             Object.assign(labTest.metadata, action.payload.metadata)
           } else {

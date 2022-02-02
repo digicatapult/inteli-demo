@@ -10,7 +10,9 @@ export const powdersSlice = createSlice({
         if (!powder) {
           state.push(action.payload)
         } else {
-          Object.assign(powder, action.payload)
+          powder.id = action.payload.id
+          Object.assign(powder.roles, action.payload.roles)
+          Object.assign(powder.metadata, action.payload.metadata)
         }
       },
     },

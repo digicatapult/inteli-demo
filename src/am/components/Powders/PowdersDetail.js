@@ -22,7 +22,14 @@ import TestDetails from './PowdersDetailsTests'
 import Header from '../Header'
 
 import { markPowderRead } from '../../../features/readPowdersSlice'
-import { identities, useApi } from '../../../utils'
+import {
+  identities,
+  powderTestStatus,
+  tokenTypes,
+  useApi,
+} from '../../../utils'
+import { upsertPowder } from '../../../features/powdersSlice'
+import { upsertLabTest } from '../../../features/labTestsSlice'
 
 const useStyles = makeStyles({
   header: {
@@ -76,6 +83,18 @@ const testList = [
   ['ASTM E1409', 'Determination of oxygen and nitrogen by Inert gas fusion'],
 ]
 
+const testListFile = () => {
+  const blob = new Blob([JSON.stringify(testList)], {
+    type: 'application/json',
+  })
+  const url = URL.createObjectURL(blob)
+  return {
+    blob: blob,
+    fileName: 'testList.json',
+    url: url,
+  }
+}
+
 const PowdersDetail = () => {
   const { powderId: idStr } = useParams()
   const id = parseInt(idStr)
@@ -101,36 +120,46 @@ const PowdersDetail = () => {
   const [labId, setLabId] = useState(null)
 
   const {
-    powderReference,
-    material,
-    alloy,
-    quantityKg,
-    particleSizeUm,
-    location,
+    metadata: {
+      powderReference,
+      material,
+      alloy,
+      quantityKg,
+      particleSizeUm,
+      location,
+    },
   } = powder
 
-  const createFormData = (inputs) => {
+  const createFormData = (
+    inputs,
+    testRoles,
+    testMetadata,
+    powderRoles,
+    powderMetadata
+  ) => {
     const formData = new FormData()
     const outputs = [
       {
-        roles: {
-          Owner: labId,
-          AdditiveManufacturer: identities.am,
-          Laboratory: labId,
-        },
+        roles: testRoles,
         metadata: {
-          type: { type: 'LITERAL', value: 'POWDER_TEST' },
-          status: { type: 'LITERAL', value: 'request' },
-          powderId: { type: 'TOKEN_ID', value: powder.id },
-          powderReference: { type: 'LITERAL', value: powderReference },
-          requiredTests: { type: 'FILE', value: 'testList.json' },
+          type: { type: 'LITERAL', value: testMetadata.type },
+          status: { type: 'LITERAL', value: testMetadata.status },
+          powderId: { type: 'TOKEN_ID', value: testMetadata.powderId },
+          powderReference: {
+            type: 'LITERAL',
+            value: testMetadata.powderReference,
+          },
+          requiredTests: {
+            type: 'FILE',
+            value: testMetadata.requiredTests.fileName,
+          },
         },
       },
       {
-        roles: { Owner: identities.am },
+        roles: powderRoles,
         metadata: {
-          type: { type: 'LITERAL', value: 'POWDER' },
-          quantityKg: { type: 'LITERAL', value: `${quantityKg - 0.05}` },
+          type: { type: 'LITERAL', value: powderMetadata.type },
+          quantityKg: { type: 'LITERAL', value: powderMetadata.quantityKg },
         },
         parent_index: 0,
       },
@@ -138,22 +167,60 @@ const PowdersDetail = () => {
 
     formData.set('request', JSON.stringify({ inputs, outputs }))
 
-    const blob = new Blob([JSON.stringify(testList)], {
-      type: 'application/json',
-    })
-    formData.append('files', blob, 'testList.json')
+    formData.append('files', testListFile.blob, testListFile.fileName)
 
     return formData
   }
 
   const onChange = async () => {
     setIsFetching(true)
+    const testRoles = {
+      Owner: labId,
+      AdditiveManufacturer: identities.am,
+      Laboratory: labId,
+    }
+    const testMetadata = {
+      type: tokenTypes.powderTest,
+      status: powderTestStatus.request,
+      powderId: powder.id,
+      powderReference: powderReference,
+      requiredTests: {
+        fileName: testListFile.fileName,
+        url: testListFile.url,
+      },
+    }
 
-    const formData = createFormData([powder.id])
-    await api.runProcess(formData)
+    const powderRoles = { Owner: identities.am }
+    const powderMetadata = {
+      type: tokenTypes.powder,
+      quantityKg: `${quantityKg - 0.05}`,
+    }
 
-    // dispatch(upsertLabTest(labTestToken))
-    // dispatch(upsertPowder(powderToken))
+    const formData = createFormData(
+      [powder.id],
+      testRoles,
+      testMetadata,
+      powderRoles,
+      powderMetadata
+    )
+    const response = await api.runProcess(formData)
+
+    const labTestToken = {
+      id: response[0],
+      original_id: response[0],
+      testRoles,
+      testMetadata,
+    }
+
+    const powderToken = {
+      id: response[0],
+      original_id: powder.id,
+      powderRoles,
+      powderMetadata,
+    }
+
+    dispatch(upsertLabTest(labTestToken))
+    dispatch(upsertPowder(powderToken))
 
     navigate('/app/powders')
   }
