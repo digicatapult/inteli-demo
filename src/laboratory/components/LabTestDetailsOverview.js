@@ -48,26 +48,11 @@ const LabTestDetailsOverview = ({
           <Grid container xs={12} className={classes.root}>
             <Attachment name="Custom-Requirements.pdf" />
             <Attachment name="MSDS-Form.pdf" />
+            <Attachment
+              name={requiredTests.fileName}
+              downloadData={requiredTests.url}
+            />
           </Grid>
-
-          {requiredTests && requiredTests.length ? (
-            <Grid container className={classes.border}>
-              <LabTestRow title={'Standard'} value={'TestName'} bold={true} />
-
-              {requiredTests.map((requirement, i) => {
-                const k = i
-                return (
-                  <LabTestRow
-                    key={k}
-                    title={requirement[0]}
-                    value={requirement[1]}
-                  />
-                )
-              })}
-            </Grid>
-          ) : (
-            <></>
-          )}
 
           {overallResult ? (
             <Grid container className={classes.border}>

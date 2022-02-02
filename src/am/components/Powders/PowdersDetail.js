@@ -83,16 +83,14 @@ const testList = [
   ['ASTM E1409', 'Determination of oxygen and nitrogen by Inert gas fusion'],
 ]
 
-const testListFile = () => {
-  const blob = new Blob([JSON.stringify(testList)], {
-    type: 'application/json',
-  })
-  const url = URL.createObjectURL(blob)
-  return {
-    blob: blob,
-    fileName: 'testList.json',
-    url: url,
-  }
+const testListBlob = new Blob([JSON.stringify(testList)], {
+  type: 'application/json',
+})
+
+const testListFile = {
+  blob: testListBlob,
+  fileName: 'testList.json',
+  url: URL.createObjectURL(testListBlob),
 }
 
 const PowdersDetail = () => {
@@ -103,7 +101,7 @@ const PowdersDetail = () => {
   const dispatch = useDispatch()
   const classes = useStyles()
   const { powder, labTest } = useSelector((state) => ({
-    powder: state.powders.find(({ original_id }) => id === original_id) || {},
+    powder: state.powders.find(({ original_id }) => id === original_id),
     labTest:
       state.labTests.find(
         ({ metadata }) => id.toString() === metadata.powderId
@@ -118,6 +116,8 @@ const PowdersDetail = () => {
 
   const [isFetching, setIsFetching] = useState(false)
   const [labId, setLabId] = useState(null)
+
+  if (!powder) return null // render nothing until token processed
 
   const {
     metadata: {
@@ -182,7 +182,7 @@ const PowdersDetail = () => {
     const testMetadata = {
       type: tokenTypes.powderTest,
       status: powderTestStatus.request,
-      powderId: powder.id,
+      powderId: powder.original_id.toString(),
       powderReference: powderReference,
       requiredTests: {
         fileName: testListFile.fileName,
@@ -208,15 +208,15 @@ const PowdersDetail = () => {
     const labTestToken = {
       id: response[0],
       original_id: response[0],
-      testRoles,
-      testMetadata,
+      roles: testRoles,
+      metadata: testMetadata,
     }
 
     const powderToken = {
-      id: response[0],
+      id: response[1],
       original_id: powder.id,
-      powderRoles,
-      powderMetadata,
+      roles: powderRoles,
+      metadata: powderMetadata,
     }
 
     dispatch(upsertLabTest(labTestToken))

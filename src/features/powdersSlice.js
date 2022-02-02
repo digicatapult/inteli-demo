@@ -6,7 +6,9 @@ export const powdersSlice = createSlice({
   reducers: {
     upsertPowder: {
       reducer(state, action) {
-        const powder = state.find(({ id }) => id === action.payload.original_id)
+        const powder = state.find(
+          ({ original_id }) => original_id === action.payload.original_id
+        )
         if (!powder) {
           state.push(action.payload)
         } else {

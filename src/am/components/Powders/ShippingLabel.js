@@ -55,7 +55,11 @@ const useStyles = makeStyles({
   },
 })
 
-const Attachment = ({ powder }) => {
+const Attachment = ({
+  powder: {
+    metadata: { powderReference, material, alloy },
+  },
+}) => {
   const classes = useStyles()
   return (
     <Box className={classes.labelContainer}>
@@ -65,10 +69,10 @@ const Attachment = ({ powder }) => {
       <Box className={classes.labelRight}>
         <Box>
           <Typography variant="subtitle2" color="textSecondary">
-            Powder ID: {powder.powderReference}
+            Powder ID: {powderReference}
           </Typography>
           <Typography variant="subtitle2" color="textSecondary">
-            Alloy: {powder.material} {powder.alloy}
+            Alloy: {material} {alloy}
           </Typography>
           <Typography variant="subtitle2" color="textSecondary">
             Weight: 0.05kg

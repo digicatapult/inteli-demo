@@ -11,7 +11,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { updateOrder } from '../../../features/ordersSlice'
-import { useApi, identities } from '../../../utils'
+import { useApi, identities, tokenTypes } from '../../../utils'
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
 import Box from '@material-ui/core/Box'
@@ -76,7 +76,8 @@ const ManufactureOrderAction = ({ order }) => {
   const onButtonChange = async () => {
     setIsAccepting(true)
 
-    const powder = powders.find((item) => item.id === selectedPowder)
+    const powder = powders.find((item) => item.original_id === selectedPowder)
+
     const outputData = [
       {
         type: 'ManufacturedOrder',
@@ -85,13 +86,13 @@ const ManufactureOrderAction = ({ order }) => {
         owner: identities.am,
       },
       {
-        type: 'Powder',
-        powderReference: powder.powderReference,
-        material: powder.material,
-        alloy: powder.alloy,
-        quantityKg: powder.quantityKg - 50,
-        particleSizeUm: powder.particleSizeUm,
-        location: powder.location,
+        type: tokenTypes.powder,
+        powderReference: powder.metadata.powderReference,
+        material: powder.metadata.material,
+        alloy: powder.metadata.alloy,
+        quantityKg: powder.metadata.quantityKg - 50,
+        particleSizeUm: powder.metadata.particleSizeUm,
+        location: powder.metadata.location,
         owner: identities.am,
       },
     ]
@@ -100,7 +101,7 @@ const ManufactureOrderAction = ({ order }) => {
       owner,
       file: new Blob([JSON.stringify(obj)]),
     }))
-    const formData = createFormData([order.latestId, powder.latestId], outputs)
+    const formData = createFormData([order.latestId, powder.id], outputs)
 
     setTimeout(async () => {
       const response = await api.runProcess(formData)
@@ -147,8 +148,8 @@ const ManufactureOrderAction = ({ order }) => {
               onChange={onPowderChange}
             >
               {powders.map((item) => (
-                <MenuItem key={item.id} value={item.id}>
-                  {item.powderReference} ({item.material})
+                <MenuItem key={item.original_id} value={item.original_id}>
+                  {item.metadata.powderReference} ({item.metadata.material})
                 </MenuItem>
               ))}
             </Select>

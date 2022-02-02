@@ -42,12 +42,14 @@ const PowderRow = ({ powder, labTest }) => {
   const {
     id: powderId,
     original_id,
-    powderReference,
-    material,
-    alloy,
-    quantityKg,
-    particleSizeUm,
-    location,
+    metadata: {
+      powderReference,
+      material,
+      alloy,
+      quantityKg,
+      particleSizeUm,
+      location,
+    },
   } = powder
 
   const classes = useStyles()
