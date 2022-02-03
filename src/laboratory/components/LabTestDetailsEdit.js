@@ -15,7 +15,7 @@ import { useDropzone } from 'react-dropzone'
 import Attachment from './Attachment'
 import images from '../../images'
 import LabTestRow from './LabTestRow'
-import { identities, useApi, tokenTypes } from '../../utils'
+import { identities, useApi, tokenTypes, metadataTypes } from '../../utils'
 import { powderTestStatus } from '../../utils/statuses'
 import { upsertLabTest } from '../../features/labTestsSlice'
 
@@ -89,13 +89,16 @@ const LabTestDetailsEdit = ({ id }) => {
       {
         roles: roles,
         metadata: {
-          type: { type: 'LITERAL', value: metadata.type },
-          status: { type: 'LITERAL', value: metadata.status },
-          overallResult: { type: 'LITERAL', value: metadata.overallResult },
+          type: { type: metadataTypes.literal, value: metadata.type },
+          status: { type: metadataTypes.literal, value: metadata.status },
+          overallResult: {
+            type: metadataTypes.literal,
+            value: metadata.overallResult,
+          },
           ...(metadata.testReport
             ? {
                 testReport: {
-                  type: 'FILE',
+                  type: metadataTypes.file,
                   value: metadata.testReport.fileName,
                 },
               }
@@ -103,7 +106,7 @@ const LabTestDetailsEdit = ({ id }) => {
           ...(metadata.testReason
             ? {
                 testReason: {
-                  type: 'FILE',
+                  type: metadataTypes.file,
                   value: metadata.testReason.fileName,
                 },
               }

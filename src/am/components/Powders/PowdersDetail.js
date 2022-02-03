@@ -24,6 +24,7 @@ import Header from '../Header'
 import { markPowderRead } from '../../../features/readPowdersSlice'
 import {
   identities,
+  metadataTypes,
   powderTestStatus,
   tokenTypes,
   useApi,
@@ -142,15 +143,18 @@ const PowdersDetail = () => {
       {
         roles: testRoles,
         metadata: {
-          type: { type: 'LITERAL', value: testMetadata.type },
-          status: { type: 'LITERAL', value: testMetadata.status },
-          powderId: { type: 'TOKEN_ID', value: testMetadata.powderId },
+          type: { type: metadataTypes.literal, value: testMetadata.type },
+          status: { type: metadataTypes.literal, value: testMetadata.status },
+          powderId: {
+            type: metadataTypes.tokenId,
+            value: testMetadata.powderId,
+          },
           powderReference: {
-            type: 'LITERAL',
+            type: metadataTypes.literal,
             value: testMetadata.powderReference,
           },
           requiredTests: {
-            type: 'FILE',
+            type: metadataTypes.file,
             value: testMetadata.requiredTests.fileName,
           },
         },
@@ -158,8 +162,11 @@ const PowdersDetail = () => {
       {
         roles: powderRoles,
         metadata: {
-          type: { type: 'LITERAL', value: powderMetadata.type },
-          quantityKg: { type: 'LITERAL', value: powderMetadata.quantityKg },
+          type: { type: metadataTypes.literal, value: powderMetadata.type },
+          quantityKg: {
+            type: metadataTypes.literal,
+            value: powderMetadata.quantityKg,
+          },
         },
         parent_index: 0,
       },
