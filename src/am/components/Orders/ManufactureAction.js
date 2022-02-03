@@ -82,7 +82,7 @@ const ManufactureOrderAction = ({ order }) => {
       {
         type: 'ManufacturedOrder',
         powderId: selectedPowder,
-        orderReference: order.orderReference,
+        orderReference: order.metadata.orderReference,
         owner: identities.am,
       },
       {
@@ -101,7 +101,7 @@ const ManufactureOrderAction = ({ order }) => {
       owner,
       file: new Blob([JSON.stringify(obj)]),
     }))
-    const formData = createFormData([order.latestId, powder.id], outputs)
+    const formData = createFormData([order.id, powder.id], outputs)
 
     setTimeout(async () => {
       const response = await api.runProcess(formData)
@@ -134,7 +134,7 @@ const ManufactureOrderAction = ({ order }) => {
 
   return (
     <Box className={classes.selectPowderWrapper}>
-      {order.type === 'AcceptedOrder' ? (
+      {order.metadata.type === 'AcceptedOrder' ? (
         <Grid container direction="column" className={classes.row}>
           <Grid item>
             <Typography variant="body2" className={classes.selectInputLabel}>

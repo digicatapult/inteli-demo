@@ -84,16 +84,27 @@ const OrderDetail = ({ order }) => {
   const classes = useStyles()
   const dispatch = useDispatch()
 
-  const { partId, image, name, material, alloy, price } = order.orderDetails
-  const quantity = order.quantity
-  const deliveryBy = order.deliveryBy
+  const {
+    metadata: {
+      partId,
+      image,
+      name,
+      material,
+      alloy,
+      price,
+      quantity,
+      deliveryBy,
+      type,
+      orderReference,
+    },
+  } = order
 
   useEffect(() => {
     dispatch(markOrderRead(order.id))
   }, [order, dispatch])
 
   let Action = null
-  switch (order.type) {
+  switch (type) {
     case 'SubmittedOrder':
       Action = AcceptOrderAction
       break
@@ -120,11 +131,11 @@ const OrderDetail = ({ order }) => {
       >
         <Grid item xs={9}>
           <Typography variant="h6" component="h6">
-            Order: {order.orderReference}
+            Order: {orderReference}
           </Typography>
         </Grid>
         <Grid item xs={3}>
-          <OrderStatus orderStatus={order.type} />
+          <OrderStatus orderStatus={type} />
         </Grid>
       </Grid>
       <Grid container className={classes.row}>
@@ -163,12 +174,6 @@ const OrderDetail = ({ order }) => {
             </Grid>
             <Grid item xs={6}>
               <Box>
-                <DetailRow
-                  title="Customer name"
-                  value={
-                    order.CustomerDetails ? 'not empty' : 'no customer details'
-                  }
-                ></DetailRow>
                 <Typography variant="subtitle2">Shipping Address:</Typography>
                 <Typography variant="subtitle1" color="textSecondary">
                   Digital Catapult

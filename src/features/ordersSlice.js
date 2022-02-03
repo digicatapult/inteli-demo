@@ -1,24 +1,22 @@
 import { createSlice } from '@reduxjs/toolkit'
-import moment from 'moment'
 
 export const ordersSlice = createSlice({
   name: 'customerOrders',
   initialState: [],
   reducers: {
-    addOrder: {
+    upsertOrder: {
       reducer(state, action) {
-        const order = state.find(({ id }) => id === action.payload.id)
+        const order = state.find(
+          ({ original_id }) => original_id === action.payload.original_id
+        )
         if (!order) {
           state.push(action.payload)
+        } else {
+          order.id = action.payload.id
+          Object.assign(order.roles, action.payload.roles)
+          Object.assign(order.metadata, action.payload.metadata)
+          Object.assign(order, action.payload)
         }
-      },
-      prepare(payload) {
-        const dateTime = moment(new Date()).utc()
-
-        payload.date = dateTime.format('DD MM yyyy')
-        payload.time = dateTime.format('hh:mm')
-
-        return { payload }
       },
     },
     updateOrder: {
@@ -36,6 +34,6 @@ export const ordersSlice = createSlice({
 
 export const { actions, reducer } = ordersSlice
 
-export const { addOrder, updateOrder } = actions
+export const { upsertOrder, updateOrder } = actions
 
 export default reducer

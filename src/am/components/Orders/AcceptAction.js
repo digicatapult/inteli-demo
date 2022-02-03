@@ -53,13 +53,13 @@ const AcceptOrderAction = ({ order }) => {
 
     const fileData = {
       type: 'AcceptedOrder',
-      orderReference: order.orderReference,
+      orderReference: order.metadata.orderReference,
     }
 
     const file = new Blob([JSON.stringify(fileData)])
-    const formData = createFormData([order.latestId], file)
+    const formData = createFormData([order.id], file)
     const response = await api.runProcess(formData)
-    const token = { id: order.latestId, latestId: response[0], ...fileData }
+    const token = { id: order.id, latestId: response[0], ...fileData }
 
     dispatch(updateOrder(token))
   }

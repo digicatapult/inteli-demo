@@ -18,8 +18,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import moment from 'moment'
 
 import BackButton from './BackButton'
-import { addOrder } from '../../features/ordersSlice'
-import { useApi, identities } from '../../utils'
+import { upsertOrder } from '../../features/ordersSlice'
+import {
+  useApi,
+  identities,
+  tokenTypes,
+  metadataTypes,
+  orderStatus,
+} from '../../utils'
 import Attachment from '../../laboratory/components/Attachment'
 
 const useStyles = makeStyles((theme) => ({
@@ -167,16 +173,37 @@ const CustomerPart = () => {
 
   const api = useApi()
 
-  const { image, name, material, alloy, price } = selectedCustomerPart
+  const { image, name, material, alloy, price, partId } = selectedCustomerPart
   const totalCost = price * quantity
   const classes = useStyles()
 
-  const createFormData = (inputs, file) => {
+  const createFormData = (inputs, roles, metadata, orderImageFile) => {
     const formData = new FormData()
     const outputs = [
       {
-        owner: identities.am,
-        metadataFile: 'file',
+        roles: roles,
+        metadata: {
+          type: { type: metadataTypes.literal, value: metadata.type },
+          status: { type: metadataTypes.literal, value: metadata.status },
+          orderReference: {
+            type: metadataTypes.literal,
+            value: metadata.orderReference,
+          },
+          partId: { type: metadataTypes.literal, value: metadata.partId },
+          name: { type: metadataTypes.literal, value: metadata.name },
+          material: { type: metadataTypes.literal, value: metadata.material },
+          alloy: { type: metadataTypes.literal, value: metadata.alloy },
+          price: { type: metadataTypes.literal, value: metadata.price },
+          quantity: { type: metadataTypes.literal, value: metadata.quantity },
+          deliveryBy: {
+            type: metadataTypes.literal,
+            value: metadata.deliveryBy,
+          },
+          orderImage: {
+            type: metadataTypes.file,
+            value: metadata.orderImage.fileName,
+          },
+        },
       },
     ]
 
@@ -188,30 +215,56 @@ const CustomerPart = () => {
       })
     )
 
-    formData.set('file', file, 'file')
+    formData.append('files', orderImageFile.blob, orderImageFile.fileName)
 
     return formData
+  }
+
+  const createOrderImageFile = async (image) => {
+    const response = await fetch(image)
+    const blob = await response.blob()
+    const url = URL.createObjectURL(blob)
+    return {
+      blob: blob,
+      fileName: 'orderImage.svg',
+      url: url,
+    }
   }
 
   const onChange = async () => {
     if (isFormReady()) {
       setIsOrdering(true)
 
-      const fileData = {
-        type: 'SubmittedOrder',
+      const orderImageFile = await createOrderImageFile(image)
+
+      const roles = { Owner: identities.am }
+      const metadata = {
+        type: tokenTypes.order,
+        status: orderStatus.submitted,
         orderReference: `#${Math.floor(Math.random() * 100000000)}`,
-        orderDetails: selectedCustomerPart,
-        customerDetails: {},
-        quantity,
-        deliveryBy,
+        partId: partId,
+        name: name,
+        material: material,
+        alloy: alloy,
+        price: price.toString(),
+        quantity: quantity.toString(),
+        deliveryBy: deliveryBy,
+        orderImage: {
+          fileName: orderImageFile.fileName,
+          url: orderImageFile.url,
+        },
       }
 
-      const file = new Blob([JSON.stringify(fileData)])
-      const formData = createFormData([], file)
+      const formData = createFormData([], roles, metadata, orderImageFile)
       const response = await api.runProcess(formData)
-      const token = { id: response[0], latestId: response[0], ...fileData }
+      const token = {
+        id: response[0],
+        original_id: response[0],
+        roles,
+        metadata,
+      }
 
-      dispatch(addOrder(token))
+      dispatch(upsertOrder(token))
 
       navigate('/app/my-orders')
     }

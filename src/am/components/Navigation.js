@@ -69,9 +69,8 @@ const Navigation = () => {
   )
 
   const hasNewOrder = customerOrders.some(
-    (order) =>
-      order.type === 'SubmittedOrder' &&
-      !readOrders.find((id) => id === order.id)
+    ({ orderId, metadata: { type } }) =>
+      type === tokenTypes.order && !readOrders.find((id) => id === orderId)
   )
   const orderStatusClass = hasNewOrder ? classes.dotUnread : classes.dotOther
 

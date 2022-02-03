@@ -23,7 +23,7 @@ const Orders = () => {
         <Grid container direction="column" item xs={5}>
           <SearchField />
           {[...customerOrders].reverse().map((order) => (
-            <OrderRow key={order.id} order={order} />
+            <OrderRow key={order.original_id} order={order} />
           ))}
         </Grid>
         <Grid item xs={7}>

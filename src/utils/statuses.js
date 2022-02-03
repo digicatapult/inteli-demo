@@ -3,4 +3,8 @@ const powderTestStatus = {
   request: 'request',
 }
 
-export { powderTestStatus }
+const orderStatus = {
+  submitted: 'submitted',
+}
+
+export { powderTestStatus, orderStatus }

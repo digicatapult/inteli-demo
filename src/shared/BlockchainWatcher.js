@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { addOrder, updateOrder } from '../features/ordersSlice'
+import { upsertOrder, updateOrder } from '../features/ordersSlice'
 import { upsertPowder } from '../features/powdersSlice'
 import { upsertLabTest } from '../features/labTestsSlice'
 
@@ -63,14 +63,13 @@ const BlockchainWatcher = ({ children }) => {
 
           // Handle each token based on type
           switch (token.metadata.type) {
-            case 'SubmittedOrder':
+            case tokenTypes.order:
               dispatch(
-                addOrder({
+                upsertOrder({
                   id: token.id,
-                  latestId: token.id,
-                  owner: token.roles.Owner,
-                  latestOwner: token.roles.Owner,
-                  ...token.metadata,
+                  original_id: token.original_id,
+                  roles: token.roles,
+                  metadata: token.metadata,
                 })
               )
               break

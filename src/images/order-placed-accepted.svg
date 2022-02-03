@@ -1,4 +1,4 @@
-<svg id="order_placed_copy" data-name="order placed copy" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="180" height="9" viewBox="0 0 180 9">
+<svg id="order_placed_copy" fill="#f90" data-name="order placed copy" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="180" height="9" viewBox="0 0 180 9">
   <defs>
     <style>
       .cls-3 {
@@ -7,7 +7,7 @@
     </style>
   </defs>
   <g id="line">
-    <image id="Layer_2_copy" data-name="Layer 2 copy" x="9" y="4" width="162" height="1" xlink:href="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKIAAAABCAYAAABdenVbAAAAPUlEQVQoke3RsQ3AIBTE0IeSCdieIWECItDv6EGiiSUX11zjNIqKjGafgQfvYux04PvnHtH1Q1+MfaJrRptFrQuHdBkbfQAAAABJRU5ErkJggg=="/>
+    <image id="Layer_2_copy" fill="#f90" data-name="Layer 2 copy" x="9" y="4" width="162" height="1" xlink:href="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKIAAAABCAYAAABdenVbAAAAPUlEQVQoke3RsQ3AIBTE0IeSCdieIWECItDv6EGiiSUX11zjNIqKjGafgQfvYux04PvnHtH1Q1+MfaJrRptFrQuHdBkbfQAAAABJRU5ErkJggg=="/>
   </g>
   <g id="circles">
     <circle class="cls-3" cx="4.5" cy="4.5" r="4.5"/>

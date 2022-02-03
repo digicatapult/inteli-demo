@@ -1,7 +1,14 @@
 import identities from './identities'
 import useApi from './vitalamApi'
 import tokenTypes from './tokenTypes'
-import { powderTestStatus } from './statuses'
+import { powderTestStatus, orderStatus } from './statuses'
 import metadataTypes from './metadataTypes'
 
-export { identities, useApi, tokenTypes, powderTestStatus, metadataTypes }
+export {
+  identities,
+  useApi,
+  tokenTypes,
+  powderTestStatus,
+  orderStatus,
+  metadataTypes,
+}

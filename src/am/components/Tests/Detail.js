@@ -123,18 +123,18 @@ const OrderDetail = ({ test }) => {
         {/* TODO: Remove spacing cheat below */}
         <DetailRow title="" value="&nbsp;"></DetailRow>{' '}
         {orders.map((order) => (
-          <Box key={order.id}>
+          <Box key={order.original_id}>
             <DetailRow
               title="Order Number"
-              value={order.orderReference}
+              value={order.metadata.orderReference}
             ></DetailRow>
             <DetailRow
               title="Part Name"
-              value={order.orderDetails.name}
+              value={order.metadata.name}
             ></DetailRow>
             <DetailRow
               title="Part Id"
-              value={order.orderDetails.partId}
+              value={order.metadata.partId}
             ></DetailRow>
           </Box>
         ))}
