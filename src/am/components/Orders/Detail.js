@@ -87,7 +87,7 @@ const OrderDetail = ({ order }) => {
   const {
     metadata: {
       partId,
-      image,
+      orderImage,
       name,
       material,
       alloy,
@@ -144,7 +144,7 @@ const OrderDetail = ({ order }) => {
             component="img"
             alt={name}
             width="160"
-            image={image}
+            image={orderImage.url}
             title={name}
           />
         </Grid>

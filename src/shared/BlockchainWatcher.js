@@ -24,6 +24,14 @@ const findOriginalId = (items, token) => {
   }
 }
 
+// so metadata files that are svg images can be displayed, change from default MIME of 'application/octet-stream'
+const svgMimeUrl = async (imageUrl) => {
+  const response = await fetch(imageUrl)
+  const oldBlob = await response.blob()
+  const blob = new Blob([oldBlob], { type: 'image/svg+xml' })
+  return URL.createObjectURL(blob)
+}
+
 // temporary version of the component that will poll the API
 const BlockchainWatcher = ({ children }) => {
   const dispatch = useDispatch()
@@ -63,7 +71,10 @@ const BlockchainWatcher = ({ children }) => {
 
           // Handle each token based on type
           switch (token.metadata.type) {
-            case tokenTypes.order:
+            case tokenTypes.order: {
+              token.metadata.orderImage.url = await svgMimeUrl(
+                token.metadata.orderImage.url
+              )
               dispatch(
                 upsertOrder({
                   id: token.id,
@@ -73,6 +84,7 @@ const BlockchainWatcher = ({ children }) => {
                 })
               )
               break
+            }
             case 'AcceptedOrder':
               dispatch(
                 updateOrder({

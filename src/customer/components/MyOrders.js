@@ -79,7 +79,6 @@ const MyOrders = () => {
                 orderReference,
               },
             } = order
-            console.log(orderImage.url)
             return (
               <Paper
                 elevation={0}
@@ -91,7 +90,7 @@ const MyOrders = () => {
                     <CardMedia
                       component="img"
                       alt={name}
-                      src={orderImage.url}
+                      image={orderImage.url}
                       title={name}
                     />
                   </Grid>
