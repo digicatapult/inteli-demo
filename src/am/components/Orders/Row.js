@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 
 import OrderStatus from './Status'
+import { orderStatus } from '../../../utils'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,14 +32,13 @@ const useStyles = makeStyles((theme) => ({
 const OrderRow = (props) => {
   const {
     id: orderId,
-    orderDetails: { name: orderName },
-    type: orderStatus,
+    metadata: { name: orderName, status },
   } = props.order
   const classes = useStyles()
   const readOrders = useSelector((state) => state.readOrders)
 
   const isNewOrder =
-    orderStatus === 'SubmittedOrder' && !readOrders.find((id) => id === orderId)
+    status === orderStatus.submitted && !readOrders.find((id) => id === orderId)
 
   return (
     <Paper
@@ -61,7 +61,7 @@ const OrderRow = (props) => {
           <Typography>{orderName}</Typography>
         </Grid>
         <Grid item xs={4} className={`${classes.rowItem}`}>
-          <OrderStatus orderStatus={orderStatus} />
+          <OrderStatus status={status} />
         </Grid>
       </Grid>
     </Paper>

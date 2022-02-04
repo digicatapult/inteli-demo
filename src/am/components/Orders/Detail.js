@@ -11,6 +11,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles'
 import { useDispatch } from 'react-redux'
 
 import { markOrderRead } from '../../../features/readOrdersSlice'
+import { orderStatus } from '../../../utils'
 import OrderStatus from './Status'
 import AcceptOrderAction from './AcceptAction'
 import RejectAction from './RejectAction'
@@ -95,6 +96,7 @@ const OrderDetail = ({ order }) => {
       quantity,
       deliveryBy,
       type,
+      status,
       orderReference,
     },
   } = order
@@ -104,8 +106,8 @@ const OrderDetail = ({ order }) => {
   }, [order, dispatch])
 
   let Action = null
-  switch (type) {
-    case 'SubmittedOrder':
+  switch (status) {
+    case orderStatus.submitted:
       Action = AcceptOrderAction
       break
     case 'AcceptedOrder':

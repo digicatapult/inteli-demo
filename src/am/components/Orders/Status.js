@@ -2,6 +2,8 @@ import React from 'react'
 import { Typography, Box } from '@material-ui/core'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 
+import { orderStatus } from '../../../utils'
+
 const useStyles = makeStyles((theme) => ({
   status: {
     width: '16ch',
@@ -23,13 +25,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const OrderStatus = ({ orderStatus }) => {
+const OrderStatus = ({ status }) => {
   const classes = useStyles()
 
   let statusText = null,
     statusClass = null
-  switch (orderStatus) {
-    case 'SubmittedOrder':
+  switch (status) {
+    case orderStatus.submitted:
       statusText = 'Requested'
       statusClass = `${classes.status} ${classes.statusRequested}`
       break
@@ -44,10 +46,6 @@ const OrderStatus = ({ orderStatus }) => {
     case 'ManufacturingOrder':
       statusText = 'Manufacturing'
       statusClass = `${classes.status} ${classes.statusAccepted}`
-      break
-    case 'CompletedOrder':
-      statusText = 'Sent'
-      statusClass = `${classes.status} ${classes.statusSent}`
       break
   }
 
