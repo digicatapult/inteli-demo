@@ -20,6 +20,9 @@ const theme = createMuiTheme({
     statusRequested: {
       main: '#f9cc8a',
     },
+    statusRejected: {
+      main: '#f55e66',
+    },
     statusAcceptedTested: {
       main: '#8ec8c4',
     },

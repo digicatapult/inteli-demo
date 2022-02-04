@@ -17,6 +17,9 @@ const useStyles = makeStyles((theme) => ({
   statusRequested: {
     background: theme.palette.statusRequested.main,
   },
+  statusRejected: {
+    background: theme.palette.statusRejected.main,
+  },
   statusAccepted: {
     background: theme.palette.statusAcceptedTested.main,
   },
@@ -34,6 +37,10 @@ const OrderStatus = ({ status }) => {
     case orderStatus.submitted:
       statusText = 'Requested'
       statusClass = `${classes.status} ${classes.statusRequested}`
+      break
+    case 'RejectedOrder':
+      statusText = 'Rejected'
+      statusClass = `${classes.status} ${classes.statusRejected}`
       break
     case 'AcceptedOrder':
       statusText = 'Accepted'

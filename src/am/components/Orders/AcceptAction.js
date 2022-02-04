@@ -17,14 +17,17 @@ const useStyles = makeStyles({
   acceptButton: {
     width: 250,
     height: 42,
+    backgroundColor: '#8ac1bc',
+    color: '#fff',
   },
 })
 
-const AcceptOrderAction = ({ order }) => {
+const AcceptAction = ({ order }) => {
   const classes = useStyles()
-  const [isAccepting, setIsAccepting] = useState(false)
   const dispatch = useDispatch()
   const api = useApi()
+
+  const [isAccepting, setIsAccepting] = useState(false)
 
   const createFormData = (inputs, file) => {
     const formData = new FormData()
@@ -69,18 +72,18 @@ const AcceptOrderAction = ({ order }) => {
       <Button
         size="medium"
         variant="contained"
-        color="primary"
         className={classes.acceptButton}
         onClick={isAccepting ? null : onChange}
+        disabled={order.type === 'AcceptedOrder'}
       >
         {isAccepting ? (
           <CircularProgress color="secondary" size="30px" />
         ) : (
-          'Accept'
+          'ACCEPT ORDER'
         )}
       </Button>
     </Container>
   )
 }
 
-export default AcceptOrderAction
+export default AcceptAction

@@ -95,6 +95,16 @@ const BlockchainWatcher = ({ children }) => {
                 })
               )
               break
+            case 'RejectedOrder':
+              dispatch(
+                updateOrder({
+                  id: findOriginalId(orders, token),
+                  latestId: token.id,
+                  latestOwner: token.roles.Owner,
+                  ...token.metadata,
+                })
+              )
+              break
             case 'ManufacturedOrder':
               dispatch(
                 updateOrder({
