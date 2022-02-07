@@ -105,7 +105,7 @@ const MyOrders = () => {
                   <Grid item>
                     <OrderStatusProgressBar
                       status={status}
-                      powderId={powderId}
+                      orderPowderId={powderId}
                     />
                   </Grid>
                 </Grid>

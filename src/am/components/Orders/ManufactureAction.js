@@ -98,6 +98,54 @@ const ManufactureOrderAction = ({ order }) => {
     return formData
   }
 
+  const mintManufacturingTokens = async () => {
+    const powder = powders.find((item) => item.original_id === selectedPowder)
+
+    const orderRoles = {
+      Owner: identities.am,
+    }
+    const orderMetadata = {
+      type: tokenTypes.order,
+      status: orderStatus.manufacturing,
+      powderId: powder.original_id.toString(),
+    }
+
+    const powderRoles = { Owner: identities.am }
+    const powderMetadata = {
+      type: tokenTypes.powder,
+      quantityKg: `${powder.metadata.quantityKg - 50}`,
+    }
+
+    const manufacturingFormData = createManufacturingFormData(
+      [order.id, powder.id],
+      orderRoles,
+      orderMetadata,
+      powderRoles,
+      powderMetadata
+    )
+
+    const response = await api.runProcess(manufacturingFormData)
+
+    const manufacturingToken = {
+      id: response[0],
+      original_id: order.original_id,
+      roles: orderRoles,
+      metadata: orderMetadata,
+    }
+
+    const powderToken = {
+      id: response[1],
+      original_id: powder.original_id,
+      roles: powderRoles,
+      metadata: powderMetadata,
+    }
+
+    dispatch(upsertOrder(manufacturingToken))
+    dispatch(upsertPowder(powderToken))
+
+    return response
+  }
+
   const createManufacturedFormData = (inputs, orderRoles, orderMetadata) => {
     const formData = new FormData()
     const outputs = [
@@ -116,78 +164,40 @@ const ManufactureOrderAction = ({ order }) => {
     return formData
   }
 
+  const mintManufacturedToken = async (manufacturingTokenId) => {
+    const roles = {
+      Owner: identities.am,
+    }
+    const metadata = {
+      type: tokenTypes.order,
+      status: orderStatus.manufactured,
+    }
+
+    const manufacturedFormData = createManufacturedFormData(
+      [manufacturingTokenId],
+      roles,
+      metadata
+    )
+
+    const response = await api.runProcess(manufacturedFormData)
+
+    const manufacturedToken = {
+      id: response[0],
+      original_id: order.original_id,
+      roles: roles,
+      metadata: metadata,
+    }
+
+    dispatch(upsertOrder(manufacturedToken))
+  }
+
   const onButtonChange = async () => {
     setIsAccepting(true)
 
-    const powder = powders.find((item) => item.original_id === selectedPowder)
-
-    const manufacturingRoles = {
-      Owner: identities.am,
-    }
-    const manufacturingMetadata = {
-      type: tokenTypes.order,
-      status: orderStatus.manufacturing,
-      powderId: powder.original_id.toString(),
-    }
-
-    const powderRoles = { Owner: identities.am }
-    const powderMetadata = {
-      type: tokenTypes.powder,
-      quantityKg: `${powder.metadata.quantityKg - 50}`,
-    }
-
-    const manufacturingFormData = createManufacturingFormData(
-      [order.id, powder.id],
-      manufacturingRoles,
-      manufacturingMetadata,
-      powderRoles,
-      powderMetadata
-    )
-
-    const response = await api.runProcess(manufacturingFormData)
-
-    const manufacturingToken = {
-      id: response[0],
-      original_id: order.original_id,
-      roles: manufacturingRoles,
-      metadata: manufacturingMetadata,
-    }
-
-    const powderToken = {
-      id: response[1],
-      original_id: powder.original_id,
-      roles: powderRoles,
-      metadata: powderMetadata,
-    }
-
-    dispatch(upsertOrder(manufacturingToken))
-    dispatch(upsertPowder(powderToken))
+    const response = await mintManufacturingTokens()
 
     setTimeout(async () => {
-      const manufacturedRoles = {
-        Owner: identities.am,
-      }
-      const manufacturedMetadata = {
-        type: tokenTypes.order,
-        status: orderStatus.manufactured,
-      }
-
-      const manufacturedFormData = createManufacturedFormData(
-        [response[0]],
-        manufacturedRoles,
-        manufacturedMetadata
-      )
-
-      const manufacturedResponse = await api.runProcess(manufacturedFormData)
-
-      const manufacturedToken = {
-        id: manufacturedResponse[0],
-        original_id: order.original_id,
-        roles: manufacturedRoles,
-        metadata: manufacturedMetadata,
-      }
-
-      dispatch(upsertOrder(manufacturedToken))
+      await mintManufacturedToken(response[0])
     }, 10000)
 
     navigate('/app/orders')
