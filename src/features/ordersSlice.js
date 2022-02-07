@@ -10,10 +10,8 @@ export const ordersSlice = createSlice({
           ({ original_id }) => original_id === action.payload.original_id
         )
         // tokens for new assets have matching id and original_id
-        if (action.payload.id === action.payload.original_id) {
-          if (!order) {
-            state.push(action.payload)
-          }
+        if (action.payload.id === action.payload.original_id && !order) {
+          state.push(action.payload)
         } else {
           if (order) {
             order.id = action.payload.id

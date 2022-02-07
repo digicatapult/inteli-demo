@@ -10,10 +10,8 @@ export const powdersSlice = createSlice({
           ({ original_id }) => original_id === action.payload.original_id
         )
         // tokens for new assets have matching id and original_id
-        if (action.payload.id === action.payload.original_id) {
-          if (!powder) {
-            state.push(action.payload)
-          }
+        if (action.payload.id === action.payload.original_id && !powder) {
+          state.push(action.payload)
         } else {
           if (powder) {
             powder.id = action.payload.id
