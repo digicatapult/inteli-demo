@@ -9,28 +9,6 @@ const useFetchWrapper = () => {
   const dispatch = useDispatch()
 
   const wrappedFetch = async (url, options) => {
-    let request
-    try {
-      request = await fetch(url, options)
-      if (request.ok) {
-        dispatch(updateNetworkStatus(true))
-      } else {
-        dispatch(updateNetworkStatus(false))
-      }
-    } catch (err) {
-      dispatch(updateNetworkStatus(false))
-      throw err
-    }
-    return request.json()
-  }
-
-  return wrappedFetch
-}
-
-const useNewFetchWrapper = () => {
-  const dispatch = useDispatch()
-
-  const newWrappedFetch = async (url, options) => {
     let response
     try {
       response = await fetch(url, options)
@@ -67,7 +45,7 @@ const useNewFetchWrapper = () => {
         return response.json()
     }
   }
-  return newWrappedFetch
+  return wrappedFetch
 }
 
 const checkJwt = (token) => {
@@ -83,7 +61,6 @@ const checkJwt = (token) => {
 
 const useApi = () => {
   const wrappedFetch = useFetchWrapper()
-  const newWrappedFetch = useNewFetchWrapper()
 
   const getAuthToken = async () => {
     let token = localStorage.getItem('token')
@@ -144,31 +121,17 @@ const useApi = () => {
         },
       }
     )
-    // temporary catch old style metadata
-    if (token.metadata_keys.includes('')) {
-      token.metadata = await wrappedFetch(
-        `http://${API_HOST}:${API_PORT}/v2/item/${id}/metadata`,
-        {
-          method: 'GET',
-          mode: 'cors',
-          cache: 'no-cache',
-          headers: {
-            Authorization: `Bearer ${await getAuthToken()}`,
-          },
-        }
-      )
-    } else {
-      await getNewMetadata(token)
-    }
+    token.metadata = await getMetadata(token.id, token.metadata_keys)
 
     return token
   }
 
-  const getNewMetadata = async (token) => {
+  const getMetadata = async (id, metadataKeys) => {
+    const metadata = {}
     await Promise.all(
-      token.metadata_keys.map(async (metadata_key) => {
-        token.metadata[metadata_key] = await newWrappedFetch(
-          `http://${API_HOST}:${API_PORT}/v2/item/${token.id}/metadata/${metadata_key}`,
+      metadataKeys.map(async (metadataKey) => {
+        metadata[metadataKey] = await wrappedFetch(
+          `http://${API_HOST}:${API_PORT}/v2/item/${id}/metadata/${metadataKey}`,
           {
             method: 'GET',
             mode: 'cors',
@@ -180,7 +143,7 @@ const useApi = () => {
         )
       })
     )
-    return token
+    return metadata
   }
 
   return { runProcess, latestToken, tokenById }

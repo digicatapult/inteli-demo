@@ -4,7 +4,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 
-import { tokenTypes, powderTestStatus } from '../../utils'
+import { powderTestStatus } from '../../utils'
 
 const useStyles = makeStyles({
   download: {
@@ -29,10 +29,8 @@ const DownloadButton = (props) => {
   const { statusIndex, orderPowderId } = props
   const selectedLabTest = useSelector((state) =>
     state.labTests.find(
-      ({ metadata: { type, status, powderId } }) =>
-        type === tokenTypes.powderTest &&
-        status === powderTestStatus.result &&
-        powderId === orderPowderId
+      ({ metadata: { status, powderId } }) =>
+        status === powderTestStatus.result && powderId === orderPowderId
     )
   )
   const classes = useStyles()

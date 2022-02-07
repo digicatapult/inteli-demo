@@ -38,20 +38,20 @@ const OrderStatus = ({ status }) => {
       statusText = 'Requested'
       statusClass = `${classes.status} ${classes.statusRequested}`
       break
-    case 'RejectedOrder':
+    case orderStatus.amended:
       statusText = 'Rejected'
       statusClass = `${classes.status} ${classes.statusRejected}`
       break
-    case 'AcceptedOrder':
+    case orderStatus.accepted:
       statusText = 'Accepted'
       statusClass = `${classes.status} ${classes.statusAccepted}`
       break
-    case 'ManufacturedOrder':
-      statusText = 'Manufactured'
+    case orderStatus.manufacturing:
+      statusText = 'Manufacturing'
       statusClass = `${classes.status} ${classes.statusAccepted}`
       break
-    case 'ManufacturingOrder':
-      statusText = 'Manufacturing'
+    case orderStatus.manufactured:
+      statusText = 'Manufactured'
       statusClass = `${classes.status} ${classes.statusAccepted}`
       break
   }

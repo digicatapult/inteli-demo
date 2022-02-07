@@ -5,8 +5,14 @@ import makeStyles from '@material-ui/core/styles/makeStyles'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
-import { updateOrder } from '../../../features/ordersSlice'
-import { identities, useApi } from '../../../utils'
+import { upsertOrder } from '../../../features/ordersSlice'
+import {
+  identities,
+  metadataTypes,
+  tokenTypes,
+  orderStatus,
+  useApi,
+} from '../../../utils'
 
 const useStyles = makeStyles({
   buttonWrapper: {
@@ -29,12 +35,21 @@ const RejectAction = ({ order, quantity, deliveryBy, formReady }) => {
 
   const [isRejectingOrder, setIsRejectingOrder] = useState(false)
 
-  const createFormData = (inputs, file) => {
+  const createFormData = (inputs, roles, metadata) => {
     const formData = new FormData()
     const outputs = [
       {
-        owner: identities.am,
-        metadataFile: 'file',
+        roles: roles,
+        metadata: {
+          type: { type: metadataTypes.literal, value: metadata.type },
+          status: { type: metadataTypes.literal, value: metadata.status },
+          quantity: { type: metadataTypes.literal, value: metadata.quantity },
+          deliveryBy: {
+            type: metadataTypes.literal,
+            value: metadata.deliveryBy,
+          },
+        },
+        parent_index: 0,
       },
     ]
 
@@ -46,8 +61,6 @@ const RejectAction = ({ order, quantity, deliveryBy, formReady }) => {
       })
     )
 
-    formData.set('file', file, 'file')
-
     return formData
   }
 
@@ -55,20 +68,24 @@ const RejectAction = ({ order, quantity, deliveryBy, formReady }) => {
     if (formReady) {
       setIsRejectingOrder(true)
 
-      const fileData = {
-        type: 'RejectedOrder',
-        orderReference: `#${Math.floor(Math.random() * 100000000)}`,
-        orderDetails: order.orderDetails,
-        customerDetails: {},
-        quantity,
-        deliveryBy,
+      const roles = { Owner: identities.cust }
+      const metadata = {
+        type: tokenTypes.order,
+        status: orderStatus.amended,
+        quantity: quantity.toString(),
+        deliveryBy: deliveryBy,
       }
-      const file = new Blob([JSON.stringify(fileData)])
-      const formData = createFormData([order.latestId], file)
-      const response = await api.runProcess(formData)
-      const token = { id: order.latestId, latestId: response[0], ...fileData }
 
-      dispatch(updateOrder(token))
+      const formData = createFormData([order.id], roles, metadata)
+      const response = await api.runProcess(formData)
+      const token = {
+        id: response[0],
+        original_id: order.original_id,
+        roles,
+        metadata,
+      }
+
+      dispatch(upsertOrder(token))
 
       navigate('/app/orders')
     }

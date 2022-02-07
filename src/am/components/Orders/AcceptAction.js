@@ -4,8 +4,14 @@ import Button from '@material-ui/core/Button'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import { useDispatch } from 'react-redux'
 
-import { updateOrder } from '../../../features/ordersSlice'
-import { identities, useApi } from '../../../utils'
+import { upsertOrder } from '../../../features/ordersSlice'
+import {
+  identities,
+  useApi,
+  tokenTypes,
+  orderStatus,
+  metadataTypes,
+} from '../../../utils'
 
 const useStyles = makeStyles({
   buttonWrapper: {
@@ -29,12 +35,16 @@ const AcceptAction = ({ order }) => {
 
   const [isAccepting, setIsAccepting] = useState(false)
 
-  const createFormData = (inputs, file) => {
+  const createFormData = (inputs, roles, metadata) => {
     const formData = new FormData()
     const outputs = [
       {
-        owner: identities.am,
-        metadataFile: 'file',
+        roles: roles,
+        metadata: {
+          type: { type: metadataTypes.literal, value: metadata.type },
+          status: { type: metadataTypes.literal, value: metadata.status },
+        },
+        parent_index: 0,
       },
     ]
 
@@ -46,25 +56,23 @@ const AcceptAction = ({ order }) => {
       })
     )
 
-    formData.set('file', file, 'file')
-
     return formData
   }
 
   const onChange = async () => {
     setIsAccepting(true)
 
-    const fileData = {
-      type: 'AcceptedOrder',
-      orderReference: order.metadata.orderReference,
+    const roles = { Owner: identities.am }
+    const metadata = {
+      type: tokenTypes.order,
+      status: orderStatus.accepted,
     }
 
-    const file = new Blob([JSON.stringify(fileData)])
-    const formData = createFormData([order.id], file)
+    const formData = createFormData([order.id], roles, metadata)
     const response = await api.runProcess(formData)
-    const token = { id: order.id, latestId: response[0], ...fileData }
+    const token = { id: response[0], original_id: order.id, roles, metadata }
 
-    dispatch(updateOrder(token))
+    dispatch(upsertOrder(token))
   }
 
   return (
@@ -74,7 +82,7 @@ const AcceptAction = ({ order }) => {
         variant="contained"
         className={classes.acceptButton}
         onClick={isAccepting ? null : onChange}
-        disabled={order.type === 'AcceptedOrder'}
+        disabled={order.metadata.status === orderStatus.accepted}
       >
         {isAccepting ? (
           <CircularProgress color="secondary" size="30px" />

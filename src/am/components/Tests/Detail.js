@@ -5,6 +5,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles'
 
 import { markTestRead } from '../../../features/readTestsSlice'
 import Attachment from '../Attachment'
+import { orderStatus } from '../../../utils'
 
 const useStyles = makeStyles({
   root: {
@@ -60,8 +61,8 @@ const OrderDetail = ({ test }) => {
   const dispatch = useDispatch()
   const orders = useSelector((state) =>
     state.customerOrders.filter(
-      ({ type, powderId: orderPowder }) =>
-        type === 'ManufacturedOrder' && orderPowder === powderId
+      ({ metadata: { status, powderId: orderPowder } }) =>
+        status === orderStatus.manufactured && orderPowder === powderId
     )
   )
 

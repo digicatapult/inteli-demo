@@ -69,7 +69,7 @@ const MyOrders = () => {
           [...customerOrders].reverse().map((order) => {
             const {
               metadata: {
-                type,
+                status,
                 powderId,
                 orderImage,
                 name,
@@ -104,8 +104,8 @@ const MyOrders = () => {
                   </Grid>
                   <Grid item>
                     <OrderStatusProgressBar
-                      orderType={type}
-                      orderPowderId={powderId}
+                      status={status}
+                      powderId={powderId}
                     />
                   </Grid>
                 </Grid>

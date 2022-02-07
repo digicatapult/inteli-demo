@@ -10,8 +10,14 @@ import Button from '@material-ui/core/Button'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { updateOrder } from '../../../features/ordersSlice'
-import { useApi, identities, tokenTypes } from '../../../utils'
+import { upsertOrder } from '../../../features/ordersSlice'
+import {
+  useApi,
+  identities,
+  tokenTypes,
+  orderStatus,
+  metadataTypes,
+} from '../../../utils'
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
 import Box from '@material-ui/core/Box'
@@ -53,22 +59,59 @@ const ManufactureOrderAction = ({ order }) => {
 
   const api = useApi()
 
-  const createFormData = (inputs, outputs) => {
+  const createManufacturingFormData = (
+    inputs,
+    orderRoles,
+    orderMetadata,
+    powderRoles,
+    powderMetadata
+  ) => {
     const formData = new FormData()
+    const outputs = [
+      {
+        roles: orderRoles,
+        metadata: {
+          type: { type: metadataTypes.literal, value: orderMetadata.type },
+          status: { type: metadataTypes.literal, value: orderMetadata.status },
+          powderId: {
+            type: metadataTypes.tokenId,
+            value: orderMetadata.powderId,
+          },
+        },
+        parent_index: 0,
+      },
+      {
+        roles: powderRoles,
+        metadata: {
+          type: { type: metadataTypes.literal, value: powderMetadata.type },
+          quantityKg: {
+            type: metadataTypes.literal,
+            value: powderMetadata.quantityKg,
+          },
+        },
+        parent_index: 1,
+      },
+    ]
 
-    formData.set(
-      'request',
-      JSON.stringify({
-        inputs,
-        outputs: outputs.map(({ owner }, outputIndex) => ({
-          owner,
-          metadataFile: `file_${outputIndex}`,
-        })),
-      })
-    )
-    outputs.forEach(({ file }, outputIndex) => {
-      formData.set(`file_${outputIndex}`, file, `file_${outputIndex}`)
-    })
+    formData.set('request', JSON.stringify({ inputs, outputs }))
+
+    return formData
+  }
+
+  const createManufacturedFormData = (inputs, orderRoles, orderMetadata) => {
+    const formData = new FormData()
+    const outputs = [
+      {
+        roles: orderRoles,
+        metadata: {
+          type: { type: metadataTypes.literal, value: orderMetadata.type },
+          status: { type: metadataTypes.literal, value: orderMetadata.status },
+        },
+        parent_index: 0,
+      },
+    ]
+
+    formData.set('request', JSON.stringify({ inputs, outputs }))
 
     return formData
   }
@@ -78,52 +121,74 @@ const ManufactureOrderAction = ({ order }) => {
 
     const powder = powders.find((item) => item.original_id === selectedPowder)
 
-    const outputData = [
-      {
-        type: 'ManufacturedOrder',
-        powderId: selectedPowder,
-        orderReference: order.metadata.orderReference,
-        owner: identities.am,
-      },
-      {
-        type: tokenTypes.powder,
-        powderReference: powder.metadata.powderReference,
-        material: powder.metadata.material,
-        alloy: powder.metadata.alloy,
-        quantityKg: powder.metadata.quantityKg - 50,
-        particleSizeUm: powder.metadata.particleSizeUm,
-        location: powder.metadata.location,
-        owner: identities.am,
-      },
-    ]
+    const manufacturingRoles = {
+      Owner: identities.am,
+    }
+    const manufacturingMetadata = {
+      type: tokenTypes.order,
+      status: orderStatus.manufacturing,
+      powderId: powder.original_id.toString(),
+    }
 
-    const outputs = outputData.map(({ owner, ...obj }) => ({
-      owner,
-      file: new Blob([JSON.stringify(obj)]),
-    }))
-    const formData = createFormData([order.id, powder.id], outputs)
+    const powderRoles = { Owner: identities.am }
+    const powderMetadata = {
+      type: tokenTypes.powder,
+      quantityKg: `${powder.metadata.quantityKg - 50}`,
+    }
+
+    const manufacturingFormData = createManufacturingFormData(
+      [order.id, powder.id],
+      manufacturingRoles,
+      manufacturingMetadata,
+      powderRoles,
+      powderMetadata
+    )
+
+    const response = await api.runProcess(manufacturingFormData)
+
+    const manufacturingToken = {
+      id: response[0],
+      original_id: order.original_id,
+      roles: manufacturingRoles,
+      metadata: manufacturingMetadata,
+    }
+
+    const powderToken = {
+      id: response[1],
+      original_id: powder.original_id,
+      roles: powderRoles,
+      metadata: powderMetadata,
+    }
+
+    dispatch(upsertOrder(manufacturingToken))
+    dispatch(upsertPowder(powderToken))
 
     setTimeout(async () => {
-      const response = await api.runProcess(formData)
-
-      const orderToken = {
-        id: order.id,
-        latestId: response[0],
-        ...outputData[0],
+      const manufacturedRoles = {
+        Owner: identities.am,
+      }
+      const manufacturedMetadata = {
+        type: tokenTypes.order,
+        status: orderStatus.manufactured,
       }
 
-      const powderToken = {
-        id: powder.id,
-        latestId: response[1],
-        ...outputData[1],
+      const manufacturedFormData = createManufacturedFormData(
+        [response[0]],
+        manufacturedRoles,
+        manufacturedMetadata
+      )
+
+      const manufacturedResponse = await api.runProcess(manufacturedFormData)
+
+      const manufacturedToken = {
+        id: manufacturedResponse[0],
+        original_id: order.original_id,
+        roles: manufacturedRoles,
+        metadata: manufacturedMetadata,
       }
 
-      dispatch(updateOrder(orderToken))
-      dispatch(upsertPowder(powderToken))
+      dispatch(upsertOrder(manufacturedToken))
     }, 10000)
-
-    const manufacturingToken = { ...order, type: 'ManufacturingOrder' }
-    dispatch(updateOrder(manufacturingToken))
 
     navigate('/app/orders')
   }
@@ -134,7 +199,7 @@ const ManufactureOrderAction = ({ order }) => {
 
   return (
     <Box className={classes.selectPowderWrapper}>
-      {order.metadata.type === 'AcceptedOrder' ? (
+      {order.metadata.status === orderStatus.accepted ? (
         <Grid container direction="column" className={classes.row}>
           <Grid item>
             <Typography variant="body2" className={classes.selectInputLabel}>

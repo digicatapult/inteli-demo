@@ -221,7 +221,7 @@ const PowdersDetail = () => {
 
     const powderToken = {
       id: response[1],
-      original_id: powder.id,
+      original_id: powder.original_id,
       roles: powderRoles,
       metadata: powderMetadata,
     }

@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom'
 import { Paper, Typography, Grid } from '@material-ui/core'
 
 import LabTestStatus from './LabTestStatus'
-import { tokenTypes, powderTestStatus } from '../../utils'
+import { powderTestStatus } from '../../utils'
 
 const useStyles = makeStyles(() => ({
   paperNonActive: {
@@ -37,12 +37,11 @@ const useStyles = makeStyles(() => ({
 const LabTestsItem = (props) => {
   const {
     selectedId,
-    metadata: { type, status, powderReference },
+    metadata: { status, powderReference },
     sent,
     original_id,
   } = props
-  const tested =
-    type === tokenTypes.powderTest && status === powderTestStatus.result
+  const tested = status === powderTestStatus.result
   const selected = selectedId === original_id ? true : false
   const statusText = tested ? 'tested' : sent ? 'sent' : 'requested'
   const classes = useStyles()

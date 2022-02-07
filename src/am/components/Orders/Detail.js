@@ -214,13 +214,12 @@ const OrderDetail = ({ order }) => {
     case orderStatus.submitted:
       Action = AcceptOrderAction
       break
-    case 'AcceptedOrder':
+    case orderStatus.accepted:
       Action = ManufactureOrderAction
       break
-    case 'ManufacturedOrder':
-      Action = EmptyAction
-      break
-    case 'ManufacturingOrder':
+    case orderStatus.amended:
+    case orderStatus.manufacturing:
+    case orderStatus.manufactured:
       Action = EmptyAction
       break
     default:
