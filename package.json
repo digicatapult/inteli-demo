@@ -1,13 +1,13 @@
 {
-  "name": "vitalam-demo-client",
+  "name": "inteli-demo",
   "version": "2.0.0",
-  "description": "Demo for VitalAM",
+  "description": "Demo for INTELI",
   "author": "Digital Catapult (https://www.digicatapult.org.uk/)",
   "license": "Apache-2.0",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/digicatapult/vitalam-demo-client.git"
+    "url": "git+https://github.com/digicatapult/inteli-demo.git"
   },
   "engines": {
     "node": "16.x.x",
