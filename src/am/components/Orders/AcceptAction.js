@@ -39,7 +39,7 @@ const AcceptAction = ({ order }) => {
     const formData = new FormData()
     const outputs = [
       {
-        roles: roles,
+        roles,
         metadata: {
           type: { type: metadataTypes.literal, value: metadata.type },
           status: { type: metadataTypes.literal, value: metadata.status },

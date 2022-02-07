@@ -181,7 +181,7 @@ const CustomerPart = () => {
     const formData = new FormData()
     const outputs = [
       {
-        roles: roles,
+        roles,
         metadata: {
           type: { type: metadataTypes.literal, value: metadata.type },
           status: { type: metadataTypes.literal, value: metadata.status },
@@ -242,13 +242,13 @@ const CustomerPart = () => {
         type: tokenTypes.order,
         status: orderStatus.submitted,
         orderReference: `#${Math.floor(Math.random() * 100000000)}`,
-        partId: partId,
-        name: name,
-        material: material,
-        alloy: alloy,
+        partId,
+        name,
+        material,
+        alloy,
         price: price.toString(),
         quantity: quantity.toString(),
-        deliveryBy: deliveryBy,
+        deliveryBy,
         orderImage: {
           fileName: orderImageFile.fileName,
           url: orderImageFile.url,

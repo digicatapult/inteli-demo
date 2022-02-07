@@ -39,7 +39,7 @@ const RejectAction = ({ order, quantity, deliveryBy, formReady }) => {
     const formData = new FormData()
     const outputs = [
       {
-        roles: roles,
+        roles,
         metadata: {
           type: { type: metadataTypes.literal, value: metadata.type },
           status: { type: metadataTypes.literal, value: metadata.status },
@@ -73,7 +73,7 @@ const RejectAction = ({ order, quantity, deliveryBy, formReady }) => {
         type: tokenTypes.order,
         status: orderStatus.amended,
         quantity: quantity.toString(),
-        deliveryBy: deliveryBy,
+        deliveryBy,
       }
 
       const formData = createFormData([order.id], roles, metadata)

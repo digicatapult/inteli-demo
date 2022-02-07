@@ -184,8 +184,8 @@ const ManufactureOrderAction = ({ order }) => {
     const manufacturedToken = {
       id: response[0],
       original_id: order.original_id,
-      roles: roles,
-      metadata: metadata,
+      roles,
+      metadata,
     }
 
     dispatch(upsertOrder(manufacturedToken))
