@@ -126,7 +126,7 @@ const ManufactureOrderAction = ({ order }) => {
 
     const response = await api.runProcess(manufacturingFormData)
 
-    const manufacturingToken = {
+    const orderToken = {
       id: response[0],
       original_id: order.original_id,
       roles: orderRoles,
@@ -140,7 +140,7 @@ const ManufactureOrderAction = ({ order }) => {
       metadata: powderMetadata,
     }
 
-    dispatch(upsertOrder(manufacturingToken))
+    dispatch(upsertOrder(orderToken))
     dispatch(upsertPowder(powderToken))
 
     return response
