@@ -8,7 +8,7 @@ networks:
 services:
 
   node-eve:
-    image: ghcr.io/digicatapult/vitalam-node:v2.7.0
+    image: ghcr.io/digicatapult/vitalam-node:v2.8.1
     container_name: node-eve
     command:
       --base-path /data/

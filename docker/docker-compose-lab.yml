@@ -13,7 +13,7 @@ networks:
 
 services:
   node-charlie:
-    image: ghcr.io/digicatapult/vitalam-node:v2.7.0
+    image: ghcr.io/digicatapult/vitalam-node:v2.8.1
     container_name: node-charlie
     command:
       --base-path /data/
