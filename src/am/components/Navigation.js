@@ -5,7 +5,7 @@ import { Toolbar, Typography, Box } from '@material-ui/core'
 import { useSelector } from 'react-redux'
 
 import logo from '../../images/maher.png'
-import { powderTestStatus } from '../../utils'
+import { orderStatus, powderTestStatus } from '../../utils'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -68,7 +68,9 @@ const Navigation = () => {
   )
 
   const hasNewOrder = customerOrders.some(
-    ({ id: orderId }) => !readOrders.find((id) => id === orderId)
+    ({ id: orderId, metadata: { status } }) =>
+      status === orderStatus.submitted &&
+      !readOrders.find((id) => id === orderId)
   )
   const orderStatusClass = hasNewOrder ? classes.dotUnread : classes.dotOther
 

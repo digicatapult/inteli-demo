@@ -32,7 +32,7 @@ assert_env() {
 ipfs_init() {
 	IPFS_PATH=$1;
 	mkdir -p $IPFS_PATH;
-	docker run --mount type=bind,src=$IPFS_PATH,dst=/ipfs --rm --entrypoint='' ghcr.io/digicatapult/vitalam-ipfs:v1.1.0 /bin/sh -c "\
+	docker run --mount type=bind,src=$IPFS_PATH,dst=/ipfs --entrypoint='' ghcr.io/digicatapult/vitalam-ipfs:v1.0.0 /bin/sh -c "\
 	set -ex; \
 	ipfs init; \
 	ipfs config Addresses.API /ip4/0.0.0.0/tcp/5001; \
