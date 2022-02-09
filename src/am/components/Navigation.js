@@ -5,7 +5,7 @@ import { Toolbar, Typography, Box } from '@material-ui/core'
 import { useSelector } from 'react-redux'
 
 import logo from '../../images/maher.png'
-import { powderTestStatus } from '../../utils'
+import { orderStatus, powderTestStatus } from '../../utils'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -62,24 +62,19 @@ const Navigation = () => {
   const customerOrders = useSelector((state) => state.customerOrders)
   const powders = useSelector((state) => state.powders)
   const testResults = useSelector((state) =>
-    state.labTests.filter(
-      ({ metadata: { status } }) => status === powderTestStatus.result
-    )
+    state.labTests.filter(({ metadata: { status } }) => status === powderTestStatus.result)
   )
 
   const hasNewOrder = customerOrders.some(
-    ({ id: orderId }) => !readOrders.find((id) => id === orderId)
+    ({ id: orderId, metadata: { status } }) =>
+      status === orderStatus.submitted && !readOrders.find((id) => id === orderId)
   )
   const orderStatusClass = hasNewOrder ? classes.dotUnread : classes.dotOther
 
-  const hasNewPowder = powders.some(
-    (powder) => !readPowders.find((id) => id === powder.id)
-  )
+  const hasNewPowder = powders.some((powder) => !readPowders.find((id) => id === powder.id))
   const powderStatusClass = hasNewPowder ? classes.dotUnread : classes.dotOther
 
-  const hasNewTests = testResults.some(
-    (test) => !readTests.find((id) => id === test.id)
-  )
+  const hasNewTests = testResults.some((test) => !readTests.find((id) => id === test.id))
   const testStatusClass = hasNewTests ? classes.dotUnread : classes.dotOther
 
   return (
@@ -87,11 +82,7 @@ const Navigation = () => {
       <div className={classes.logo}>
         <img src={logo}></img>
       </div>
-      <NavLink
-        to="/app/orders"
-        className={`${classes.navButton}`}
-        activeClassName={classes.navActive}
-      >
+      <NavLink to="/app/orders" className={`${classes.navButton}`} activeClassName={classes.navActive}>
         <Box className={classes.navButtonWrapping}>
           <Typography>Orders</Typography>
           <Typography variant="h5" className={orderStatusClass}>
@@ -99,11 +90,7 @@ const Navigation = () => {
           </Typography>
         </Box>
       </NavLink>
-      <NavLink
-        to="/app/powders"
-        className={`${classes.navButton}`}
-        activeClassName={classes.navActive}
-      >
+      <NavLink to="/app/powders" className={`${classes.navButton}`} activeClassName={classes.navActive}>
         <Box className={classes.navButtonWrapping}>
           <Typography>Powder Inventory</Typography>
           <Typography variant="h5" className={powderStatusClass}>
@@ -111,11 +98,7 @@ const Navigation = () => {
           </Typography>
         </Box>
       </NavLink>
-      <NavLink
-        to="/app/tests"
-        className={classes.navButton}
-        activeClassName={classes.navActive}
-      >
+      <NavLink to="/app/tests" className={classes.navButton} activeClassName={classes.navActive}>
         <Box className={classes.navButtonWrapping}>
           <Typography>Test Results</Typography>
           <Typography variant="h5" className={testStatusClass}>

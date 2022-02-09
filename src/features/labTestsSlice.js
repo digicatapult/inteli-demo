@@ -10,10 +10,8 @@ export const labTestsSlice = createSlice({
           ({ original_id }) => original_id === action.payload.original_id
         )
         // tokens for new assets have matching id and original_id
-        if (action.payload.id === action.payload.original_id) {
-          if (!labTest) {
-            state.push(action.payload)
-          }
+        if (action.payload.id === action.payload.original_id && !labTest) {
+          state.push(action.payload)
         } else {
           if (labTest) {
             labTest.id = action.payload.id

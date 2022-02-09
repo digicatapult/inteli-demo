@@ -6,13 +6,7 @@ import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
 import { upsertOrder } from '../../../features/ordersSlice'
-import {
-  identities,
-  metadataTypes,
-  tokenTypes,
-  orderStatus,
-  useApi,
-} from '../../../utils'
+import { identities, metadataTypes, tokenTypes, orderStatus, useApi } from '../../../utils'
 
 const useStyles = makeStyles({
   buttonWrapper: {
@@ -39,7 +33,7 @@ const RejectAction = ({ order, quantity, deliveryBy, formReady }) => {
     const formData = new FormData()
     const outputs = [
       {
-        roles: roles,
+        roles,
         metadata: {
           type: { type: metadataTypes.literal, value: metadata.type },
           status: { type: metadataTypes.literal, value: metadata.status },
@@ -73,7 +67,7 @@ const RejectAction = ({ order, quantity, deliveryBy, formReady }) => {
         type: tokenTypes.order,
         status: orderStatus.amended,
         quantity: quantity.toString(),
-        deliveryBy: deliveryBy,
+        deliveryBy,
       }
 
       const formData = createFormData([order.id], roles, metadata)
@@ -101,11 +95,7 @@ const RejectAction = ({ order, quantity, deliveryBy, formReady }) => {
         onClick={isRejectingOrder ? null : onChange}
         disabled={!formReady}
       >
-        {isRejectingOrder ? (
-          <CircularProgress color="secondary" size="30px" />
-        ) : (
-          'SEND NEGOTIATION'
-        )}
+        {isRejectingOrder ? <CircularProgress color="secondary" size="30px" /> : 'SEND NEGOTIATION'}
       </Button>
     </Container>
   )

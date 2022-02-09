@@ -1,23 +1,12 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import {
-  CircularProgress,
-  Container,
-  Grid,
-  Typography,
-} from '@material-ui/core'
+import { CircularProgress, Container, Grid, Typography } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { upsertOrder } from '../../../features/ordersSlice'
-import {
-  useApi,
-  identities,
-  tokenTypes,
-  orderStatus,
-  metadataTypes,
-} from '../../../utils'
+import { useApi, identities, tokenTypes, orderStatus, metadataTypes } from '../../../utils'
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
 import Box from '@material-ui/core/Box'
@@ -59,13 +48,7 @@ const ManufactureOrderAction = ({ order }) => {
 
   const api = useApi()
 
-  const createManufacturingFormData = (
-    inputs,
-    orderRoles,
-    orderMetadata,
-    powderRoles,
-    powderMetadata
-  ) => {
+  const createManufacturingFormData = (inputs, orderRoles, orderMetadata, powderRoles, powderMetadata) => {
     const formData = new FormData()
     const outputs = [
       {
@@ -173,19 +156,15 @@ const ManufactureOrderAction = ({ order }) => {
       status: orderStatus.manufactured,
     }
 
-    const manufacturedFormData = createManufacturedFormData(
-      [manufacturingTokenId],
-      roles,
-      metadata
-    )
+    const manufacturedFormData = createManufacturedFormData([manufacturingTokenId], roles, metadata)
 
     const response = await api.runProcess(manufacturedFormData)
 
     const manufacturedToken = {
       id: response[0],
       original_id: order.original_id,
-      roles: roles,
-      metadata: metadata,
+      roles,
+      metadata,
     }
 
     dispatch(upsertOrder(manufacturedToken))
@@ -217,11 +196,7 @@ const ManufactureOrderAction = ({ order }) => {
             </Typography>
           </Grid>
           <Grid item>
-            <Select
-              name="powder"
-              className={classes.selectInput}
-              onChange={onPowderChange}
-            >
+            <Select name="powder" className={classes.selectInput} onChange={onPowderChange}>
               {powders.map((item) => (
                 <MenuItem key={item.original_id} value={item.original_id}>
                   {item.metadata.powderReference} ({item.metadata.material})
@@ -240,11 +215,7 @@ const ManufactureOrderAction = ({ order }) => {
           disabled={selectedPowder ? false : true}
           onClick={onButtonChange}
         >
-          {isAccepting ? (
-            <CircularProgress color="secondary" size="30px" />
-          ) : (
-            'Manufacture Part'
-          )}
+          {isAccepting ? <CircularProgress color="secondary" size="30px" /> : 'Manufacture Part'}
         </Button>
       </Container>
     </Box>

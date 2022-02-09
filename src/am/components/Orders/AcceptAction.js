@@ -5,13 +5,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles'
 import { useDispatch } from 'react-redux'
 
 import { upsertOrder } from '../../../features/ordersSlice'
-import {
-  identities,
-  useApi,
-  tokenTypes,
-  orderStatus,
-  metadataTypes,
-} from '../../../utils'
+import { identities, useApi, tokenTypes, orderStatus, metadataTypes } from '../../../utils'
 
 const useStyles = makeStyles({
   buttonWrapper: {
@@ -39,7 +33,7 @@ const AcceptAction = ({ order }) => {
     const formData = new FormData()
     const outputs = [
       {
-        roles: roles,
+        roles,
         metadata: {
           type: { type: metadataTypes.literal, value: metadata.type },
           status: { type: metadataTypes.literal, value: metadata.status },
@@ -84,11 +78,7 @@ const AcceptAction = ({ order }) => {
         onClick={isAccepting ? null : onChange}
         disabled={order.metadata.status === orderStatus.accepted}
       >
-        {isAccepting ? (
-          <CircularProgress color="secondary" size="30px" />
-        ) : (
-          'ACCEPT ORDER'
-        )}
+        {isAccepting ? <CircularProgress color="secondary" size="30px" /> : 'ACCEPT ORDER'}
       </Button>
     </Container>
   )
