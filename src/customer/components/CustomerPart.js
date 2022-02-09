@@ -19,7 +19,13 @@ import moment from 'moment'
 
 import BackButton from './BackButton'
 import { upsertOrder } from '../../features/ordersSlice'
-import { useApi, identities, tokenTypes, metadataTypes, orderStatus } from '../../utils'
+import {
+  useApi,
+  identities,
+  tokenTypes,
+  metadataTypes,
+  orderStatus,
+} from '../../utils'
 import Attachment from '../../laboratory/components/Attachment'
 
 const useStyles = makeStyles((theme) => ({
@@ -138,7 +144,11 @@ const DetailRow = ({ title, value }) => {
         {title}:
       </Typography>
       &nbsp;
-      <Typography className={classes.inline} variant="body2" color="textSecondary">
+      <Typography
+        className={classes.inline}
+        variant="body2"
+        color="textSecondary"
+      >
         {value}
       </Typography>
     </Box>
@@ -157,7 +167,9 @@ const CustomerPart = () => {
   const [deliveryBy, setDeliveryBy] = useState('')
   const [deliveryByError, setDeliveryByError] = useState('')
 
-  const selectedCustomerPart = useSelector((state) => state.customerParts.find(({ partId }) => partId === id))
+  const selectedCustomerPart = useSelector((state) =>
+    state.customerParts.find(({ partId }) => partId === id)
+  )
 
   const api = useApi()
 
@@ -311,14 +323,32 @@ const CustomerPart = () => {
 
   return (
     <Container>
-      <BackButton buttonClass={classes.backButton} backToLocation="/app/customer-parts" value="< Back" />
+      <BackButton
+        buttonClass={classes.backButton}
+        backToLocation="/app/customer-parts"
+        value="< Back"
+      />
 
       <Paper elevation={0} className={classes.card}>
         <Grid container>
           <Grid item xs={3}>
-            <CardMedia component="img" alt={name} width="450" height="322" image={image} title={name} />
+            <CardMedia
+              component="img"
+              alt={name}
+              width="450"
+              height="322"
+              image={image}
+              title={name}
+            />
           </Grid>
-          <Grid container item xs={6} direction="column" justify="space-between" className={classes.contentDetails}>
+          <Grid
+            container
+            item
+            xs={6}
+            direction="column"
+            justify="space-between"
+            className={classes.contentDetails}
+          >
             <CardContent>
               <Typography gutterBottom className={classes.partTitle}>
                 {name}
@@ -329,7 +359,9 @@ const CustomerPart = () => {
               <DetailRow title="Alloy" value={alloy}></DetailRow>
             </CardContent>
             <Box className={classes.quantityContainer}>
-              <InputLabel className={classes.quantityLabel}>*Quantity:</InputLabel>
+              <InputLabel className={classes.quantityLabel}>
+                *Quantity:
+              </InputLabel>
               <Input
                 className={classes.quantityInput}
                 name="quantity"
@@ -339,7 +371,9 @@ const CustomerPart = () => {
               <div className={classes.errorText}>{quantityError}</div>
             </Box>
             <Box className={classes.deliveryByContainer}>
-              <InputLabel className={classes.deliveryByLabel}>*Delivery by:</InputLabel>
+              <InputLabel className={classes.deliveryByLabel}>
+                *Delivery by:
+              </InputLabel>
               <Input
                 className={classes.deliveryByInput}
                 name="deliveryBy"
@@ -356,10 +390,19 @@ const CustomerPart = () => {
               </CardContent>
             </Grid>
           </Grid>
-          <Grid container item xs={2} direction="column" justify="space-between" className={classes.rightColumn}>
+          <Grid
+            container
+            item
+            xs={2}
+            direction="column"
+            justify="space-between"
+            className={classes.rightColumn}
+          >
             <Typography variant="h6">&#163;{totalCost}</Typography>
             <Box className={classes.rightColumnBottom}>
-              <Typography className={classes.shippingAddress}>Shipping Address:</Typography>
+              <Typography className={classes.shippingAddress}>
+                Shipping Address:
+              </Typography>
               <Typography color="textSecondary">Digital Catapult</Typography>
               <Typography color="textSecondary">101 Euston Road</Typography>
               <Typography color="textSecondary">London</Typography>
@@ -373,7 +416,11 @@ const CustomerPart = () => {
               onClick={isOrdering ? null : onChange}
               disabled={!isFormReady()}
             >
-              {isOrdering ? <CircularProgress color="secondary" size="30px" /> : 'ISSUE PURCHASE ORDER'}
+              {isOrdering ? (
+                <CircularProgress color="secondary" size="30px" />
+              ) : (
+                'ISSUE PURCHASE ORDER'
+              )}
             </Button>
           </Grid>
         </Grid>

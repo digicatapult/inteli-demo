@@ -6,7 +6,9 @@ export const ordersSlice = createSlice({
   reducers: {
     upsertOrder: {
       reducer(state, action) {
-        const order = state.find(({ original_id }) => original_id === action.payload.original_id)
+        const order = state.find(
+          ({ original_id }) => original_id === action.payload.original_id
+        )
         // tokens for new assets have matching id and original_id
         if (action.payload.id === action.payload.original_id && !order) {
           state.push(action.payload)
@@ -16,7 +18,9 @@ export const ordersSlice = createSlice({
             Object.assign(order.roles, action.payload.roles)
             Object.assign(order.metadata, action.payload.metadata)
           } else {
-            console.error(`Error cannot find token with original id ${action.payload.original_id}`)
+            console.error(
+              `Error cannot find token with original id ${action.payload.original_id}`
+            )
           }
         }
       },

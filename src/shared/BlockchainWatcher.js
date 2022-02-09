@@ -44,8 +44,13 @@ const BlockchainWatcher = ({ children }) => {
           // get the token to process
           const token = await api.tokenById(i)
 
-          if (token.metadata.type === tokenTypes.order && token.metadata.orderImage) {
-            token.metadata.orderImage.url = await svgMimeUrl(token.metadata.orderImage.url)
+          if (
+            token.metadata.type === tokenTypes.order &&
+            token.metadata.orderImage
+          ) {
+            token.metadata.orderImage.url = await svgMimeUrl(
+              token.metadata.orderImage.url
+            )
           }
 
           // if state has been modified and the effect canceled bail. The re-render will
@@ -104,7 +109,9 @@ const BlockchainWatcher = ({ children }) => {
         await pollFunc()
       } catch (err) {
         console.error(
-          `Error polling for blockchain state. Error was ${`"${err.message}"` || JSON.stringify(err, null, 2)}`
+          `Error polling for blockchain state. Error was ${
+            `"${err.message}"` || JSON.stringify(err, null, 2)
+          }`
         )
       }
       if (timer !== null) {

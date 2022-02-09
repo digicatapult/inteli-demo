@@ -6,7 +6,13 @@ import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
 import { upsertOrder } from '../../../features/ordersSlice'
-import { identities, metadataTypes, tokenTypes, orderStatus, useApi } from '../../../utils'
+import {
+  identities,
+  metadataTypes,
+  tokenTypes,
+  orderStatus,
+  useApi,
+} from '../../../utils'
 
 const useStyles = makeStyles({
   buttonWrapper: {
@@ -95,7 +101,11 @@ const RejectAction = ({ order, quantity, deliveryBy, formReady }) => {
         onClick={isRejectingOrder ? null : onChange}
         disabled={!formReady}
       >
-        {isRejectingOrder ? <CircularProgress color="secondary" size="30px" /> : 'SEND NEGOTIATION'}
+        {isRejectingOrder ? (
+          <CircularProgress color="secondary" size="30px" />
+        ) : (
+          'SEND NEGOTIATION'
+        )}
       </Button>
     </Container>
   )
