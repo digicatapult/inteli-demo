@@ -19,7 +19,7 @@ export const ordersSlice = createSlice({
             Object.assign(order.metadata, action.payload.metadata)
           } else {
             console.error(
-              `Error cannot find token with original id ${action.payload.original_id}`
+              `Error cannot find order with original id ${action.payload.original_id}`
             )
           }
         }

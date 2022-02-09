@@ -19,7 +19,7 @@ export const powdersSlice = createSlice({
             Object.assign(powder.metadata, action.payload.metadata)
           } else {
             console.error(
-              `Error cannot find token with original id ${action.payload.original_id}`
+              `Error cannot find powder with original id ${action.payload.original_id}`
             )
           }
         }
