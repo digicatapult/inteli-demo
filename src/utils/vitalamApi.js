@@ -121,9 +121,11 @@ const useApi = () => {
         },
       }
     )
-    token.metadata = await getMetadata(token.id, token.metadata_keys)
 
-    return token
+    return {
+      ...token,
+      metadata: await getMetadata(token.id, token.metadata_keys),
+    }
   }
 
   const getMetadata = async (id, metadataKeys) => {
