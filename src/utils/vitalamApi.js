@@ -128,13 +128,8 @@ const useApi = () => {
     }
   }
 
-<<<<<<< HEAD
   const getMetadata = async (id, metadataKeys) => {
     const metadata = {}
-=======
-  const getNewMetadata = async (token) => {
-    token.metadata = {} // temp
->>>>>>> main
     await Promise.all(
       metadataKeys.map(async (metadataKey) => {
         metadata[metadataKey] = await wrappedFetch(
