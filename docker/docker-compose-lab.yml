@@ -48,7 +48,7 @@ services:
     networks: ['ipfs', 'lab']
 
   api-charlie:
-    image: ghcr.io/digicatapult/vitalam-api:v2.6.2
+    image: ghcr.io/digicatapult/vitalam-api:v2.8.0
     container_name: api-charlie
     ports:
       - 3003:3001

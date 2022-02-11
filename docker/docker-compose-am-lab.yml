@@ -42,7 +42,7 @@ services:
     networks: ['am']
 
   api-eve:
-    image: ghcr.io/digicatapult/vitalam-api:v2.6.2
+    image: ghcr.io/digicatapult/vitalam-api:v2.8.0
     container_name: api-eve
     ports:
       - 3004:3001
