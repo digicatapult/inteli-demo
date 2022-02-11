@@ -129,23 +129,30 @@ const useApi = () => {
   }
 
   const getMetadata = async (id, metadataKeys) => {
-    const metadata = {}
-    await Promise.all(
-      metadataKeys.map(async (metadataKey) => {
-        metadata[metadataKey] = await wrappedFetch(
-          `http://${API_HOST}:${API_PORT}/v2/item/${id}/metadata/${metadataKey}`,
-          {
-            method: 'GET',
-            mode: 'cors',
-            cache: 'no-cache',
-            headers: {
-              Authorization: `Bearer ${await getAuthToken()}`,
-            },
+    return Object.assign(
+      {},
+      ...(await Promise.all(
+        metadataKeys.map(async (metadataKey) => {
+          return {
+            [metadataKey]: await getMetadataValue(id, metadataKey),
           }
-        )
-      })
+        })
+      ))
     )
-    return metadata
+  }
+
+  const getMetadataValue = async (id, metadataKey) => {
+    return await wrappedFetch(
+      `http://${API_HOST}:${API_PORT}/v2/item/${id}/metadata/${metadataKey}`,
+      {
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache',
+        headers: {
+          Authorization: `Bearer ${await getAuthToken()}`,
+        },
+      }
+    )
   }
 
   return { runProcess, latestToken, tokenById }
