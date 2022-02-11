@@ -165,6 +165,7 @@ const useApi = () => {
   }
 
   const getNewMetadata = async (token) => {
+    token.metadata = {} // temp
     await Promise.all(
       token.metadata_keys.map(async (metadata_key) => {
         token.metadata[metadata_key] = await newWrappedFetch(
