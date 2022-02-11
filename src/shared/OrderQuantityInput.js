@@ -1,4 +1,4 @@
-import { Grid, Input, InputLabel } from '@material-ui/core'
+import { Grid, Input, InputLabel, Typography } from '@material-ui/core'
 import React from 'react'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 
@@ -57,7 +57,9 @@ const OrderQuantityInput = ({
         onChange={handleChange('quantity')}
         value={quantity}
       />
-      <div className={classes.errorText}>{errorMessage}</div>
+      <Typography variant="subtitle1" className={classes.errorText}>
+        {errorMessage}
+      </Typography>
     </Grid>
   )
 }

@@ -1,4 +1,4 @@
-import { Grid, InputLabel, TextField } from '@material-ui/core'
+import { Grid, InputLabel, TextField, Typography } from '@material-ui/core'
 import React from 'react'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 
@@ -45,7 +45,9 @@ const OrderDeliveryByDatePicker = ({ handleChange, label, errorMessage }) => {
           disableUnderline: true,
         }}
       />
-      <div className={classes.errorText}>{errorMessage}</div>
+      <Typography variant="subtitle1" className={classes.errorText}>
+        {errorMessage}
+      </Typography>
     </Grid>
   )
 }

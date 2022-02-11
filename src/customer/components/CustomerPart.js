@@ -368,7 +368,9 @@ const CustomerPart = () => {
                 onChange={handleChange('quantity')}
                 value={quantity}
               />
-              <div className={classes.errorText}>{quantityError}</div>
+              <Typography variant="subtitle1" className={classes.errorText}>
+                {quantityError}
+              </Typography>
             </Box>
             <Box className={classes.deliveryByContainer}>
               <InputLabel className={classes.deliveryByLabel}>
@@ -380,7 +382,9 @@ const CustomerPart = () => {
                 placeholder={DATE_FORMAT}
                 onChange={handleChange('deliveryBy')}
               />
-              <div className={classes.errorText}>{deliveryByError}</div>
+              <Typography variant="subtitle1" className={classes.errorText}>
+                {deliveryByError}
+              </Typography>
             </Box>
             <Grid container item direction="column" justify="space-between">
               <CardContent className={classes.contentForm}>

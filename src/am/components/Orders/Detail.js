@@ -329,14 +329,16 @@ const OrderDetail = ({ order }) => {
               className={`${classes.rejectAndNegotiateTitle} ${classes.rejectAndNegotiateToggle}`}
               onClick={toggleNegotiationDisplay}
             >
-              Reject &amp; negotiate
+              <Typography variant="subtitle1">
+                Reject &amp; negotiate
+              </Typography>
             </Grid>
             <Grid
               item
               className={
                 displayNegotiation
-                  ? classes.rejectAndNegotiateDownArrow
-                  : classes.rejectAndNegotiateUpArrow
+                  ? classes.rejectAndNegotiateUpArrow
+                  : classes.rejectAndNegotiateDownArrow
               }
             ></Grid>
           </Grid>
