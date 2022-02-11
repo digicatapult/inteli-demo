@@ -25,14 +25,14 @@ Each persona has four containers in its stack:
 
 The [API](https://github.com/digicatapult/vitalam-api) uses an [Auth0](https://auth0.com/) Machine to Machine API to issue a JSON Web Token for authentication on its endpoints. First, you will need to create your own Auth0 API, which can be done for free. Then, so that the React clients can successfully authenticate with their respective APIs you need to set the following environment variables in a `.env` saved at the root of the `vitalam-demo-client` repository.
 
-| variable                     | required | default | description                                                                                                          |
-| :--------------------------- | :------: | :-----: | :------------------------------------------------------------------------------------------------------------------- |
-| API_JWKS_URI                 |    Y     |    -    | JSON Web Key Set containing public keys used by the Auth0 API e.g. `https://test.eu.auth0.com/.well-known/jwks.json` |
-| API_AUTH_AUDIENCE            |    Y     |    -    | Identifier of the Auth0 API                                                                                          |
-| API_AUTH_ISSUER              |    Y     |    -    | Domain of the Auth0 API e.g. `https://test.eu.auth0.com/`                                                            |
-| API_AUTH_TOKEN_URL           |    Y     |    -    | Auth0 API endpoint that issues an Authorisation (Bearer) access token e.g. `https://test.auth0.com/oauth/token`      |
-| REACT_API_AUTH_CLIENT_ID     |    Y     |    -    | Client ID provided by Auth0 for the API                                                                              |
-| REACT_API_AUTH_CLIENT_SECRET |    Y     |    -    | Client secret provided by Auth0 for the API                                                                          |
+| variable                     | required |                       default                       | description                                                           |
+| :--------------------------- | :------: | :-------------------------------------------------: | :-------------------------------------------------------------------- |
+| AUTH_JWKS_URI                |    N     | `https://inteli.eu.auth0.com/.well-known/jwks.json` | JSON Web Key Set containing public keys used by the Auth0 API         |
+| AUTH_AUDIENCE                |    N     |                    `inteli-dev`                     | Identifier of the Auth0 API                                           |
+| AUTH_ISSUER                  |    N     |           `https://inteli.eu.auth0.com/`            | Domain of the Auth0 API `                                             |
+| AUTH_TOKEN_URL               |    N     |      `https://inteli.eu.auth0.com/oauth/token`      | Auth0 API endpoint that issues an Authorisation (Bearer) access token |
+| REACT_API_AUTH_CLIENT_ID     |    Y     |                          -                          | Client ID provided by Auth0 for the API                               |
+| REACT_API_AUTH_CLIENT_SECRET |    Y     |                          -                          | Client secret provided by Auth0 for the API                           |
 
 ### Docker setup
 
