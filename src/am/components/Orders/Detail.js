@@ -10,6 +10,7 @@ import AcceptOrderAction from './AcceptAction'
 import ManufactureOrderAction from './ManufactureAction'
 import Attachment from '../Attachment'
 import Negotiate from './Negotiate'
+import Certification from './Certification'
 
 const useStyles = makeStyles({
   root: {
@@ -159,8 +160,6 @@ const OrderDetail = ({ order }) => {
     },
   } = order
 
-  console.log(requiredCerts)
-
   useEffect(() => {
     dispatch(markOrderRead(order.id))
   }, [order, dispatch])
@@ -277,6 +276,9 @@ const OrderDetail = ({ order }) => {
         </Grid>
       </Grid>
       {status === orderStatus.submitted && <Negotiate order={order} />}
+      {requiredCerts && status === orderStatus.accepted && (
+        <Certification metadata={order.metadata} />
+      )}
     </Paper>
   )
 }
