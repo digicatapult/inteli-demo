@@ -173,11 +173,18 @@ const CustomerPart = () => {
 
   const api = useApi()
 
-  const { image, name, material, alloy, price, partId } = selectedCustomerPart
+  const { image, name, material, alloy, price, partId, requiredCerts } =
+    selectedCustomerPart
   const totalCost = price * quantity
   const classes = useStyles()
 
-  const createFormData = (inputs, roles, metadata, orderImageFile) => {
+  const createFormData = (
+    inputs,
+    roles,
+    metadata,
+    orderImageFile,
+    requiredCertsFile
+  ) => {
     const formData = new FormData()
     const outputs = [
       {
@@ -203,6 +210,10 @@ const CustomerPart = () => {
             type: metadataTypes.file,
             value: metadata.orderImage.fileName,
           },
+          requiredCerts: {
+            type: metadataTypes.file,
+            value: metadata.requiredCerts.fileName,
+          },
         },
       },
     ]
@@ -216,6 +227,7 @@ const CustomerPart = () => {
     )
 
     formData.append('files', orderImageFile.blob, orderImageFile.fileName)
+    formData.append('files', requiredCertsFile.blob, requiredCertsFile.fileName)
 
     return formData
   }
@@ -231,11 +243,24 @@ const CustomerPart = () => {
     }
   }
 
+  const createCertsFile = async (requiredCerts) => {
+    const blob = new Blob([JSON.stringify(requiredCerts)], {
+      type: 'application/json',
+    })
+    const url = URL.createObjectURL(blob)
+    return {
+      blob: blob,
+      fileName: 'requiredCertifications.json',
+      url: url,
+    }
+  }
+
   const onChange = async () => {
     if (isFormReady()) {
       setIsOrdering(true)
 
       const orderImageFile = await createOrderImageFile(image)
+      const requiredCertsFile = await createCertsFile(requiredCerts)
 
       const roles = { Owner: identities.am }
       const metadata = {
@@ -253,9 +278,19 @@ const CustomerPart = () => {
           fileName: orderImageFile.fileName,
           url: orderImageFile.url,
         },
+        requiredCerts: {
+          fileName: requiredCertsFile.fileName,
+          url: requiredCertsFile.url,
+        },
       }
 
-      const formData = createFormData([], roles, metadata, orderImageFile)
+      const formData = createFormData(
+        [],
+        roles,
+        metadata,
+        orderImageFile,
+        requiredCertsFile
+      )
       const response = await api.runProcess(formData)
       const token = {
         id: response[0],
