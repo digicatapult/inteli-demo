@@ -44,6 +44,7 @@ export const partsSlice = createSlice({
       alloy: 'Ti-6Al-4V',
       price: 1200,
       requiredCerts,
+      supplier: 'Maher',
     },
     {
       partId: '10-631045-1',
@@ -53,6 +54,7 @@ export const partsSlice = createSlice({
       alloy: '2014',
       price: 750,
       requiredCerts,
+      supplier: 'Maher',
     },
     {
       partId: '11-219743-1',
@@ -62,6 +64,7 @@ export const partsSlice = createSlice({
       alloy: 'Ti-6Al-4V',
       price: 925,
       requiredCerts,
+      supplier: 'Maher',
     },
     {
       partId: '12-367534-1',
@@ -71,6 +74,7 @@ export const partsSlice = createSlice({
       alloy: '2014',
       price: 2100,
       requiredCerts,
+      supplier: 'Maher',
     },
     {
       partId: '10-874236-1',
@@ -80,6 +84,7 @@ export const partsSlice = createSlice({
       alloy: '2014',
       price: 1828,
       requiredCerts,
+      supplier: 'Maher',
     },
     {
       partId: '13-143583-2',
@@ -89,6 +94,7 @@ export const partsSlice = createSlice({
       alloy: 'C-276',
       price: '552',
       requiredCerts,
+      supplier: 'Maher',
     },
     {
       partId: '14-143463-1',
@@ -98,6 +104,7 @@ export const partsSlice = createSlice({
       alloy: '304L',
       price: 680,
       requiredCerts,
+      supplier: 'Maher',
     },
     {
       partId: '10-045623-3',
@@ -107,6 +114,7 @@ export const partsSlice = createSlice({
       alloy: '2014',
       price: 3210,
       requiredCerts,
+      supplier: 'Maher',
     },
   ],
   reducers: {

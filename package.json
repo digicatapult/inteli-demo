@@ -34,7 +34,8 @@
     "react-scripts": "^5.0.0",
     "redux": "^4.1.2",
     "reset-css": "^5.0.1",
-    "styled-components": "^5.3.3"
+    "styled-components": "^5.3.3",
+    "uniqid": "^5.4.0"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.16.5",
