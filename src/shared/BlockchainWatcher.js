@@ -17,7 +17,7 @@ const svgMimeUrl = async (imageUrl) => {
 // so metadata files that are JSON can be used, change from default MIME of 'application/octet-stream'
 const toJSON = async (url) => {
   const response = await fetch(url)
-  return await response.json()
+  return response.json()
 }
 
 // temporary version of the component that will poll the API

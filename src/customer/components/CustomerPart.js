@@ -237,9 +237,9 @@ const CustomerPart = () => {
     const blob = await response.blob()
     const url = URL.createObjectURL(blob)
     return {
-      blob: blob,
+      blob,
       fileName: 'orderImage.svg',
-      url: url,
+      url,
     }
   }
 
@@ -249,9 +249,9 @@ const CustomerPart = () => {
     })
     const url = URL.createObjectURL(blob)
     return {
-      blob: blob,
+      blob,
       fileName: 'requiredCertifications.json',
-      url: url,
+      url,
     }
   }
 
