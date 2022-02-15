@@ -10,32 +10,25 @@ const useStyles = makeStyles({
   },
 })
 
-const getRequiredCerts = async (requiredCertsUrl) => {
-  const response = await fetch(requiredCertsUrl)
-  return await response.json()
-}
-
-const Certification = async ({ metadata }) => {
+const Certification = ({ metadata }) => {
   console.log(metadata)
   const classes = useStyles()
-  const requiredCerts = await getRequiredCerts(metadata.requiredCerts.url)
 
-  console.log(requiredCerts)
   return (
     <Box>
-      <Typography className={classes.inline} variant="subtitle2">
+      <Typography className={classes.inline} variant="subtitle3">
         Upload Certifications
       </Typography>
       <Grid container direction="row">
-        <Grid container direction="column" item xs={5}>
-          {[...requiredCerts].reverse().map((cert) => (
+        {metadata.requiredCerts.map((cert) => {
+          return (
             <CertificationRow
               key={cert.metadataKey}
               metadata={metadata}
               requiredCert={cert}
             />
-          ))}
-        </Grid>
+          )
+        })}
       </Grid>
     </Box>
   )

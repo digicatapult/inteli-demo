@@ -278,10 +278,7 @@ const CustomerPart = () => {
           fileName: orderImageFile.fileName,
           url: orderImageFile.url,
         },
-        requiredCerts: {
-          fileName: requiredCertsFile.fileName,
-          url: requiredCertsFile.url,
-        },
+        requiredCerts: JSON.stringify(requiredCerts),
       }
 
       const formData = createFormData(

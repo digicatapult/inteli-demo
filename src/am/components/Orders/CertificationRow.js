@@ -19,20 +19,21 @@ const useStyles = makeStyles({
 
 const CertificationRow = ({ metadata, requiredCert }) => {
   const { metadataKey, description } = requiredCert
+  console.log(metadataKey)
+  console.log(description)
   const classes = useStyles()
 
   return (
     <Paper elevation={0} className={classes.root}>
       <Grid container>
         <Grid item xs={1} className={`${classes.rowItem}`}>
-          <Typography variant="h5">
-            {metadata[metadataKey] ? '·' : '\xa0'}
-          </Typography>
+          <Typography>{metadata[metadataKey] ? '·' : 'X'}</Typography>
         </Grid>
-        <Grid item xs={7} className={classes.rowItem}>
+        <Grid item xs={9} className={classes.rowItem}>
           <Typography>{description}</Typography>
         </Grid>
-        <Grid item xs={4} className={`${classes.rowItem}`}>
+        <Grid item xs={2} className={`${classes.rowItem}`}>
+          Download
           {
             //TODO download/upload
           }
