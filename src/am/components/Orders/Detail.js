@@ -40,47 +40,6 @@ const useStyles = makeStyles({
   attachment: {
     width: '100%',
   },
-  rejectAndNegotiateContainer: {
-    padding: '24px 28px',
-    margin: '32px 0px',
-    width: '100%',
-  },
-  rejectAndNegotiateToggle: {
-    '&&:hover': {
-      cursor: 'pointer',
-    },
-  },
-  rejectAndNegotiateX: {
-    width: '16px',
-    height: '16px',
-    '&&:hover': {
-      cursor: 'pointer',
-    },
-  },
-  rejectAndNegotiateTitle: {
-    textDecoration: 'underline',
-    fontWeight: '600',
-  },
-  rejectAndNegotiateDownArrow: {
-    margin: '6px',
-    width: '0px',
-    height: '0px',
-    borderLeft: '6px solid transparent',
-    borderRight: '6px solid transparent',
-    borderTop: '6px solid #000',
-  },
-  rejectAndNegotiateUpArrow: {
-    margin: '6px',
-    width: '0px',
-    height: '0px',
-    borderLeft: '6px solid transparent',
-    borderRight: '6px solid transparent',
-    borderBottom: '6px solid #000',
-  },
-  rejectAndNegotiateText: {
-    margin: '32px 0px',
-    fontSize: '0.9rem',
-  },
   contentForm: {
     margin: '0px 64px 0px -8px',
     padding: '0px',
@@ -104,9 +63,6 @@ const useStyles = makeStyles({
     color: '#ff0000',
     fontSize: '1rem',
     margin: '8px 0px',
-  },
-  negotiationButtonWrapper: {
-    margin: '24px 0px 8px 0px',
   },
 })
 
@@ -277,7 +233,7 @@ const OrderDetail = ({ order }) => {
       </Grid>
       {status === orderStatus.submitted && <Negotiate order={order} />}
       {requiredCerts && status === orderStatus.accepted && (
-        <Certification metadata={order.metadata} />
+        <Certification order={order} />
       )}
     </Paper>
   )

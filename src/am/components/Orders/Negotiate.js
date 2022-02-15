@@ -22,9 +22,6 @@ const useStyles = makeStyles({
   rejectAndNegotiateX: {
     width: '16px',
     height: '16px',
-    '&&:hover': {
-      cursor: 'pointer',
-    },
   },
   rejectAndNegotiateTitle: {
     textDecoration: 'underline',
