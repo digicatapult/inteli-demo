@@ -130,7 +130,7 @@ const BlockchainWatcher = ({ children }) => {
         )
       }
       if (timer !== null) {
-        timer = setTimeout(timerFn, 100000)
+        timer = setTimeout(timerFn, 1000)
       }
     }
     // kick off the timer immediately. This is important so that we can deal with multiple new tokens
