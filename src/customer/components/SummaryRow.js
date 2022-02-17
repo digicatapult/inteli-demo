@@ -61,14 +61,12 @@ const SummaryRow = ({ order, activeItem }) => {
   const {
     id: orderId,
     metadata: { name, orderImage: image, quantity },
-    timeStamp,
+    timestamp,
   } = order
+
   const classes = useStyles()
-  const todaysDate = new Date()
-  const formattedTimeStamp = new Date(timeStamp)
-  const formattedDate = formattedTimeStamp
-    ? moment(formattedTimeStamp, 'DD MMM YYYY').format('DD MMM YYYY')
-    : moment(todaysDate, 'DD MMM YYYY').format('DD MMM YYYY')
+  const orderTimestampFormattedDate = moment(timestamp).format('DD MMM YYYY')
+
   return (
     <Paper
       id={orderId}
@@ -121,7 +119,7 @@ const SummaryRow = ({ order, activeItem }) => {
               component="h6"
               className={`${classes.datePadding} ${classes.threeFiftyFont} ${classes.dateColour} `}
             >
-              {formattedDate}
+              {orderTimestampFormattedDate}
             </Typography>
           </Grid>
         </Grid>
