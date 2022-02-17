@@ -12,7 +12,7 @@ export const loadState = () => {
     const serializedState = window.localStorage.getItem('state')
     return !serializedState ? {} : JSON.parse(serializedState)
   } catch (e) {
-    console.error(e)
+    console.error('Error reading state from local storage: ', e)
     return {}
   }
 }

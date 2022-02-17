@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { fetchTokens, initTokens } from '../features/tokensSlice'
-// import createRefToken from '../utils/resetChain'
 
 // temporary version of the component that will poll the API
 const BlockchainWatcher = ({ children }) => {
@@ -13,7 +12,6 @@ const BlockchainWatcher = ({ children }) => {
   // This effect manages the polling for new tokens
   // TODO refactor chain watcher
   useEffect(() => {
-    // createRefToken('resetTest-2', dispatch)
     if (!isLoaded) {
       dispatch(initTokens())
       setIsLoaded(true)

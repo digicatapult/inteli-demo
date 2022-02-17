@@ -17,7 +17,7 @@ const getLatestToken = async ({ getState }) => {
     .latestToken()
     .then((res) => res.id)
   if (!id) {
-    return console.error(`there are no tokens to fetch. Latet: ${id}`)
+    throw new Error(`there are no tokens to fetch. Latet: ${id}`)
   }
 
   const last = getState()?.tokens?.last
@@ -26,11 +26,11 @@ const getLatestToken = async ({ getState }) => {
       last,
       latestToken: last,
     }
-  }
-
-  return {
-    latestToken: await Api().tokenById(id),
-    last,
+  } else {
+    return {
+      latestToken: await Api().tokenById(id),
+      last,
+    }
   }
 }
 
@@ -45,10 +45,10 @@ const getRefToken = async (token, position, tokens = []) => {
       data,
       newPosition: token.id + tokens.length,
     }
+  } else {
+    const prevToken = await Api().tokenById(token.id - 1)
+    return getRefToken(prevToken, position, data)
   }
-
-  const prevToken = await Api().tokenById(token.id - 1)
-  return getRefToken(prevToken, position, data)
 }
 
 const getData = async (last = { id: 1 }, tokens = {}, position) => {
@@ -57,8 +57,7 @@ const getData = async (last = { id: 1 }, tokens = {}, position) => {
 
     return await getData(
       last,
-      ref,
-      { ...tokens, data: [...data, ...(tokens?.data || [])] },
+      { ...tokens, data: [...data, ...(tokens?.data || [])], ref },
       newPosition
     )
   }
@@ -78,7 +77,9 @@ const getData = async (last = { id: 1 }, tokens = {}, position) => {
 const upsertTokens = (tokens = [], dispatch) => {
   tokens.forEach((token) => {
     const type = token.metadata.type
-    upsertMap[type](token, dispatch)
+    if (['ORDER', 'LAB_TEST', 'POWDER'].includes(type)) {
+      upsertMap[type](token, dispatch)
+    }
   })
 }
 
@@ -95,7 +96,7 @@ const fetchTokens = createAsyncThunk('tokens/fetch', async (action, store) => {
       data: [...(newData?.data || []), ...tokens.data],
     }
   } catch (e) {
-    console.error(e)
+    console.error('Error occured fetching tokens: ', e)
   }
 })
 
@@ -116,7 +117,7 @@ const initTokens = createAsyncThunk('tokens/init', async (action, store) => {
         : res.data,
     }
   } catch (e) {
-    console.error(e)
+    console.error('Error occured during init stage: ', e)
   }
 })
 
