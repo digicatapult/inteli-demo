@@ -67,7 +67,7 @@ const SummaryRow = ({ order, activeItem }) => {
   } = order
 
   const classes = useStyles()
-  const orderTimestampFormattedDate = moment(timestamp).format('DD MMM YYYY')
+  const tokenTimestampFormattedDate = moment(timestamp).format('DD MMM YYYY')
 
   return (
     <Paper
@@ -121,7 +121,7 @@ const SummaryRow = ({ order, activeItem }) => {
               component="h6"
               className={`${classes.datePadding} ${classes.threeFiftyFont} ${classes.dateColour} `}
             >
-              {orderTimestampFormattedDate}
+              {tokenTimestampFormattedDate}
             </Typography>
           </Grid>
         </Grid>

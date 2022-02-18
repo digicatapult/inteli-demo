@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React from 'react'
 import Timeline from '@material-ui/lab/Timeline/Timeline'
 import TimelineItem from '@material-ui/lab/TimelineItem/TimelineItem'
 import TimelineSeparator from '@material-ui/lab/TimelineSeparator/TimelineSeparator'
@@ -12,7 +12,6 @@ import { Grid } from '@material-ui/core'
 import moment from 'moment'
 
 import { orderStatus } from '../../utils/statuses'
-import { DATE_PICKER_DATE_FORMAT } from '../../utils/forms'
 
 const useStyles = makeStyles({
   dateTime: {
@@ -44,13 +43,12 @@ const VerticalTimeline = ({ order }) => {
 
   const {
     id: orderId,
-    metadata: { deliveryBy, status },
+    metadata: { status },
+    timestamp,
   } = order
 
-  const deliveryByFormattedDate = moment(
-    deliveryBy,
-    DATE_PICKER_DATE_FORMAT
-  ).format('DD-MM-YYYY')
+  const tokenTimestampFormattedDate =
+    moment(timestamp).format('DD-MM-YYYY hh:mm')
 
   // Set the current status order. Again will eventually need updating with more states
   let statusIndex = 0
@@ -105,7 +103,7 @@ const VerticalTimeline = ({ order }) => {
                       variant="subtitle1"
                       className={`${classes.dateTime} ${classes.time}`}
                     >
-                      {deliveryByFormattedDate}
+                      {tokenTimestampFormattedDate}
                     </Typography>
                   </Grid>
                   <Grid item xs={10}>
@@ -147,7 +145,7 @@ const VerticalTimeline = ({ order }) => {
                       variant="subtitle1"
                       className={`${classes.dateTime} ${classes.time}`}
                     >
-                      {deliveryByFormattedDate}
+                      {tokenTimestampFormattedDate}
                     </Typography>
                   </Grid>
                   <Grid item xs={10}>
@@ -185,7 +183,7 @@ const VerticalTimeline = ({ order }) => {
                       variant="subtitle1"
                       className={`${classes.dateTime} ${classes.time}`}
                     >
-                      {deliveryByFormattedDate}
+                      {tokenTimestampFormattedDate}
                     </Typography>
                   </Grid>
                   <Grid item xs={10}>
@@ -224,7 +222,7 @@ const VerticalTimeline = ({ order }) => {
                       variant="subtitle1"
                       className={`${classes.dateTime} ${classes.time}`}
                     >
-                      {deliveryByFormattedDate}
+                      {tokenTimestampFormattedDate}
                     </Typography>
                   </Grid>
                   <Grid item xs={10}>
@@ -257,7 +255,7 @@ const VerticalTimeline = ({ order }) => {
                       variant="subtitle1"
                       className={`${classes.dateTime} ${classes.time}`}
                     >
-                      {deliveryByFormattedDate}
+                      {tokenTimestampFormattedDate}
                     </Typography>
                   </Grid>
                   <Grid item xs={10}>
