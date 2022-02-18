@@ -17,7 +17,7 @@ const getLatestToken = async ({ getState }) => {
     .latestToken()
     .then((res) => res.id)
   if (!id) {
-    throw new Error(`there are no tokens to fetch. Latet: ${id}`)
+    throw new Error(`there are no tokens to fetch. Latest: ${id}`)
   }
 
   const last = getState()?.tokens?.last
@@ -102,7 +102,7 @@ const fetchTokens = createAsyncThunk('tokens/fetch', async (action, store) => {
         : combinedTokens,
     }
   } catch (e) {
-    console.error('Error occured fetching tokens: ', e)
+    console.warn('Error occured fetching tokens: ', e)
   }
 })
 

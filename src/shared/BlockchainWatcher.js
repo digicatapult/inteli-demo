@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { fetchTokens, initTokens } from '../features/tokensSlice'
-// import resetChain from '../utils/resetChain'
 
 // temporary version of the component that will poll the API
 const BlockchainWatcher = ({ children }) => {
@@ -14,7 +13,6 @@ const BlockchainWatcher = ({ children }) => {
   // TODO refactor chain watcher
   useEffect(() => {
     if (!isLoaded) {
-      // resetChain('new-chain-3', dispatch)
       dispatch(initTokens())
       setIsLoaded(true)
       console.log('finished loading state from local storage')
@@ -35,7 +33,7 @@ const BlockchainWatcher = ({ children }) => {
           )
         }
       }
-      const timer = setTimeout(timerFn, 13000)
+      const timer = setTimeout(timerFn, 3000)
 
       // The clean-up function clears the timer (as expected) but also sets it to null to indicate to the
       // `pollFunc` that this specific effect instantiation has been canceled

@@ -131,11 +131,11 @@ const OrderSummary = ({ order }) => {
         <Grid item xs={2}>
           <CardMedia
             component="img"
-            alt={image.filename}
+            alt={image?.filename || 'unknown'}
             width="160"
             height="160px"
             image={mapPartIdToImage[partId]}
-            title={image.filename}
+            title={image?.filename || 'unknown'}
             className={classes.picturePadding}
           />
         </Grid>

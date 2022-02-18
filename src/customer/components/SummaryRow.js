@@ -86,10 +86,10 @@ const SummaryRow = ({ order, activeItem }) => {
           <Grid item xs={3}>
             <CardMedia
               component="img"
-              alt={image.filename}
+              alt={image?.filename || 'unknown'}
               width="160"
               image={mapPartIdToImage[partId]}
-              title={image.filename}
+              title={image?.filename || 'unknown'}
             />
           </Grid>
           <Grid item xs={8}>
