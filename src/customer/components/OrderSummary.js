@@ -1,7 +1,9 @@
 import React from 'react'
 import { Paper, Typography, Grid, Box, CardMedia } from '@material-ui/core'
 import makeStyles from '@material-ui/core/styles/makeStyles'
+
 import VerticalTimeline from './VerticalTimeline'
+import { mapPartIdToImage } from '../../features/partsSlice'
 
 const useStyles = makeStyles({
   name: {
@@ -132,7 +134,7 @@ const OrderSummary = ({ order }) => {
             alt={image.filename}
             width="160"
             height="160px"
-            image={image.url}
+            image={mapPartIdToImage[partId]}
             title={image.filename}
             className={classes.picturePadding}
           />

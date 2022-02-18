@@ -33,6 +33,17 @@ const requiredCerts = [
   },
 ]
 
+const mapPartIdToImage = {
+  '34-396589-2': images.parts[0],
+  '10-631045-1': images.parts[1],
+  '11-219743-1': images.parts[2],
+  '12-367534-1': images.parts[3],
+  '10-874236-1': images.parts[4],
+  '13-143583-2': images.parts[5],
+  '14-143463-1': images.parts[6],
+  '10-045623-3': images.parts[7],
+}
+
 export const partsSlice = createSlice({
   name: 'customerParts',
   initialState: [
@@ -130,5 +141,6 @@ export const partsSlice = createSlice({
 export const { actions, reducer } = partsSlice
 
 export const { getCustomerParts, resetCustomerParts } = actions
+export { mapPartIdToImage }
 
 export default reducer

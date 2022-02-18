@@ -35,13 +35,13 @@ const getLatestToken = async ({ getState }) => {
 }
 
 const getRefToken = async (token, position, tokens = []) => {
-  const isRef = token.metadata.type === 'REFERENCE'
+  const isRefToken = token.metadata.type === 'REFERENCE'
   const isFirst = token.id === 1 || position + 1 === token.id
   const data = [...tokens, token]
 
-  if (isFirst || isRef) {
+  if (isFirst || isRefToken) {
     return {
-      ref: isRef ? token : tokens.ref || undefined,
+      refToken: isRefToken ? token : tokens.refToken || undefined,
       data,
       newPosition: token.id + tokens.length,
     }
@@ -53,11 +53,11 @@ const getRefToken = async (token, position, tokens = []) => {
 
 const getData = async (last = { id: 1 }, tokens = {}, position) => {
   if (!position || last.id > position) {
-    const { newPosition, data, ref } = await getRefToken(last, position)
+    const { newPosition, data, refToken } = await getRefToken(last, position)
 
     return await getData(
       last,
-      { ...tokens, data: [...data, ...(tokens?.data || [])], ref },
+      { ...tokens, data: [...data, ...(tokens?.data || [])], refToken },
       newPosition
     )
   }
@@ -76,13 +76,14 @@ const getData = async (last = { id: 1 }, tokens = {}, position) => {
 // only new tokens will call upsert actions
 const upsertTokens = (tokens = [], dispatch) => {
   tokens.forEach((token) => {
-    const type = token.metadata.type
+    const type = token.metadata?.type
     if (['ORDER', 'LAB_TEST', 'POWDER'].includes(type)) {
       upsertMap[type](token, dispatch)
     }
   })
 }
 
+// TODO ref should be named referenceToken
 // this thunk is for fetching new tokens and storing to localstorage
 const fetchTokens = createAsyncThunk('tokens/fetch', async (action, store) => {
   try {
@@ -91,9 +92,14 @@ const fetchTokens = createAsyncThunk('tokens/fetch', async (action, store) => {
     const newData = await getData(latestToken, {}, last?.id, store)
     // upsert only new tokens
     upsertTokens(newData.data, store.dispatch)
+    const combinedTokens = [...(newData?.data || []), ...tokens.data]
+
     return {
+      ...tokens,
       ...newData,
-      data: [...(newData?.data || []), ...tokens.data],
+      data: tokens.refToken
+        ? combinedTokens.filter(({ id }) => id > tokens?.refToken?.id)
+        : combinedTokens,
     }
   } catch (e) {
     console.error('Error occured fetching tokens: ', e)
@@ -108,13 +114,14 @@ const initTokens = createAsyncThunk('tokens/init', async (action, store) => {
     const res = await getData(latestToken, tokens, last?.id)
 
     upsertTokens(res.data, store.dispatch)
+    const data = res.refToken
+      ? res.data.filter((token) => token.id > res.refToken.id)
+      : res.data
 
     return {
       ...tokens,
       ...res,
-      data: res.ref
-        ? res.data.filter((token) => token.id > res.ref.id)
-        : res.data,
+      data,
     }
   } catch (e) {
     console.error('Error occured during init stage: ', e)
@@ -125,13 +132,13 @@ const tokens = createSlice({
   name: 'tokens',
   initialState: { isFetching: true, isError: false, data: [] },
   reducers: {
-    addRef: {
+    addRefToken: {
       reducer(state, { payload }) {
         const { id } = payload
 
         return {
           ...state,
-          ref: payload,
+          refToken: payload,
           data: [...state.data, payload].filter((token) => token.id > id),
         }
       },
@@ -154,8 +161,8 @@ const tokens = createSlice({
 
 // exports
 const { actions, reducer } = tokens
-const { update, addRef } = actions
+const { update, addRefToken } = actions
 
-export { initTokens, fetchTokens, update, addRef, upsertTokens }
+export { initTokens, fetchTokens, update, addRefToken, upsertTokens }
 
 export default reducer

@@ -1,6 +1,6 @@
 import tokenTypes from './tokenTypes'
 import Api from './vitalamApi'
-import { addRef } from '../features/tokensSlice'
+import { addRefToken } from '../features/tokensSlice'
 import { metadataTypes } from './'
 import { resetOrder } from '../features/ordersSlice'
 import { resetCustomerParts } from '../features/partsSlice'
@@ -48,7 +48,7 @@ const createRefToken = async (name, dispatch) => {
     metadata,
   }
 
-  dispatch(addRef(token))
+  dispatch(addRefToken(token))
   dispatch(resetOrder())
   dispatch(resetCustomerParts())
   dispatch(resetLabTest())

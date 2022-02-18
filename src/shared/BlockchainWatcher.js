@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { fetchTokens, initTokens } from '../features/tokensSlice'
+// import resetChain from '../utils/resetChain'
 
 // temporary version of the component that will poll the API
 const BlockchainWatcher = ({ children }) => {
@@ -13,6 +14,7 @@ const BlockchainWatcher = ({ children }) => {
   // TODO refactor chain watcher
   useEffect(() => {
     if (!isLoaded) {
+      // resetChain('new-chain-3', dispatch)
       dispatch(initTokens())
       setIsLoaded(true)
       console.log('finished loading state from local storage')
