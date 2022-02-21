@@ -17,7 +17,7 @@ export const ordersSlice = createSlice({
             order.id = action.payload.id
             Object.assign(order.roles, action.payload.roles)
             Object.assign(order.metadata, action.payload.metadata)
-            Object.assign(order.timeStamp, action.payload.timestamp)
+            order.timeStamp = action.payload.timestamp
           } else {
             console.error(
               `Error cannot find order with original id ${action.payload.original_id}`
