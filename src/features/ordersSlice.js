@@ -19,7 +19,7 @@ export const ordersSlice = createSlice({
             Object.assign(order.metadata, action.payload.metadata)
 
             if (action.payload.timestamp) {
-              Object.assign(order.timestamp, action.payload.timestamp)
+              order.timestamp = action.payload.timestamp
             }
           } else {
             console.error(
