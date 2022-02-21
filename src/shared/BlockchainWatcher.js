@@ -84,7 +84,7 @@ const BlockchainWatcher = ({ children }) => {
                   original_id: token.original_id,
                   roles: token.roles,
                   metadata: token.metadata,
-                  timeStamp: token.timestamp,
+                  timestamp: token.timestamp,
                 })
               )
               break

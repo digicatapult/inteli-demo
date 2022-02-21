@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React from 'react'
 import Timeline from '@material-ui/lab/Timeline/Timeline'
 import TimelineItem from '@material-ui/lab/TimelineItem/TimelineItem'
 import TimelineSeparator from '@material-ui/lab/TimelineSeparator/TimelineSeparator'
@@ -9,6 +9,8 @@ import TimelineDot from '@material-ui/lab/TimelineDot/TimelineDot'
 import { Typography } from '@material-ui/core'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import { Grid } from '@material-ui/core'
+import moment from 'moment'
+
 import { orderStatus } from '../../utils/statuses'
 
 const useStyles = makeStyles({
@@ -27,7 +29,6 @@ const useStyles = makeStyles({
   },
 })
 
-// Inital labels to be used on the timeline, will need refactoring when alternatives are added
 const statusLabels = [
   'Order placed',
   'Order accepted',
@@ -42,8 +43,12 @@ const VerticalTimeline = ({ order }) => {
 
   const {
     id: orderId,
-    metadata: { deliveryBy, status },
+    metadata: { status },
+    timestamp,
   } = order
+
+  const tokenTimestampFormattedDate =
+    moment(timestamp).format('DD-MM-YYYY hh:mm')
 
   // Set the current status order. Again will eventually need updating with more states
   let statusIndex = 0
@@ -98,7 +103,7 @@ const VerticalTimeline = ({ order }) => {
                       variant="subtitle1"
                       className={`${classes.dateTime} ${classes.time}`}
                     >
-                      {deliveryBy}
+                      {tokenTimestampFormattedDate}
                     </Typography>
                   </Grid>
                   <Grid item xs={10}>
@@ -140,7 +145,7 @@ const VerticalTimeline = ({ order }) => {
                       variant="subtitle1"
                       className={`${classes.dateTime} ${classes.time}`}
                     >
-                      {deliveryBy}
+                      {tokenTimestampFormattedDate}
                     </Typography>
                   </Grid>
                   <Grid item xs={10}>
@@ -178,7 +183,7 @@ const VerticalTimeline = ({ order }) => {
                       variant="subtitle1"
                       className={`${classes.dateTime} ${classes.time}`}
                     >
-                      {deliveryBy}
+                      {tokenTimestampFormattedDate}
                     </Typography>
                   </Grid>
                   <Grid item xs={10}>
@@ -217,7 +222,7 @@ const VerticalTimeline = ({ order }) => {
                       variant="subtitle1"
                       className={`${classes.dateTime} ${classes.time}`}
                     >
-                      {deliveryBy}
+                      {tokenTimestampFormattedDate}
                     </Typography>
                   </Grid>
                   <Grid item xs={10}>
@@ -250,7 +255,7 @@ const VerticalTimeline = ({ order }) => {
                       variant="subtitle1"
                       className={`${classes.dateTime} ${classes.time}`}
                     >
-                      {deliveryBy}
+                      {tokenTimestampFormattedDate}
                     </Typography>
                   </Grid>
                   <Grid item xs={10}>
