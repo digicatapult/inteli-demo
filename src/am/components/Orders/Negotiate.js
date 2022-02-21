@@ -55,15 +55,15 @@ const useStyles = makeStyles({
 const Negotiate = ({ order }) => {
   const classes = useStyles()
 
-  const [quantity, setQuantity] = useState(1)
+  const {
+    metadata: { quantity: quantityOnChain },
+  } = order
+
+  const [quantity, setQuantity] = useState(quantityOnChain)
   const [quantityError, setQuantityError] = useState('')
   const [deliveryBy, setDeliveryBy] = useState('')
   const [deliveryByError, setDeliveryByError] = useState('')
   const [displayNegotiation, setDisplayNegotiation] = useState(true)
-
-  const {
-    metadata: { quantity: quantityOnChain },
-  } = order
 
   const toggleNegotiationDisplay = () => {
     setDisplayNegotiation(!displayNegotiation)
