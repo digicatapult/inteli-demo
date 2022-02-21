@@ -6,7 +6,6 @@ import images from '../../images'
 
 const useStyles = makeStyles({
   attachmentContainer: {
-    width: '100%',
     border: '1px lightgrey solid',
     margin: '16px 24px',
     borderRadius: '8px',

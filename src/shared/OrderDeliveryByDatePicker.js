@@ -18,8 +18,6 @@ const useStyles = makeStyles({
   deliveryByInput: {
     border: '1px #d3d3d3 solid',
     borderRadius: '10px',
-    height: '32px',
-    fontSize: '0.8rem',
     padding: '4px 16px',
     textDecoration: 'none',
   },
@@ -27,6 +25,7 @@ const useStyles = makeStyles({
     color: '#ff0000',
     fontSize: '1rem',
     margin: '8px 0px',
+    height: '40px',
   },
 })
 

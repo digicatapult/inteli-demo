@@ -17,12 +17,10 @@ const useStyles = makeStyles({
     fontWeight: '600',
   },
   quantityInput: {
-    width: '120px',
+    width: '140px',
     border: '1px #d3d3d3 solid',
     borderRadius: '10px',
-    height: '40px',
-    fontSize: '0.9rem',
-    padding: '16px',
+    padding: '4px 16px',
     '&&&:before': {
       borderBottom: 'none',
     },
@@ -34,6 +32,7 @@ const useStyles = makeStyles({
     color: '#ff0000',
     fontSize: '1rem',
     margin: '8px 0px',
+    height: '40px',
   },
 })
 
