@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { CardMedia, Grid, Typography } from '@material-ui/core'
+import { CardMedia, CardContent, Grid, Typography } from '@material-ui/core'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 
 import RejectOrderAction from './RejectAction'
@@ -28,7 +28,7 @@ const useStyles = makeStyles({
     fontWeight: '600',
   },
   rejectAndNegotiateDownArrow: {
-    margin: '6px',
+    margin: '12px',
     width: '0px',
     height: '0px',
     borderLeft: '6px solid transparent',
@@ -36,7 +36,7 @@ const useStyles = makeStyles({
     borderTop: '6px solid #000',
   },
   rejectAndNegotiateUpArrow: {
-    margin: '6px',
+    margin: '12px',
     width: '0px',
     height: '0px',
     borderLeft: '6px solid transparent',
@@ -45,10 +45,11 @@ const useStyles = makeStyles({
   },
   rejectAndNegotiateText: {
     margin: '32px 0px',
-    fontSize: '0.9rem',
   },
-  negotiationButtonWrapper: {
-    margin: '24px 0px 8px 0px',
+  inputContainer: {
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr',
+    width: '100%',
   },
 })
 
@@ -109,10 +110,15 @@ const Negotiate = ({ order }) => {
         <Grid container>
           <Grid
             item
-            className={`${classes.rejectAndNegotiateTitle} ${classes.rejectAndNegotiateToggle}`}
+            className={`${classes.rejectAndNegotiateToggle}`}
             onClick={toggleNegotiationDisplay}
           >
-            <Typography variant="subtitle1">Reject &amp; negotiate</Typography>
+            <Typography
+              variant="subtitle1"
+              className={classes.rejectAndNegotiateTitle}
+            >
+              Reject &amp; negotiate
+            </Typography>
           </Grid>
           <Grid
             item
@@ -142,25 +148,26 @@ const Negotiate = ({ order }) => {
               the remaining items.
             </Typography>
           </Grid>
-          <OrderQuantityInput
-            handleChange={handleChange}
-            label="*Processed Quantity:"
-            quantity={quantity}
-            errorMessage={quantityError}
-          />
-          <OrderDeliveryByDatePicker
-            handleChange={handleChange}
-            label="*Delivery date of remaining items:"
-            errorMessage={deliveryByError}
-          />
-          <Grid className={classes.negotiationButtonWrapper}>
-            <RejectOrderAction
-              order={order}
+
+          <CardContent className={classes.inputContainer}>
+            <OrderQuantityInput
+              handleChange={handleChange}
+              label="Proposed Quantity:"
               quantity={quantity}
-              deliveryBy={deliveryBy}
-              formReady={isFormReady()}
+              errorMessage={quantityError}
             />
-          </Grid>
+            <OrderDeliveryByDatePicker
+              handleChange={handleChange}
+              label="Delivery date of remaining items:"
+              errorMessage={deliveryByError}
+            />
+          </CardContent>
+          <RejectOrderAction
+            order={order}
+            quantity={quantity}
+            deliveryBy={deliveryBy}
+            formReady={isFormReady()}
+          />
         </Grid>
       )}
     </Grid>
