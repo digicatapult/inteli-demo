@@ -37,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
     position: 'relative',
     borderRight: '1px #d3d3d3 solid',
     margin: '0px 24px',
+    padding: '0px 24px',
   },
   backButton: {
     textDecoration: 'none',
