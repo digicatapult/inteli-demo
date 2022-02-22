@@ -5,7 +5,8 @@ import { upsertLabTest } from './labTestsSlice'
 import { upsertOrder } from './ordersSlice'
 import { upsertPowder } from './powdersSlice'
 import { PromiseStateFactory } from './utils'
-import { Api, tokenTypes } from '../utils'
+import { tokenTypes } from '../utils'
+import Api from '../utils/vitalamApi'
 
 const upsertMap = {
   [tokenTypes.order]: (token, dispatch) => dispatch(upsertOrder(token)),

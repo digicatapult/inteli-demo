@@ -1,4 +1,5 @@
-import { Api, tokenTypes, identities, metadataTypes } from './'
+import { tokenTypes, identities, metadataTypes } from './'
+import Api from './vitalamApi'
 import { addRefToken } from '../features/tokensSlice'
 import { resetOrder } from '../features/ordersSlice'
 import { resetCustomerParts } from '../features/partsSlice'
