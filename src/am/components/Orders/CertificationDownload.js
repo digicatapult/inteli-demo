@@ -39,11 +39,7 @@ const CertificationDownload = ({ name, downloadData }) => {
 
   useEffect(() => {
     setURL(downloadData)
-    return () => {
-      URL.revokeObjectURL(url)
-      setURL('')
-    }
-  }, [downloadData, url])
+  }, [downloadData])
 
   return (
     <Box className={classes.container}>
