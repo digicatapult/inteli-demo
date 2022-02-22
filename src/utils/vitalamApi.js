@@ -1,6 +1,12 @@
 const API_HOST = process.env.REACT_APP_API_HOST || 'localhost'
 const API_PORT = process.env.REACT_APP_API_PORT || '3001'
 
+const toJSON = async (url) => {
+  console.log('req certs: ', { url })
+  const response = await fetch(url)
+  return response.json()
+}
+
 const wrappedFetch = (url, options) =>
   fetch(url, options).then((res) => res.json())
 
@@ -82,11 +88,23 @@ const useApi = () => {
     )
 
     const metadata = await getNewMetadata(token)
+    const isOrder = metadata.type === 'ORDER'
+    console.log({ isOrder, metadata })
 
-    return {
+    const enrichedToken = {
       ...token,
-      metadata,
+      metadata: {
+        ...metadata,
+        requiredCerts:
+          metadata.requiredCerts && isOrder
+            ? await toJSON(metadata.requiredCerts.url)
+            : undefined,
+      },
     }
+
+    console.log({ enrichedToken })
+
+    return enrichedToken
   }
 
   const getNewMetadata = async (token) => {

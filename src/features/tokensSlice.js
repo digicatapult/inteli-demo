@@ -75,7 +75,7 @@ const getData = async (last = { id: 1 }, tokens = {}, position) => {
 // this is a helper function to temporarly address current setup
 // only new tokens will call upsert actions
 const upsertTokens = (tokens = [], dispatch) => {
-  tokens.forEach((token) => {
+  tokens.reverse().forEach((token) => {
     const type = token.metadata?.type
     if (['ORDER', 'LAB_TEST', 'POWDER'].includes(type)) {
       upsertMap[type](token, dispatch)
