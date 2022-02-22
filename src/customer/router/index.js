@@ -4,11 +4,13 @@ import { Route, Routes, Navigate } from 'react-router-dom'
 import CustomerPart from '../components/CustomerPart'
 import CustomerParts from '../components/CustomerParts'
 import MyOrders from '../components/MyOrders'
+import Suppliers from '../components/Suppliers'
 
 const Routing = () => {
   return (
     <Routes>
       <Route path="/" element={<Navigate to="/app/customer-parts" />} />
+      <Route path="/app/suppliers" element={<Suppliers />} />
       <Route path="/app/my-orders" element={<MyOrders />} />
       <Route path="/app/my-orders/:orderId" element={<MyOrders />} />
       <Route path="/app/customer-part/:partId" element={<CustomerPart />} />

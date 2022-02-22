@@ -77,6 +77,13 @@ const Navigation = () => {
         <img src={images.logoCust}></img>
       </div>
       <NavLink
+        to="/app/suppliers"
+        className={`${classes.navButton} ${classes.navHover}`}
+        activeclassname={classes.navActive}
+      >
+        <Typography variant="subtitle2">Suppliers</Typography>
+      </NavLink>
+      <NavLink
         to="/app/customer-parts"
         className={`${classes.navButton} ${classes.navHover}`}
         activeclassname={classes.navActive}
