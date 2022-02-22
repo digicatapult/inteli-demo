@@ -1,4 +1,4 @@
-import { Grid, Input, InputLabel, Typography } from '@material-ui/core'
+import { Grid, Input, Typography } from '@material-ui/core'
 import React from 'react'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 
@@ -11,18 +11,13 @@ const useStyles = makeStyles({
   },
   quantityLabel: {
     margin: '12px 0px 12px 0px',
-    padding: '0px',
-    color: '#000',
-    fontSize: '0.9rem',
     fontWeight: '600',
   },
   quantityInput: {
-    width: '120px',
+    width: '150px',
     border: '1px #d3d3d3 solid',
     borderRadius: '10px',
-    height: '40px',
-    fontSize: '0.9rem',
-    padding: '16px',
+    padding: '4px 16px',
     '&&&:before': {
       borderBottom: 'none',
     },
@@ -32,8 +27,8 @@ const useStyles = makeStyles({
   },
   errorText: {
     color: '#ff0000',
-    fontSize: '1rem',
     margin: '8px 0px',
+    height: '40px',
   },
 })
 
@@ -47,9 +42,9 @@ const OrderQuantityInput = ({
 
   return (
     <Grid item xs={4} className={classes.quantityContainer}>
-      <InputLabel item className={classes.quantityLabel}>
+      <Typography variant="subtitle1" className={classes.quantityLabel}>
         {label}
-      </InputLabel>
+      </Typography>
       <Input
         item
         className={classes.quantityInput}

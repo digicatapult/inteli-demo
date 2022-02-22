@@ -2,23 +2,12 @@ const API_HOST = process.env.REACT_APP_API_HOST || 'localhost'
 const API_PORT = process.env.REACT_APP_API_PORT || '3001'
 
 const toJSON = async (url) => {
-  console.log('req certs: ', { url })
   const response = await fetch(url)
   return response.json()
 }
 
 const wrappedFetch = (url, options) =>
   fetch(url, options).then((res) => res.json())
-
-/* we are using same images as for parts which are within client
-  added a map in partsSlice.js so temporary commenting this out
-const svgMimeUrl = async (imageUrl) => {
-  const response = await fetch(imageUrl)
-  const oldBlob = await response.blob()
-  const blob = new Blob([oldBlob], { type: 'image/svg+xml' })
-  return URL.createObjectURL(blob)
-}
-*/
 
 const useNewFetchWrapper = () => {
   const newWrappedFetch = async (url, options) => {
@@ -32,7 +21,8 @@ const useNewFetchWrapper = () => {
         return response.text()
       case 'application/octet-stream': {
         const blob = await response.blob()
-        const url = URL.createObjectURL(blob)
+        const appBlob = new Blob([blob], { type: 'application' })
+        const url = URL.createObjectURL(appBlob)
         const fileName = response.headers
           .get('content-disposition')
           .split('filename=')[1]
@@ -89,8 +79,6 @@ const useApi = () => {
 
     const metadata = await getNewMetadata(token)
     const isOrder = metadata.type === 'ORDER'
-    console.log({ isOrder, metadata })
-
     const enrichedToken = {
       ...token,
       metadata: {
@@ -101,8 +89,6 @@ const useApi = () => {
             : undefined,
       },
     }
-
-    console.log({ enrichedToken })
 
     return enrichedToken
   }

@@ -2,16 +2,20 @@ import React from 'react'
 import Timeline from '@material-ui/lab/Timeline/Timeline'
 import TimelineItem from '@material-ui/lab/TimelineItem/TimelineItem'
 import TimelineSeparator from '@material-ui/lab/TimelineSeparator/TimelineSeparator'
-import TimelineConnector from '@material-ui/lab/TimelineConnector/TimelineConnector'
 import TimelineContent from '@material-ui/lab/TimelineContent'
 import TimelineOppositeContent from '@material-ui/lab/TimelineOppositeContent/TimelineOppositeContent'
-import TimelineDot from '@material-ui/lab/TimelineDot/TimelineDot'
 import { Typography } from '@material-ui/core'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import { Grid } from '@material-ui/core'
-import moment from 'moment'
 
 import { orderStatus } from '../../utils/statuses'
+import TimelineAmendedItem from './TimelineAmendedItem'
+import TimelineOrderConnector from './TimelineOrderConnector'
+import TimelineOrderDot from './TimelineOrderDot'
+import {
+  getStatusLabel,
+  getTokenTimestampFormattedDate,
+} from '../../utils/timeline'
 
 const useStyles = makeStyles({
   dateTime: {
@@ -24,21 +28,15 @@ const useStyles = makeStyles({
   time: {
     paddingLeft: '20px',
   },
+  timelineSeparator: {
+    minHeight: '110px',
+  },
   timelineRowContent: {
     padding: '20px 0px 40px 0px',
   },
 })
 
-const statusLabels = [
-  'Order placed',
-  'Order accepted',
-  'Certification',
-  'Dispatched',
-  'Delivered',
-  'Amended',
-]
-
-const VerticalTimeline = ({ order }) => {
+const TimelineOrder = ({ order }) => {
   const classes = useStyles()
 
   const {
@@ -47,33 +45,7 @@ const VerticalTimeline = ({ order }) => {
     timestamp,
   } = order
 
-  const tokenTimestampFormattedDate =
-    moment(timestamp).format('DD-MM-YYYY hh:mm')
-
-  // Set the current status order. Again will eventually need updating with more states
-  let statusIndex = 0
-  if (status === orderStatus.submitted) {
-    statusIndex = 1
-  } else if (status === orderStatus.accepted) {
-    statusIndex = 2
-  } else if (status === orderStatus.manufacturing) {
-    statusIndex = 3
-  } else if (status === orderStatus.manufactured) {
-    statusIndex = 4
-  } else if (status === orderStatus.amended) {
-    statusIndex = 2
-  } else {
-    statusIndex = 0
-  }
-
-  // Helper function to decide the colour of a timeline segment
-  const getTimelineColour = (index, value) => {
-    if (index >= value) {
-      return '#FF9900'
-    } else {
-      return '#CCCCCC'
-    }
-  }
+  const tokenTimestampFormattedDate = getTokenTimestampFormattedDate(timestamp)
 
   return (
     <Grid container id={orderId} spacing={0}>
@@ -81,22 +53,14 @@ const VerticalTimeline = ({ order }) => {
         <Timeline>
           <TimelineItem>
             <TimelineSeparator>
-              <TimelineDot
-                style={{
-                  backgroundColor: `${getTimelineColour(statusIndex, 1)}`,
-                }}
-              />
-              <TimelineConnector
-                style={{
-                  backgroundColor: `${getTimelineColour(statusIndex, 1)}`,
-                }}
-              />
+              <TimelineOrderDot row={1} status={status} />
+              <TimelineOrderConnector row={1} status={status} />
             </TimelineSeparator>
             <Grid item sm={12}>
               <TimelineContent>
                 <Grid container alignItems="flex-start">
                   <Grid item xs={9}>
-                    <Typography variant="h6">{statusLabels[0]}</Typography>
+                    <Typography variant="h6">{getStatusLabel(0)}</Typography>
                   </Grid>
                   <Grid item xs={3}>
                     <Typography
@@ -118,26 +82,18 @@ const VerticalTimeline = ({ order }) => {
             </Grid>
           </TimelineItem>
           <TimelineItem>
-            <TimelineSeparator>
-              <TimelineDot
-                style={{
-                  backgroundColor: `${getTimelineColour(statusIndex, 2)}`,
-                }}
-              />
-              <TimelineConnector
-                style={{
-                  backgroundColor: `${getTimelineColour(statusIndex, 2)}`,
-                }}
-              />
+            <TimelineSeparator className={classes.timelineSeparator}>
+              <TimelineOrderDot row={2} status={status} />
+              <TimelineOrderConnector row={2} status={status} />
             </TimelineSeparator>
             <Grid item sm={12}>
               <TimelineContent>
                 <Grid container alignItems="flex-start">
                   <Grid item xs={9}>
                     <Typography variant="h6">
-                      {status === 'amended'
-                        ? statusLabels[statusLabels.length - 1]
-                        : statusLabels[1]}
+                      {status === orderStatus.amended
+                        ? getStatusLabel(5)
+                        : getStatusLabel(1)}
                     </Typography>
                   </Grid>
                   <Grid item xs={3}>
@@ -148,35 +104,24 @@ const VerticalTimeline = ({ order }) => {
                       {tokenTimestampFormattedDate}
                     </Typography>
                   </Grid>
-                  <Grid item xs={10}>
-                    <Typography
-                      className={classes.timelineRowContent}
-                      variant="subtitle1"
-                    ></Typography>
-                  </Grid>
+                  {status === orderStatus.amended && (
+                    <TimelineAmendedItem order={order} />
+                  )}
                 </Grid>
               </TimelineContent>
             </Grid>
           </TimelineItem>
           <TimelineItem>
             <TimelineSeparator>
-              <TimelineDot
-                style={{
-                  backgroundColor: `${getTimelineColour(statusIndex, 3)}`,
-                }}
-              />
-              <TimelineConnector
-                style={{
-                  backgroundColor: `${getTimelineColour(statusIndex, 3)}`,
-                }}
-              />
+              <TimelineOrderDot row={3} status={status} />
+              <TimelineOrderConnector row={3} status={status} />
             </TimelineSeparator>
             <Grid item sm={12}>
               <TimelineContent>
                 {' '}
                 <Grid container alignItems="flex-start">
                   <Grid item xs={9}>
-                    <Typography variant="h6">{statusLabels[2]}</Typography>
+                    <Typography variant="h6">{getStatusLabel(2)}</Typography>
                   </Grid>
                   <Grid item xs={3}>
                     <Typography
@@ -199,23 +144,15 @@ const VerticalTimeline = ({ order }) => {
           </TimelineItem>
           <TimelineItem>
             <TimelineSeparator>
-              <TimelineDot
-                style={{
-                  backgroundColor: `${getTimelineColour(statusIndex, 4)}`,
-                }}
-              />
-              <TimelineConnector
-                style={{
-                  backgroundColor: `${getTimelineColour(statusIndex, 4)}`,
-                }}
-              />
+              <TimelineOrderDot row={4} status={status} />
+              <TimelineOrderConnector row={4} status={status} />
             </TimelineSeparator>
             <Grid item sm={12}>
               <TimelineContent>
                 {' '}
                 <Grid container alignItems="flex-start">
                   <Grid item xs={9}>
-                    <Typography variant="h6">{statusLabels[3]}</Typography>
+                    <Typography variant="h6">{getStatusLabel(3)}</Typography>
                   </Grid>
                   <Grid item xs={3}>
                     <Typography
@@ -238,17 +175,13 @@ const VerticalTimeline = ({ order }) => {
           </TimelineItem>
           <TimelineItem>
             <TimelineSeparator>
-              <TimelineDot
-                style={{
-                  backgroundColor: `${getTimelineColour(statusIndex, 5)}`,
-                }}
-              />
+              <TimelineOrderDot row={5} status={status} />
             </TimelineSeparator>
             <Grid item sm={12}>
               <TimelineContent>
                 <Grid container alignItems="flex-start">
                   <Grid item xs={9}>
-                    <Typography variant="h6">{statusLabels[4]}</Typography>
+                    <Typography variant="h6">{getStatusLabel(4)}</Typography>
                   </Grid>
                   <Grid item xs={3}>
                     <Typography
@@ -274,4 +207,4 @@ const VerticalTimeline = ({ order }) => {
     </Grid>
   )
 }
-export default VerticalTimeline
+export default TimelineOrder

@@ -11,4 +11,13 @@ const orderStatus = {
   manufactured: 'manufactured',
 }
 
-export { powderTestStatus, orderStatus }
+const statusLabels = [
+  'Order placed',
+  'Order accepted',
+  'Certification',
+  'Dispatched',
+  'Delivered',
+  'Order Negotiated',
+]
+
+export { powderTestStatus, orderStatus, statusLabels }

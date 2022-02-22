@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react'
 import { Grid } from '@material-ui/core'
 import makeStyles from '@material-ui/core/styles/makeStyles'
-import { useNavigate, useParams } from 'react-router-dom'
-
+import { useParams, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import SummaryRow from './SummaryRow'
 import OrderSummary from './OrderSummary'

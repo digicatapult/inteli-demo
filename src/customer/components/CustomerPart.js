@@ -8,14 +8,11 @@ import {
   CircularProgress,
   Box,
   Container,
-  InputLabel,
-  Input,
 } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import moment from 'moment'
 
 import BackButton from './BackButton'
 import { upsertOrder } from '../../features/ordersSlice'
@@ -27,6 +24,9 @@ import {
   orderStatus,
 } from '../../utils'
 import Attachment from '../../laboratory/components/Attachment'
+import OrderQuantityInput from '../../shared/OrderQuantityInput'
+import OrderDeliveryByDatePicker from '../../shared/OrderDeliveryByDatePicker'
+import { isDeliveryByInvalid, isQuantityInvalid } from '../../utils/forms'
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -37,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
     position: 'relative',
     borderRight: '1px #d3d3d3 solid',
     margin: '0px 24px',
+    padding: '0px 24px',
   },
   backButton: {
     textDecoration: 'none',
@@ -46,72 +47,8 @@ const useStyles = makeStyles((theme) => ({
     width: 230,
     height: 42,
   },
-  imagePlaceholder: {
-    backgroundColor: '#ccc',
-    height: 322,
-  },
   inline: {
     display: 'inline',
-  },
-  quantityContainer: {
-    width: '100%',
-    margin: '32px 0px 16px 0px',
-    padding: '8px 16px',
-    height: '18px',
-    display: 'grid',
-    gridTemplateColumns: '0fr 0.25fr 0.5fr',
-  },
-  quantityLabel: {
-    margin: '16px 24px 6px 0px',
-    color: '#000',
-    fontSize: '0.9rem',
-  },
-  quantityInput: {
-    width: '120px',
-    border: '1px #d3d3d3 solid',
-    borderRadius: '10px',
-    height: '40px',
-    fontSize: '0.9rem',
-    padding: '16px',
-    '&&&:before': {
-      borderBottom: 'none',
-    },
-    '&&:after': {
-      borderBottom: 'none',
-    },
-  },
-  deliveryByContainer: {
-    width: '100%',
-    margin: '0px 32px 8px 8px',
-    padding: '8px',
-    height: '48px',
-    display: 'grid',
-    gridTemplateColumns: '0fr 0.25fr 0.5fr',
-  },
-  deliveryByLabel: {
-    width: '90px',
-    margin: '16px 0px 0px 0px',
-    padding: '0px',
-    color: '#000',
-    fontSize: '0.9rem',
-  },
-  deliveryByInput: {
-    width: '120px',
-    border: '1px #d3d3d3 solid',
-    borderRadius: '10px',
-    height: '40px',
-    fontSize: '0.8rem',
-    padding: '16px',
-    '&&&:before': {
-      borderBottom: 'none',
-    },
-    '&&:after': {
-      borderBottom: 'none',
-    },
-  },
-  contentForm: {
-    margin: '0px 64px 0px -8px',
-    padding: '0px',
   },
   rightColumn: {
     padding: '64px 0px 112px 16px',
@@ -129,10 +66,9 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: '600',
     marginBottom: '16px',
   },
-  errorText: {
-    color: '#ff0000',
-    margin: '12px 0px',
-    fontSize: '1rem',
+  orderForm: {
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr',
   },
 }))
 
@@ -154,8 +90,6 @@ const DetailRow = ({ title, value }) => {
     </Box>
   )
 }
-
-const DATE_FORMAT = 'DD/MM/YYYY'
 
 const CustomerPart = () => {
   const { partId: id } = useParams()
@@ -305,39 +239,15 @@ const CustomerPart = () => {
     }
   }
 
-  const isQuantityValid = (value) => {
-    return !isNaN(value) && value > 0
-  }
-
   const setQuantityValue = (value) => {
     const quantityValue = value.replace(/\D/g, '')
 
-    if (isQuantityValid(quantityValue)) {
-      setQuantityError('')
-    } else {
-      setQuantityError('Must be greater than 0')
-    }
-
-    setQuantity(quantityValue)
-  }
-
-  const isDeliveryByValid = (value) => {
-    if (value && value.length === 10) {
-      const date = moment(value, DATE_FORMAT)
-
-      return date.isValid() && date.isSameOrAfter(moment().startOf('day'))
-    } else {
-      return false
-    }
+    setQuantityError(isQuantityInvalid(quantityValue))
+    setQuantity(parseInt(quantityValue, 10) || quantityValue)
   }
 
   const setDeliveryByValue = (value) => {
-    if (isDeliveryByValid(value)) {
-      setDeliveryByError('')
-    } else {
-      setDeliveryByError('Not before today')
-    }
-
+    setDeliveryByError(isDeliveryByInvalid(value))
     setDeliveryBy(value)
   }
 
@@ -353,7 +263,7 @@ const CustomerPart = () => {
   }
 
   const isFormReady = () => {
-    return isQuantityValid(quantity) && isDeliveryByValid(deliveryBy)
+    return !isQuantityInvalid(quantity) && !isDeliveryByInvalid(deliveryBy)
   }
 
   return (
@@ -393,46 +303,26 @@ const CustomerPart = () => {
               <DetailRow title="Material" value={material}></DetailRow>
               <DetailRow title="Alloy" value={alloy}></DetailRow>
             </CardContent>
-            <Box className={classes.quantityContainer}>
-              <InputLabel className={classes.quantityLabel}>
-                *Quantity:
-              </InputLabel>
-              <Input
-                className={classes.quantityInput}
-                name="quantity"
-                onChange={handleChange('quantity')}
-                value={quantity}
+
+            <CardContent className={classes.orderForm}>
+              <OrderQuantityInput
+                handleChange={handleChange}
+                label="Quantity"
+                quantity={quantity}
+                errorMessage={quantityError}
               />
-              <Typography variant="subtitle1" className={classes.errorText}>
-                {quantityError}
-              </Typography>
-            </Box>
-            <Box className={classes.deliveryByContainer}>
-              <InputLabel className={classes.deliveryByLabel}>
-                *Delivery by:
-              </InputLabel>
-              <Input
-                className={classes.deliveryByInput}
-                name="deliveryBy"
-                placeholder={DATE_FORMAT}
-                onChange={handleChange('deliveryBy')}
+
+              <OrderDeliveryByDatePicker
+                handleChange={handleChange}
+                label="Delivery date"
+                errorMessage={deliveryByError}
               />
-              <Typography variant="subtitle1" className={classes.errorText}>
-                {deliveryByError}
-              </Typography>
-            </Box>
-            <Grid
-              container
-              item
-              direction="column"
-              justifyContent="space-between"
-            >
-              <CardContent className={classes.contentForm}>
-                <Attachment name="Materials.pdf" />
-                <Attachment name="Requirements.pdf" />
-                <Attachment name="CAD" />
-              </CardContent>
-            </Grid>
+            </CardContent>
+            <CardContent>
+              <Attachment name="Materials.pdf" />
+              <Attachment name="Requirements.pdf" />
+              <Attachment name="CAD" />
+            </CardContent>
           </Grid>
           <Grid
             container

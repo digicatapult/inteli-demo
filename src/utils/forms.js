@@ -2,7 +2,7 @@ import moment from 'moment'
 
 const DATE_PICKER_DATE_FORMAT = 'YYYY-MM-DD'
 
-const isQuantityInvalid = (value, maxValue = 0) => {
+const isQuantityInvalid = (value, maxValue = Infinity) => {
   if (!isNaN(value) && parseInt(value, 10) > maxValue) {
     return 'Must be less than order'
   } else if (!isNaN(value) && parseInt(value, 10) < 1) {

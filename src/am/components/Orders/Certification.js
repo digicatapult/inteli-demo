@@ -7,8 +7,13 @@ import {
 } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import makeStyles from '@material-ui/core/styles/makeStyles'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 import CertificationRow from './CertificationRow'
+import { upsertOrder } from '../../../features/ordersSlice'
+import { identities, useApi, tokenTypes } from '../../../utils'
+import { createOutput, request } from '../../../utils/runProcessFormat'
 
 const useStyles = makeStyles({
   container: {
@@ -18,9 +23,8 @@ const useStyles = makeStyles({
     margin: '24px 0px',
   },
   buttonWrapper: {
-    padding: '16px 0px',
+    margin: '40px 0px',
     display: 'grid',
-    justifyContent: 'right',
   },
   submitButton: {
     width: 128,
@@ -32,16 +36,69 @@ const useStyles = makeStyles({
 
 const Certification = ({ order }) => {
   const classes = useStyles()
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const api = useApi()
 
-  const [isAccepting, setIsAccepting] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [certificateFileChanges, setCertificateFileChanges] = useState({})
 
-  const onChange = async () => {
-    setIsAccepting(true)
-    //TODO create token and upsert
+  const setFile = (file) => {
+    setCertificateFileChanges((prev) => ({ ...prev, ...file }))
+  }
+
+  const forgetFile = (key) => {
+    const { [key]: _, ...rest } = certificateFileChanges
+    setCertificateFileChanges(rest)
+  }
+
+  const onSubmit = async () => {
+    setIsSubmitting(true)
+
+    const files = Object.fromEntries(
+      Object.entries(certificateFileChanges).filter(([, value]) => {
+        return value !== null
+      })
+    )
+    const nones = Object.keys(certificateFileChanges).filter((key) => {
+      return certificateFileChanges[key] === null
+    })
+
+    const roles = { Owner: identities.am }
+    const { metadata, output } = createOutput({
+      roles,
+      metadata: {
+        files,
+        literals: { type: tokenTypes.order },
+        nones,
+      },
+      parentIndex: 0,
+    })
+
+    const formData = request({
+      inputs: [order.id],
+      outputs: [output],
+      filesToAttach: files,
+    })
+
+    const response = await api.runProcess(formData)
+    const token = {
+      id: response[0],
+      original_id: order.original_id,
+      roles,
+      metadata,
+    }
+    dispatch(upsertOrder(token))
+
+    navigate('/app/orders/' + token.id)
   }
 
   return (
-    <Grid container justify="space-between" className={classes.container}>
+    <Grid
+      container
+      justifyContent="space-between"
+      className={classes.container}
+    >
       <Typography variant="subtitle2" className={classes.title}>
         Upload Certifications
       </Typography>
@@ -52,6 +109,8 @@ const Certification = ({ order }) => {
               key={cert.metadataKey}
               metadata={order.metadata}
               requiredCert={cert}
+              setParentFile={setFile}
+              forgetParentFile={forgetFile}
             />
           )
         })}
@@ -60,10 +119,10 @@ const Certification = ({ order }) => {
         <Button
           variant="contained"
           className={classes.submitButton}
-          disabled={false} // TODO disable until changes are made
-          onClick={onChange}
+          disabled={Object.keys(certificateFileChanges).length === 0}
+          onClick={onSubmit}
         >
-          {isAccepting ? (
+          {isSubmitting ? (
             <CircularProgress color="secondary" size="30px" />
           ) : (
             'Submit All'

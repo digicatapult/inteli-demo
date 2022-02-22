@@ -92,7 +92,7 @@ const Navigation = () => {
       <NavLink
         to="/app/orders"
         className={`${classes.navButton}`}
-        activeClassName={classes.navActive}
+        activeclassname={classes.navActive}
       >
         <Box className={classes.navButtonWrapping}>
           <Typography>Orders</Typography>
@@ -104,7 +104,7 @@ const Navigation = () => {
       <NavLink
         to="/app/powders"
         className={`${classes.navButton}`}
-        activeClassName={classes.navActive}
+        activeclassname={classes.navActive}
       >
         <Box className={classes.navButtonWrapping}>
           <Typography>Powder Inventory</Typography>
@@ -116,7 +116,7 @@ const Navigation = () => {
       <NavLink
         to="/app/tests"
         className={classes.navButton}
-        activeClassName={classes.navActive}
+        activeclassname={classes.navActive}
       >
         <Box className={classes.navButtonWrapping}>
           <Typography>Test Results</Typography>

@@ -31,9 +31,6 @@ const theme = createTheme({
     },
   },
   typography: {
-    subtitle1: {
-      fontSize: 12,
-    },
     subtitle2: {
       fontSize: 12,
     },

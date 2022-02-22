@@ -29,7 +29,7 @@ const useStyles = makeStyles({
       marginRight: 'auto',
     },
   },
-  orderDetailsHeading: {
+  heading: {
     fontWeight: 600,
   },
   content: {
@@ -56,14 +56,8 @@ const useStyles = makeStyles({
     marginBottom: '32px',
   },
   shippingAddress: {
-    fontSize: '1rem',
     fontWeight: '600',
     marginBottom: '16px',
-  },
-  errorText: {
-    color: '#ff0000',
-    fontSize: '1rem',
-    margin: '8px 0px',
   },
 })
 
@@ -77,7 +71,7 @@ const DetailRow = ({ title, value }) => {
       &nbsp;
       <Typography
         className={classes.inline}
-        variant="subtitle1"
+        variant="subtitle2"
         color="textSecondary"
       >
         {value}
@@ -169,11 +163,7 @@ const OrderDetail = ({ order }) => {
           />
         </Grid>
         <Grid container item xs={9}>
-          <Typography
-            gutterBottom
-            variant="body1"
-            className={classes.orderDetailsHeading}
-          >
+          <Typography gutterBottom variant="body1" className={classes.heading}>
             Order Details
           </Typography>
           <Grid container>
@@ -198,16 +188,16 @@ const OrderDetail = ({ order }) => {
             <Grid item xs={6}>
               <Box>
                 <Typography variant="subtitle2">Shipping Address:</Typography>
-                <Typography variant="subtitle1" color="textSecondary">
+                <Typography variant="subtitle2" color="textSecondary">
                   Digital Catapult
                 </Typography>
-                <Typography variant="subtitle1" color="textSecondary">
+                <Typography variant="subtitle2" color="textSecondary">
                   101 Euston Road
                 </Typography>
-                <Typography variant="subtitle1" color="textSecondary">
+                <Typography variant="subtitle2" color="textSecondary">
                   London
                 </Typography>
-                <Typography variant="subtitle1" color="textSecondary">
+                <Typography variant="subtitle2" color="textSecondary">
                   NW1 2RA
                 </Typography>
               </Box>
@@ -221,7 +211,9 @@ const OrderDetail = ({ order }) => {
         className={`${classes.row} ${classes.header}`}
       >
         <Box className={classes.attachment}>
-          <DetailRow title="Attached Documents"></DetailRow>
+          <Typography variant="subtitle1" className={classes.heading}>
+            Attached Documents
+          </Typography>
           <Attachment name="Requirements.PDF" />
           <Attachment name="CAD" />
         </Box>
@@ -232,9 +224,12 @@ const OrderDetail = ({ order }) => {
         </Grid>
       </Grid>
       {status === orderStatus.submitted && <Negotiate order={order} />}
-      {requiredCerts && status === orderStatus.accepted && (
-        <Certification order={order} />
-      )}
+      {requiredCerts &&
+        [
+          orderStatus.accepted,
+          orderStatus.manufacturing,
+          orderStatus.manufactured,
+        ].includes(status) && <Certification order={order} />}
     </Paper>
   )
 }

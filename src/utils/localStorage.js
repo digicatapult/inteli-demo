@@ -3,7 +3,7 @@ export const saveState = (state) => {
     const serializedState = JSON.stringify(state)
     localStorage.setItem('state', serializedState)
   } catch (e) {
-    console.error(e)
+    console.error('Error occured while reading from local storage:', e)
   }
 }
 

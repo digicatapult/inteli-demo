@@ -1,7 +1,5 @@
-import tokenTypes from './tokenTypes'
-import Api from './vitalamApi'
+import { Api, tokenTypes, identities, metadataTypes } from './'
 import { addRefToken } from '../features/tokensSlice'
-import { metadataTypes } from './'
 import { resetOrder } from '../features/ordersSlice'
 import { resetCustomerParts } from '../features/partsSlice'
 import { resetLabTest } from '../features/labTestsSlice'
@@ -34,7 +32,7 @@ const createFormData = (inputs, roles, metadata) => {
 }
 
 const createRefToken = async (name, dispatch) => {
-  const roles = { Owner: '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty' } // TODO get correct owner
+  const roles = { Owner: identities.cust }
   const metadata = {
     type: tokenTypes.reference,
     name: name,
