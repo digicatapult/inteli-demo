@@ -11,13 +11,12 @@ const orderStatus = {
   manufactured: 'manufactured',
 }
 
-const statusLabels = [
-  'Order placed',
-  'Order accepted',
-  'Certification',
-  'Dispatched',
-  'Delivered',
-  'Order Negotiated',
-]
+const statusLabels = {
+  [orderStatus.submitted]: 'Order placed',
+  [orderStatus.amended]: 'Order negotiated',
+  [orderStatus.accepted]: 'Certification',
+  [orderStatus.manufacturing]: 'Dispatched',
+  [orderStatus.manufactured]: 'Delivered',
+}
 
 export { powderTestStatus, orderStatus, statusLabels }

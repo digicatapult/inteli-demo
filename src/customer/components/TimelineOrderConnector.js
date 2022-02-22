@@ -3,7 +3,6 @@ import makeStyles from '@material-ui/core/styles/makeStyles'
 import TimelineConnector from '@material-ui/lab/TimelineConnector/TimelineConnector'
 
 import { getTimelineStatusIndex } from '../../utils/timeline'
-import { orderStatus } from '../../utils'
 
 const useStyles = makeStyles({
   orangeLine: {
@@ -11,28 +10,33 @@ const useStyles = makeStyles({
   },
   greyLine: {
     backgroundColor: '#ccc',
-  },
-  rejectedLine: {
-    backgroundColor: '#bdbdbd',
+    background: 'linear-gradient(#fff 50%, #ccc 50%)',
+    backgroundSize: 'auto 10px',
   },
 })
 
-const TimelineOrderConnector = ({ row, status }) => {
+const TimelineOrderConnector = ({ latestStatus, rowStatus }) => {
   const classes = useStyles()
 
-  const statusIndex = getTimelineStatusIndex(status)
+  const latestStatusIndex = getTimelineStatusIndex(latestStatus)
+  const rowStatusIndex = getTimelineStatusIndex(rowStatus)
 
-  const getTimelineConnectorClassName = (status) => {
-    if (status === orderStatus.amended && row === 2) {
-      return classes.rejectedLine
-    } else if (statusIndex >= row) {
+  const getTimelineConnectorClassName = (latestStatusIndex, rowStatusIndex) => {
+    if (latestStatusIndex > rowStatusIndex) {
       return classes.orangeLine
     } else {
       return classes.greyLine
     }
   }
 
-  return <TimelineConnector className={getTimelineConnectorClassName(status)} />
+  return (
+    <TimelineConnector
+      className={getTimelineConnectorClassName(
+        latestStatusIndex,
+        rowStatusIndex
+      )}
+    />
+  )
 }
 
 export default TimelineOrderConnector

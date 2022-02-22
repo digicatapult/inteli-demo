@@ -7,23 +7,26 @@ const getTimelineStatusIndex = (status) => {
   switch (status) {
     case orderStatus.submitted:
       return 1
-    case orderStatus.accepted:
-      return 2
     case orderStatus.amended:
       return 2
-    case orderStatus.manufacturing:
+    case orderStatus.accepted:
       return 3
-    case orderStatus.manufactured:
+    case orderStatus.manufacturing:
       return 4
+    case orderStatus.manufactured:
+      return 5
   }
 }
 
-const getStatusLabel = (index) => {
-  return statusLabels[index]
+const getStatusLabel = (orderStatus) => {
+  return statusLabels[orderStatus]
 }
 
-const getTokenTimestampFormattedDate = (timestamp) =>
-  moment(timestamp).format('DD-MM-YYYY HH:mm')
+const getTokenTimestampFormattedDate = (timestamp) => {
+  if (timestamp) {
+    return moment(timestamp).format('DD-MM-YYYY HH:mm')
+  }
+}
 
 const getAmendedDeliveryByFormattedDate = (deliveryBy) =>
   moment(deliveryBy, DATE_PICKER_DATE_FORMAT).format('DD - MM - YYYY')

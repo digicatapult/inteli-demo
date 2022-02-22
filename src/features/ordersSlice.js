@@ -9,14 +9,21 @@ export const ordersSlice = createSlice({
         const order = state.find(
           ({ original_id }) => original_id === action.payload.original_id
         )
+
         // tokens for new assets have matching id and original_id
         if (action.payload.id === action.payload.original_id && !order) {
+          action.payload.statusHistory = buildStatusHistory({}, action.payload)
           state.push(action.payload)
         } else {
           if (order) {
             order.id = action.payload.id
             Object.assign(order.roles, action.payload.roles)
             Object.assign(order.metadata, action.payload.metadata)
+
+            order.statusHistory = buildStatusHistory(
+              order.statusHistory,
+              action.payload
+            )
 
             if (action.payload.timestamp) {
               order.timestamp = action.payload.timestamp
@@ -31,6 +38,19 @@ export const ordersSlice = createSlice({
     },
   },
 })
+
+const buildStatusHistory = (statusHistory, payload) => {
+  const newStatus = payload.metadata.status
+  const timestamp = payload.timestamp
+  if (newStatus && timestamp) {
+    return {
+      ...statusHistory,
+      [newStatus]: timestamp,
+    }
+  } else {
+    return statusHistory
+  }
+}
 
 export const { actions, reducer } = ordersSlice
 

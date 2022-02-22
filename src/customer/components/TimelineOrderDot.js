@@ -3,14 +3,14 @@ import TimelineDot from '@material-ui/lab/TimelineDot/TimelineDot'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 
 import { getTimelineStatusIndex } from '../../utils/timeline'
-import { orderStatus } from '../../utils'
 
 const useStyles = makeStyles({
   orangeDot: {
     backgroundColor: '#ff9900',
   },
   greyDot: {
-    backgroundColor: '#ccc',
+    borderColor: '#ccc',
+    backgroundColor: '#fff',
   },
   redDot: {
     backgroundColor: '#fff',
@@ -18,22 +18,27 @@ const useStyles = makeStyles({
   },
 })
 
-const TimelineOrderDot = ({ row, status }) => {
+const TimelineOrderDot = ({ latestStatus, rowStatus }) => {
   const classes = useStyles()
 
-  const statusIndex = getTimelineStatusIndex(status)
+  const latestStatusIndex = getTimelineStatusIndex(latestStatus)
+  const rowStatusIndex = getTimelineStatusIndex(rowStatus)
 
-  const getTimelineDotClassName = (status) => {
-    if (status === orderStatus.amended && row === 2) {
-      return classes.redDot
-    } else if (statusIndex >= row) {
+  const getTimelineDotClassName = (latestStatusIndex, rowStatusIndex) => {
+    if (latestStatusIndex > rowStatusIndex) {
       return classes.orangeDot
+    } else if (latestStatusIndex === rowStatusIndex) {
+      return classes.redDot
     } else {
       return classes.greyDot
     }
   }
 
-  return <TimelineDot className={getTimelineDotClassName(status)} />
+  return (
+    <TimelineDot
+      className={getTimelineDotClassName(latestStatusIndex, rowStatusIndex)}
+    />
+  )
 }
 
 export default TimelineOrderDot
