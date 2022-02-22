@@ -8,9 +8,9 @@ import { PromiseStateFactory } from './utils'
 import { Api, tokenTypes } from '../utils'
 
 const upsertMap = {
-  ORDER: (token, dispatch) => dispatch(upsertOrder(token)),
-  LAB_TEST: (token, dispatch) => dispatch(upsertLabTest(token)),
-  POWDER: (token, dispatch) => dispatch(upsertPowder(token)),
+  [tokenTypes.order]: (token, dispatch) => dispatch(upsertOrder(token)),
+  [tokenTypes.powderTest]: (token, dispatch) => dispatch(upsertLabTest(token)),
+  [tokenTypes.powder]: (token, dispatch) => dispatch(upsertPowder(token)),
 }
 
 const getLatestToken = async ({ getState }) => {
