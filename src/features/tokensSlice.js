@@ -1,10 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
+import { updateNetworkStatus } from './networkStatusSlice'
 import { upsertLabTest } from './labTestsSlice'
 import { upsertOrder } from './ordersSlice'
 import { upsertPowder } from './powdersSlice'
 import { PromiseStateFactory } from './utils'
-import Api from '../utils/vitalamApi'
+import { Api, tokenTypes } from '../utils'
 
 const upsertMap = {
   ORDER: (token, dispatch) => dispatch(upsertOrder(token)),
@@ -35,7 +36,7 @@ const getLatestToken = async ({ getState }) => {
 }
 
 const getRefToken = async (token, position, tokens = []) => {
-  const isRefToken = token.metadata.type === 'REFERENCE'
+  const isRefToken = token.metadata.type === tokenTypes.reference
   const isFirst = token.id === 1 || position + 1 === token.id
   const data = [...tokens, token]
 
@@ -77,7 +78,8 @@ const getData = async (last = { id: 1 }, tokens = {}, position) => {
 const upsertTokens = (tokens = [], dispatch) => {
   tokens.reverse().forEach((token) => {
     const type = token.metadata?.type
-    if (['ORDER', 'LAB_TEST', 'POWDER'].includes(type)) {
+    const { reference, ...types } = tokenTypes
+    if (Object.values(types).includes(type)) {
       upsertMap[type](token, dispatch)
     }
   })
@@ -92,6 +94,7 @@ const fetchTokens = createAsyncThunk('tokens/fetch', async (action, store) => {
     const newData = await getData(latestToken, {}, last?.id, store)
     // upsert only new tokens
     upsertTokens(newData.data, store.dispatch)
+    store.dispatch(updateNetworkStatus(true))
     const combinedTokens = [...(newData?.data || []), ...tokens.data]
 
     return {
@@ -102,6 +105,7 @@ const fetchTokens = createAsyncThunk('tokens/fetch', async (action, store) => {
         : combinedTokens,
     }
   } catch (e) {
+    store.dispatch(updateNetworkStatus(false))
     console.warn('Error occured fetching tokens: ', e)
   }
 })
@@ -130,7 +134,7 @@ const initTokens = createAsyncThunk('tokens/init', async (action, store) => {
 
 const tokens = createSlice({
   name: 'tokens',
-  initialState: { isFetching: true, isError: false, data: [] },
+  initialState: { isFetching: true, isError: false, data: [], refToken: null },
   reducers: {
     addRefToken: {
       reducer(state, { payload }) {

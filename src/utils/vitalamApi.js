@@ -77,7 +77,7 @@ const useApi = () => {
       }
     )
 
-    const metadata = await getNewMetadata(token)
+    const metadata = await getMetadata(token)
     const isOrder = metadata.type === 'ORDER'
     const enrichedToken = {
       ...token,
@@ -93,7 +93,7 @@ const useApi = () => {
     return enrichedToken
   }
 
-  const getNewMetadata = async (token) => {
+  const getMetadata = async (token) => {
     // recursive function?
     const metadata = {}
     await Promise.all(
