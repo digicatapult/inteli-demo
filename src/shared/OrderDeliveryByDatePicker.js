@@ -38,7 +38,6 @@ const OrderDeliveryByDatePicker = ({ handleChange, label, errorMessage }) => {
         onChange={handleChange('deliveryBy')}
         className={classes.deliveryByInput}
         InputProps={{
-          classes: { input: classes.inputFont },
           disableUnderline: true,
         }}
       />
