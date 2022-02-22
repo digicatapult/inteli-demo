@@ -48,7 +48,7 @@ const VerticalTimeline = ({ order }) => {
   } = order
 
   const tokenTimestampFormattedDate =
-    moment(timestamp).format('DD-MM-YYYY HH:mm')
+    moment(timestamp).format('DD-MM-YYYY hh:mm')
 
   // Set the current status order. Again will eventually need updating with more states
   let statusIndex = 0
