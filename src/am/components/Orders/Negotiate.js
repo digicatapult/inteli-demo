@@ -110,7 +110,7 @@ const Negotiate = ({ order }) => {
         <Grid container>
           <Grid
             item
-            className={`${classes.rejectAndNegotiateToggle}`}
+            className={classes.rejectAndNegotiateToggle}
             onClick={toggleNegotiationDisplay}
           >
             <Typography

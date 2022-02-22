@@ -41,6 +41,9 @@ const useStyles = makeStyles({
   dndText: {
     textDecoration: 'underline',
   },
+  greyText: {
+    color: '#868B92',
+  },
 })
 
 const CertificationRow = ({
@@ -102,7 +105,11 @@ const CertificationRow = ({
             <img src={pending} className={classes.icon} />
           )}
         </Grid>
-        <Grid item xs={8} className={classes.rowItem}>
+        <Grid
+          item
+          xs={8}
+          className={`${file ? '' : classes.greyText} ${classes.rowItem}`}
+        >
           <Typography>{description}</Typography>
         </Grid>
         <Grid item xs={2} className={classes.rowItem}>

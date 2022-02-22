@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import { Box, Typography } from '@material-ui/core'
 
@@ -35,11 +35,6 @@ const useStyles = makeStyles({
 
 const CertificationDownload = ({ name, downloadData }) => {
   const classes = useStyles()
-  const [url, setURL] = useState('')
-
-  useEffect(() => {
-    setURL(downloadData)
-  }, [downloadData])
 
   return (
     <Box className={classes.container}>
@@ -47,7 +42,7 @@ const CertificationDownload = ({ name, downloadData }) => {
         Download
       </Typography>
       <a
-        href={url}
+        href={downloadData}
         target="_blank"
         rel="noreferrer"
         download={name}
