@@ -29,7 +29,7 @@ services:
     networks: ['am']
 
   ipfs-eve:
-    image: ghcr.io/digicatapult/vitalam-ipfs:v1.2.7
+    image: ghcr.io/digicatapult/vitalam-ipfs:v1.2.8
     container_name: ipfs-eve
     ports:
       - 5004:5001
