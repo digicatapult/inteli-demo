@@ -1,7 +1,7 @@
 import React from 'react'
 import { Grid, Paper, Typography, TextField } from '@material-ui/core'
 import makeStyles from '@material-ui/core/styles/makeStyles'
-import { FormControl, MenuItem, Select } from '@material-ui/core'
+import { FormControl, MenuItem, Select, Button } from '@material-ui/core'
 
 const useStyles = makeStyles({
   container: {
@@ -34,19 +34,37 @@ const useStyles = makeStyles({
     paddingLeft: '35px',
     paddingTop: '35px',
   },
+  createSupplierButton: {
+    backgroundColor: '#17AE93',
+    color: '#fff',
+    width: '290px',
+    marginBottom: '15px',
+    marginTop: '200px',
+  },
+  addressText: {
+    border: '1px #d3d3d3 solid',
+    borderRadius: '10px',
+    padding: '4px 16px',
+    width: '70%',
+    marginBottom: '20px',
+  },
 })
 
 const CreateSupplier = () => {
   const classes = useStyles()
   const [tier, setTier] = React.useState('tier1')
+  const [country, setCountry] = React.useState('UK')
 
   const handleChange = (event) => {
     setTier(event.target.value)
   }
+  const handleCountryChange = (event) => {
+    setCountry(event.target.value)
+  }
 
   return (
     <Paper elevation={0} xs={12} className={classes.container}>
-      <Grid justifyContent="center">
+      <Grid container justifyContent="center" xs={12}>
         <Grid item xs={6} className={classes.containerBorder}>
           <Grid item>
             <Typography
@@ -87,7 +105,64 @@ const CreateSupplier = () => {
                 <MenuItem value={'tier3'}>Tier 3</MenuItem>
               </Select>
             </FormControl>
+            <Grid item>
+              <Typography
+                variant="subtitle1"
+                className={classes.companyNameByTierLabel}
+              >
+                SC10 certification
+              </Typography>
+              DROPZONE
+            </Grid>
+            <Grid item>
+              <Button
+                variant="contained"
+                size="medium"
+                /*                 onClick={isAccepting ? null : onSubmit}
+                 */ className={classes.createSupplierButton}
+              >
+                Create Supplier
+              </Button>
+            </Grid>
           </Grid>
+        </Grid>
+        <Grid item xs={6} className={classes.containerBorder}>
+          <Typography
+            variant="subtitle1"
+            className={classes.companyNameByLabel}
+          >
+            Company address
+          </Typography>
+          <TextField
+            type="text"
+            className={classes.addressText}
+            InputProps={{
+              disableUnderline: true,
+            }}
+          />
+          <TextField
+            type="text"
+            className={classes.addressText}
+            InputProps={{
+              disableUnderline: true,
+            }}
+          />
+          <FormControl sx={{ m: 1, minWidth: 170, border: 'none' }}>
+            <Select
+              displayEmpty
+              inputProps={{
+                'aria-label': 'Without label',
+                disableUnderline: true,
+              }}
+              className={classes.addressText}
+              value={country}
+              onChange={handleCountryChange}
+            >
+              <MenuItem value={'UK'}>United Kingdom</MenuItem>
+              <MenuItem value={'FR'}>France</MenuItem>
+              <MenuItem value={'DE'}>Germany</MenuItem>
+            </Select>
+          </FormControl>
         </Grid>
       </Grid>
     </Paper>
