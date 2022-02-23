@@ -75,6 +75,6 @@ services:
         - REACT_APP_AUTH_CLIENT_ID=${REACT_API_AUTH_CLIENT_ID}
         - REACT_APP_AUTH_CLIENT_SECRET=${REACT_API_AUTH_CLIENT_SECRET}
     ports:
-      - 8004:3000
+      - 8004:80
     restart: on-failure
     networks: ['am']
