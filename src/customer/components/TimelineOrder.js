@@ -12,10 +12,7 @@ import { orderStatus } from '../../utils/statuses'
 import TimelineAmendedItem from './TimelineAmendedItem'
 import TimelineOrderConnector from './TimelineOrderConnector'
 import TimelineOrderDot from './TimelineOrderDot'
-import {
-  getStatusLabel,
-  getTokenTimestampFormattedDate,
-} from '../../utils/timeline'
+import { getStatusLabel, getMetadataTimestamp } from '../../utils/timeline'
 
 const useStyles = makeStyles({
   dateTime: {
@@ -72,8 +69,10 @@ const TimelineOrder = ({ order }) => {
                       variant="subtitle1"
                       className={`${classes.dateTime} ${classes.time}`}
                     >
-                      {getTokenTimestampFormattedDate(
-                        order.statusHistory[orderStatus.submitted]
+                      {getMetadataTimestamp(
+                        order.history,
+                        'status',
+                        orderStatus.submitted
                       )}
                     </Typography>
                   </Grid>
@@ -88,7 +87,11 @@ const TimelineOrder = ({ order }) => {
               <TimelineOppositeContent />
             </Grid>
           </TimelineItem>
-          {order.statusHistory[orderStatus.amended] && (
+          {getMetadataTimestamp(
+            order.history,
+            'status',
+            orderStatus.amended
+          ) && (
             <TimelineItem>
               <TimelineSeparator className={classes.timelineSeparator}>
                 <TimelineOrderDot
@@ -113,8 +116,10 @@ const TimelineOrder = ({ order }) => {
                         variant="subtitle1"
                         className={`${classes.dateTime} ${classes.time}`}
                       >
-                        {getTokenTimestampFormattedDate(
-                          order.statusHistory[orderStatus.amended]
+                        {getMetadataTimestamp(
+                          order.history,
+                          'status',
+                          orderStatus.submitted
                         )}
                       </Typography>
                     </Grid>
@@ -149,8 +154,10 @@ const TimelineOrder = ({ order }) => {
                       variant="subtitle1"
                       className={`${classes.dateTime} ${classes.time}`}
                     >
-                      {getTokenTimestampFormattedDate(
-                        order.statusHistory[orderStatus.accepted]
+                      {getMetadataTimestamp(
+                        order.history,
+                        'status',
+                        orderStatus.accepted
                       )}
                     </Typography>
                   </Grid>
@@ -187,8 +194,10 @@ const TimelineOrder = ({ order }) => {
                       variant="subtitle1"
                       className={`${classes.dateTime} ${classes.time}`}
                     >
-                      {getTokenTimestampFormattedDate(
-                        order.statusHistory[orderStatus.manufacturing]
+                      {getMetadataTimestamp(
+                        order.history,
+                        'status',
+                        orderStatus.manufacturing
                       )}
                     </Typography>
                   </Grid>
@@ -224,8 +233,10 @@ const TimelineOrder = ({ order }) => {
                       variant="subtitle1"
                       className={`${classes.dateTime} ${classes.time}`}
                     >
-                      {getTokenTimestampFormattedDate(
-                        order.statusHistory[orderStatus.manufactured]
+                      {getMetadataTimestamp(
+                        order.history,
+                        'status',
+                        orderStatus.manufactured
                       )}
                     </Typography>
                   </Grid>

@@ -22,6 +22,16 @@ const getStatusLabel = (orderStatus) => {
   return statusLabels[orderStatus]
 }
 
+const getMetadataTimestamp = (history, metadataKey, metadataValue) => {
+  const mostRecentHistory = history.find(
+    (h) => h.metadata[metadataKey] === metadataValue
+  )
+
+  return mostRecentHistory
+    ? getTokenTimestampFormattedDate(mostRecentHistory.timestamp)
+    : null
+}
+
 const getTokenTimestampFormattedDate = (timestamp) => {
   if (timestamp) {
     return moment(timestamp).format('DD-MM-YYYY HH:mm')
@@ -34,6 +44,7 @@ const getAmendedDeliveryByFormattedDate = (deliveryBy) =>
 export {
   getTimelineStatusIndex,
   getStatusLabel,
+  getMetadataTimestamp,
   getTokenTimestampFormattedDate,
   getAmendedDeliveryByFormattedDate,
 }
