@@ -1,3 +1,7 @@
+import { useDispatch } from 'react-redux'
+
+import { add } from '../features/tokensSlice'
+
 const API_HOST = process.env.REACT_APP_API_HOST || 'localhost'
 const API_PORT = process.env.REACT_APP_API_PORT || '3001'
 
@@ -41,6 +45,7 @@ const useNewFetchWrapper = () => {
 }
 
 const useApi = () => {
+  const dispatch = useDispatch()
   const newWrappedFetch = useNewFetchWrapper()
   const authToken = localStorage.getItem('token')
 
@@ -76,6 +81,9 @@ const useApi = () => {
         },
       }
     )
+
+    // to be fair we just care about the id, so whole token is not needed in this instance
+    dispatch(add({ type: 'lastFetchedToken', ...token }))
 
     const metadata = await getMetadata(token)
     const isOrder = metadata.type === 'ORDER'

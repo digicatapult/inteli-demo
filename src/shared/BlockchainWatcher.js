@@ -1,47 +1,39 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { fetchTokens, initTokens } from '../features/tokensSlice'
+import useApi from '../utils/vitalamApi'
 
 // temporary version of the component that will poll the API
 const BlockchainWatcher = ({ children }) => {
+  const { lastFetchedToken } = useSelector((state) => state.tokens)
+  /* not sure if this will work, but the idea is to listen for state changes rather than setTimeout */
+  const customerOrders = useSelector((state) => state.customerOrders)
+  const customerParts = useSelector((state) => state.customerParts)
+  const powders = useSelector((state) => state.powders)
+  const [latestTokenId, setLatestTokenId] = React.useState(null)
+  const api = useApi()
   const dispatch = useDispatch()
-  const [isLoaded, setIsLoaded] = React.useState(false)
-  const { isFetching } = useSelector((state) => state.tokens)
 
-  // This effect manages the polling for new tokens
-  // TODO refactor chain watcher
   useEffect(() => {
-    if (!isLoaded) {
-      dispatch(initTokens())
-      setIsLoaded(true)
-      console.log('finished loading state from local storage')
-    } else {
-      // will store the timeout id. This will be set for the first time lower down
-      // note when this is null it means the timer has been cancelled which is caused
-      // by a component render
-      const timerFn = async () => {
-        try {
-          if (!isFetching) {
-            dispatch(fetchTokens())
-          }
-        } catch (err) {
-          console.error(
-            `Error polling for blockchain state. Error was ${
-              `"${err.message}"` || JSON.stringify(err, null, 2)
-            }`
-          )
+    const recursive = async (currentId) => {
+      try {
+        if (latestTokenId === null) {
+          const latest = await api.latestToken()
+          setLatestTokenId(latest)
         }
-      }
-      const timer = setTimeout(timerFn, 3000)
-
-      // The clean-up function clears the timer (as expected) but also sets it to null to indicate to the
-      // `pollFunc` that this specific effect instantiation has been canceled
-      return () => {
-        clearTimeout(timer)
+        if (currentId < latestTokenId) {
+          await api.tokenById(currentId)
+          return recursive(currentId + 1)
+        }
+        setLatestTokenId(null)
+        console.info(`Fetching is complete.\nCurrent Index -> ${currentId}`)
+      } catch (e) {
+        console.error('Error occured while fetching tokens: ', e)
       }
     }
-  }, [dispatch, isFetching, isLoaded]) // effect sensitivities.
+
+    recursive(lastFetchedToken.id + 1)
+  }, [dispatch, lastFetchedToken, customerOrders, powders, customerParts]) // effect sensitivities.
 
   return <>{children}</>
 }
