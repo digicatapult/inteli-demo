@@ -8,7 +8,7 @@ networks:
 services:
 
   node-eve:
-    image: ghcr.io/digicatapult/vitalam-node:v2.8.1
+    image: ghcr.io/digicatapult/vitalam-node:v2.9.3
     container_name: node-eve
     command:
       --base-path /data/
@@ -29,7 +29,7 @@ services:
     networks: ['am']
 
   ipfs-eve:
-    image: ghcr.io/digicatapult/vitalam-ipfs:v1.1.0
+    image: ghcr.io/digicatapult/vitalam-ipfs:v1.2.7
     container_name: ipfs-eve
     ports:
       - 5004:5001

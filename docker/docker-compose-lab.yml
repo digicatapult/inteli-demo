@@ -13,7 +13,7 @@ networks:
 
 services:
   node-charlie:
-    image: ghcr.io/digicatapult/vitalam-node:v2.8.1
+    image: ghcr.io/digicatapult/vitalam-node:v2.9.3
     container_name: node-charlie
     command:
       --base-path /data/
@@ -35,7 +35,7 @@ services:
     networks: ['chain', 'lab']
 
   ipfs-charlie:
-    image: ghcr.io/digicatapult/vitalam-ipfs:v1.1.0
+    image: ghcr.io/digicatapult/vitalam-ipfs:v1.2.7
     container_name: ipfs-charlie
     ports:
       - 5003:5001

@@ -13,7 +13,7 @@ networks:
 
 services:
   node-bob:
-    image: ghcr.io/digicatapult/vitalam-node:v2.8.1
+    image: ghcr.io/digicatapult/vitalam-node:v2.9.3
     container_name: node-bob
     command:
       --base-path /data/
@@ -35,7 +35,7 @@ services:
     networks: ['chain', 'am']
 
   ipfs-bob:
-    image: ghcr.io/digicatapult/vitalam-ipfs:v1.1.0
+    image: ghcr.io/digicatapult/vitalam-ipfs:v1.2.7
     container_name: ipfs-bob
     ports:
       - 5002:5001
