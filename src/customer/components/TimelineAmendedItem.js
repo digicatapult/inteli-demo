@@ -16,6 +16,7 @@ import {
   metadataTypes,
 } from '../../utils'
 import { getAmendedDeliveryByFormattedDate } from '../../utils/timeline'
+import tick from '../../images/tick.svg'
 
 const useStyles = makeStyles({
   actionRowWarning: {
@@ -54,11 +55,25 @@ const useStyles = makeStyles({
     color: '#fff',
     width: '125px',
   },
+  proposalAcceptedContainer: {
+    margin: '10px 40px',
+  },
+  tick: {
+    display: 'block',
+    float: 'left',
+    padding: '5px 10px',
+    height: '100%',
+  },
+  proposalAcceptedText: {
+    color: '#17AE93',
+    display: 'block',
+    float: 'right',
+  },
 })
 
 const AmendedTimeLineItem = ({ order }) => {
   const {
-    metadata: { quantity, deliveryBy },
+    metadata: { quantity, deliveryBy, status },
   } = order
 
   const dispatch = useDispatch()
@@ -114,7 +129,7 @@ const AmendedTimeLineItem = ({ order }) => {
     })
   }
 
-  return (
+  return status === orderStatus.amended ? (
     <>
       <Typography variant="subtitle2" className={classes.actionRowWarning}>
         Action Required
@@ -159,6 +174,13 @@ const AmendedTimeLineItem = ({ order }) => {
         </Grid>
       </Grid>
     </>
+  ) : (
+    <div className={classes.proposalAcceptedContainer}>
+      <img src={tick} className={classes.tick} />
+      <Typography variant="subtitle2" className={classes.proposalAcceptedText}>
+        Proposal accepted
+      </Typography>
+    </div>
   )
 }
 

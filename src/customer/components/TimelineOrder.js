@@ -123,9 +123,7 @@ const TimelineOrder = ({ order }) => {
                         )}
                       </Typography>
                     </Grid>
-                    {latestStatus === orderStatus.amended && (
-                      <TimelineAmendedItem order={order} />
-                    )}
+                    <TimelineAmendedItem order={order} />
                   </Grid>
                 </TimelineContent>
               </Grid>
