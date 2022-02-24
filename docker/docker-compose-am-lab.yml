@@ -8,7 +8,7 @@ networks:
 services:
 
   node-eve:
-    image: ghcr.io/digicatapult/vitalam-node:v2.8.1
+    image: ghcr.io/digicatapult/vitalam-node:v2.9.3
     container_name: node-eve
     command:
       --base-path /data/
@@ -29,7 +29,7 @@ services:
     networks: ['am']
 
   ipfs-eve:
-    image: ghcr.io/digicatapult/vitalam-ipfs:v1.1.0
+    image: ghcr.io/digicatapult/vitalam-ipfs:v1.2.9
     container_name: ipfs-eve
     ports:
       - 5004:5001
@@ -42,7 +42,7 @@ services:
     networks: ['am']
 
   api-eve:
-    image: ghcr.io/digicatapult/vitalam-api:v2.8.0
+    image: ghcr.io/digicatapult/vitalam-api:v2.9.0
     container_name: api-eve
     ports:
       - 3004:3001
@@ -75,6 +75,6 @@ services:
         - REACT_APP_AUTH_CLIENT_ID=${REACT_API_AUTH_CLIENT_ID}
         - REACT_APP_AUTH_CLIENT_SECRET=${REACT_API_AUTH_CLIENT_SECRET}
     ports:
-      - 8004:3000
+      - 8004:80
     restart: on-failure
     networks: ['am']

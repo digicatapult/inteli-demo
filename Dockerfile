@@ -22,16 +22,10 @@ RUN npm run build
 
 ##################################################################################################
 
-FROM node:$NODE_VERSION AS runtime
-
-RUN npm -g install npm@8.x.x
+FROM nginx:1.21.6-alpine AS runtime
 
 WORKDIR /vitalam-demo-client
-ENV PORT 3000
 
 COPY --from=build /vitalam-demo-client/build .
-
-RUN npm install -g serve
-
-EXPOSE 3000
-CMD ["serve", "/vitalam-demo-client"]
+COPY ./config/nginx.conf /etc/nginx/conf.d/default.conf
+CMD ["nginx", "-g", "daemon off;"]
