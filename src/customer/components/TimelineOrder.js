@@ -12,7 +12,12 @@ import { orderStatus } from '../../utils/statuses'
 import TimelineAmendedItem from './TimelineAmendedItem'
 import TimelineOrderConnector from './TimelineOrderConnector'
 import TimelineOrderDot from './TimelineOrderDot'
-import { getStatusLabel, getMetadataTimestamp } from '../../utils/timeline'
+import Certification from './Certification'
+import {
+  getStatusLabel,
+  getMetadataTimestamp,
+  getTimelineStatusIndex,
+} from '../../utils/timeline'
 
 const useStyles = makeStyles({
   dateTime: {
@@ -139,11 +144,9 @@ const TimelineOrder = ({ order }) => {
             </TimelineSeparator>
             <Grid item sm={12}>
               <TimelineContent>
-                {' '}
                 <Grid container alignItems="flex-start">
                   <Grid item xs={9}>
                     <Typography variant="h6">
-                      {' '}
                       {getStatusLabel(orderStatus.accepted)}
                     </Typography>
                   </Grid>
@@ -159,6 +162,11 @@ const TimelineOrder = ({ order }) => {
                       )}
                     </Typography>
                   </Grid>
+
+                  {getTimelineStatusIndex(latestStatus) >=
+                    getTimelineStatusIndex(orderStatus.accepted) && (
+                    <Certification order={order} />
+                  )}
                   <Grid item xs={10}>
                     <Typography
                       className={classes.timelineRowContent}

@@ -7,7 +7,7 @@ import removeUploadX from '../../../images/close-x-icon.svg'
 import tick from '../../../images/tick.svg'
 import pending from '../../../images/pending.svg'
 import cloud from '../../../images/cloud.svg'
-import CertificationDownload from './CertificationDownload'
+import CertificationDownload from '../../../shared/CertificationDownload'
 
 const useStyles = makeStyles({
   root: {
