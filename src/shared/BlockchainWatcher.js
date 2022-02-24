@@ -6,6 +6,7 @@ import { upsertPowder } from '../features/powdersSlice'
 import { upsertLabTest } from '../features/labTestsSlice'
 import useApi from '../utils/vitalamApi'
 import { tokenTypes } from '../utils'
+import { updateNetworkStatus } from '../features/networkStatusSlice'
 
 // temporary version of the component that will poll the API
 const BlockchainWatcher = ({ children }) => {
@@ -38,8 +39,10 @@ const BlockchainWatcher = ({ children }) => {
           return pollFunction(current + 1)
         }
         console.info(`Polling is complete.\nCurrent Index -> ${current}`)
+        dispatch(updateNetworkStatus(true))
         lastProcessedId.current = current
       } catch (e) {
+        dispatch(updateNetworkStatus(false))
         console.error('Error occured while fetching tokens: ', e)
       }
     }
