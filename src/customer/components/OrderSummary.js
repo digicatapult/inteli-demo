@@ -2,7 +2,6 @@ import React from 'react'
 import { Paper, Typography, Grid, Box, CardMedia } from '@material-ui/core'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 
-import { mapPartIdToImage } from '../../features/partsSlice'
 import TimelineOrder from './TimelineOrder'
 
 const useStyles = makeStyles({
@@ -131,11 +130,11 @@ const OrderSummary = ({ order }) => {
         <Grid item xs={2}>
           <CardMedia
             component="img"
-            alt={image?.filename || 'unknown'}
+            alt={image.filename}
             width="160"
             height="160px"
-            image={mapPartIdToImage[partId]}
-            title={image?.filename || 'unknown'}
+            image={image.url}
+            title={image.filename}
             className={classes.picturePadding}
           />
         </Grid>
