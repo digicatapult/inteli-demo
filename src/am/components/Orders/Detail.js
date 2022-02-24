@@ -224,12 +224,9 @@ const OrderDetail = ({ order }) => {
         </Grid>
       </Grid>
       {status === orderStatus.submitted && <Negotiate order={order} />}
-      {requiredCerts &&
-        [
-          orderStatus.accepted,
-          orderStatus.manufacturing,
-          orderStatus.manufactured,
-        ].includes(status) && <Certification order={order} />}
+      {requiredCerts && status === orderStatus.accepted && (
+        <Certification order={order} />
+      )}
     </Paper>
   )
 }

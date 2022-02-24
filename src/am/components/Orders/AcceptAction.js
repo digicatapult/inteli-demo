@@ -70,12 +70,7 @@ const AcceptAction = ({ order }) => {
 
     const formData = createFormData([order.id], roles, metadata)
     const response = await api.runProcess(formData)
-    const token = {
-      id: response[0],
-      original_id: order.original_id,
-      roles,
-      metadata,
-    }
+    const token = { id: response[0], original_id: order.id, roles, metadata }
 
     dispatch(upsertOrder(token))
   }
