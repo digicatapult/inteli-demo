@@ -119,7 +119,7 @@ const TimelineOrder = ({ order }) => {
                         {getMetadataTimestamp(
                           order.history,
                           'status',
-                          orderStatus.submitted
+                          orderStatus.amended
                         )}
                       </Typography>
                     </Grid>
