@@ -4,11 +4,6 @@ export const ordersSlice = createSlice({
   name: 'customerOrders',
   initialState: [],
   reducers: {
-    resetOrder: {
-      reducer() {
-        return []
-      },
-    },
     upsertOrder: {
       reducer(state, action) {
         const order = state.find(
@@ -39,6 +34,6 @@ export const ordersSlice = createSlice({
 
 export const { actions, reducer } = ordersSlice
 
-export const { upsertOrder, resetOrder } = actions
+export const { upsertOrder } = actions
 
 export default reducer

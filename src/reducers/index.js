@@ -7,7 +7,6 @@ import readTestsReducer from '../features/readTestsSlice'
 import powdersReducer from '../features/powdersSlice'
 import labTestsReducer from '../features/labTestsSlice'
 import networkStatusReducer from '../features/networkStatusSlice'
-import tokensReducer from '../features/tokensSlice'
 
 export default combineReducers({
   customerParts: customerPartsReducer,
@@ -18,5 +17,4 @@ export default combineReducers({
   labTests: labTestsReducer,
   networkStatus: networkStatusReducer,
   readTests: readTestsReducer,
-  tokens: tokensReducer,
 })

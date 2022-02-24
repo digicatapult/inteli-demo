@@ -11,7 +11,6 @@ import ManufactureOrderAction from './ManufactureAction'
 import Attachment from '../Attachment'
 import Negotiate from './Negotiate'
 import Certification from './Certification'
-import { mapPartIdToImage } from '../../../features/partsSlice'
 
 const useStyles = makeStyles({
   root: {
@@ -98,6 +97,7 @@ const OrderDetail = ({ order }) => {
   const {
     metadata: {
       partId,
+      orderImage,
       name,
       material,
       alloy,
@@ -158,7 +158,7 @@ const OrderDetail = ({ order }) => {
             component="img"
             alt={name}
             width="160"
-            image={mapPartIdToImage[partId]}
+            image={orderImage.url}
             title={name}
           />
         </Grid>

@@ -4,11 +4,6 @@ export const powdersSlice = createSlice({
   name: 'powders',
   initialState: [],
   reducers: {
-    resetPowder: {
-      reducer() {
-        return []
-      },
-    },
     upsertPowder: {
       reducer(state, action) {
         const powder = state.find(
@@ -35,6 +30,6 @@ export const powdersSlice = createSlice({
 
 export const { actions, reducer } = powdersSlice
 
-export const { upsertPowder, resetPowder } = actions
+export const { upsertPowder } = actions
 
 export default reducer

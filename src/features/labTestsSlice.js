@@ -4,11 +4,6 @@ export const labTestsSlice = createSlice({
   name: 'labTests',
   initialState: [],
   reducers: {
-    resetLabTest: {
-      reducer() {
-        return []
-      },
-    },
     upsertLabTest: {
       reducer(state, action) {
         const labTest = state.find(
@@ -35,6 +30,6 @@ export const labTestsSlice = createSlice({
 
 export const { actions, reducer } = labTestsSlice
 
-export const { upsertLabTest, resetLabTest } = actions
+export const { upsertLabTest } = actions
 
 export default reducer
