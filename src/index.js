@@ -25,10 +25,7 @@ store.subscribe(() => {
 const store = configureStore({
   reducer: rootReducer,
   devTools: process.env.NODE_ENV !== 'production',
-
 })
-
-
 
 let App = null
 let props = {}

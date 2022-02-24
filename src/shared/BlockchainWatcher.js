@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useDispatch } from 'react-redux'
 
 import { upsertOrder } from '../features/ordersSlice'
@@ -13,41 +13,45 @@ const BlockchainWatcher = ({ children }) => {
   // TODO replace lastProcessedId with lastFetchedToken
   // more details in src/index.js comments
   // const { lastFetchedToken } = useSelector((state) => state.tokens)
-  const lastProcessedId = React.useRef(0)
-  const [latestTokenId, setLatestTokenId] = React.useState(null)
+  const lastProcessedId = useRef(1)
   const api = useApi()
 
   // a helper function to keep useEffect cleaner
   const upsertToken = (token) => {
-    const { metadata: { type } } = token
-    if (tokenTypes.order === type) upsertOrder(token)
-    if (tokenTypes.powder === type) upsertPowder(token)
-    if (tokenTypes.powderTest === type) upsertLabTest(token) 
+    const { metadata } = token
+    if (tokenTypes.order === metadata.type) dispatch(upsertOrder(token))
+    if (tokenTypes.powder === metadata.type) dispatch(upsertPowder(token))
+    if (tokenTypes.powderTest === metadata.type) dispatch(upsertLabTest(token))
   }
 
   useEffect(() => {
-    const pollFunction = async (lastProcessedId) => {
+    // Old implementation, as we agreed this will become a new story to refactor
+    // once we have got auth and other elements in (more comments in src/index.js)
+    const pollFunction = async (current = 1) => {
+      let latestId = null
       try {
-        if (latestTokenId === null) {
-          const latest = await api.latestToken()
-          setLatestTokenId(latest)
+        latestId = await api.latestToken().then((res) => res.id)
+        if (current < latestId) {
+          const token = await api.tokenById(current)
+          upsertToken(token)
+          // returning without await because then it will fetched in parallel'is
+          return pollFunction(current + 1)
         }
-        if (lastProcessedId < latestTokenId) {
-          upsertToken(await api.tokenById(lastProcessedId))
-          return pollFunction(lastProcessedId + 1)
-        }
-        setLatestTokenId(null)
-        console.info(`Polling is complete.\nCurrent Index -> ${lastProcessedId}`)
-
-        return setTimeout(pollFunction, 5000)
+        console.info(`Polling is complete.\nCurrent Index -> ${current}`)
+        lastProcessedId.current = current
       } catch (e) {
         console.error('Error occured while fetching tokens: ', e)
       }
     }
 
-    setTimeout(pollFunction, 0)
+    const timer = setTimeout(() => pollFunction(lastProcessedId.current), 5000)
 
-  }, [dispatch, api]) // effect sensitivities.
+    // The clean-up function clears the timer (as expected) but also sets it to null to indicate to the
+    // `pollFunc` that this specific effect instantiation has been canceled
+    return () => {
+      clearTimeout(timer)
+    }
+  }, [api, dispatch]) // effect sensitivities.
 
   return <>{children}</>
 }
