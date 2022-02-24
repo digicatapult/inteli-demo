@@ -10,8 +10,6 @@ import makeStyles from '@material-ui/core/styles/makeStyles'
 import { Link as RouterLink } from 'react-router-dom'
 import moment from 'moment'
 
-import { mapPartIdToImage } from '../../features/partsSlice'
-
 const useStyles = makeStyles({
   maherStyle: {
     backgroundColor: '#0C74BB',
@@ -62,7 +60,7 @@ const useStyles = makeStyles({
 const SummaryRow = ({ order, activeItem }) => {
   const {
     id: orderId,
-    metadata: { partId, name, orderImage: image, quantity },
+    metadata: { name, orderImage: image, quantity },
     timestamp,
   } = order
 
@@ -86,10 +84,10 @@ const SummaryRow = ({ order, activeItem }) => {
           <Grid item xs={3}>
             <CardMedia
               component="img"
-              alt={image?.filename || 'unknown'}
+              alt={image.filename}
               width="160"
-              image={mapPartIdToImage[partId]}
-              title={image?.filename || 'unknown'}
+              image={image.url}
+              title={image.filename}
             />
           </Grid>
           <Grid item xs={8}>
