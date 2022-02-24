@@ -3,26 +3,32 @@ import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { configureStore } from '@reduxjs/toolkit'
 
-// this seems a little overkill to render a different app rather than render different components, we should focus on re-useable components
 import CustomerApp from './customer'
 import AdditiveManufacturerApp from './am'
 import LaboratoryApp from './laboratory'
 import rootReducer from './reducers'
 import BlockchainWatcher from './shared/BlockchainWatcher.js'
-import auth from './redux-middleware/auth'
-import { loadState, saveState } from './utils/localStorage'
+// as agreed this will be part of another PR, doing in stages
+// 1. blockchainwatcher back to timeout
+// 2. localstorage implementation
+// 3. setting lastFetchedToken
+// 4. ability to reset invalidate token after the 'ref' point
+//import { loadState, saveState } from './utils/localStorage'
+/* please read above ^^^ 
+  // preloadedState: loadState(),
+store.subscribe(() => { 
+  const state = store.getState()
+  saveState(state)
+})
+*/
 
 const store = configureStore({
   reducer: rootReducer,
   devTools: process.env.NODE_ENV !== 'production',
-  preloadedState: loadState(),
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(auth),
+
 })
 
-store.subscribe(() => {
-  const state = store.getState()
-  saveState(state)
-})
+
 
 let App = null
 let props = {}

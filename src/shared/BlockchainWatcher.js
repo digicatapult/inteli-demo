@@ -1,47 +1,53 @@
 import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
-import { fetchTokens, initTokens } from '../features/tokensSlice'
+import { upsertOrder } from '../features/ordersSlice'
+import { upsertPowder } from '../features/powdersSlice'
+import { upsertLabTest } from '../features/labTestsSlice'
+import useApi from '../utils/vitalamApi'
+import { tokenTypes } from '../utils'
 
 // temporary version of the component that will poll the API
 const BlockchainWatcher = ({ children }) => {
   const dispatch = useDispatch()
-  const [isLoaded, setIsLoaded] = React.useState(false)
-  const { isFetching } = useSelector((state) => state.tokens)
+  // TODO replace lastProcessedId with lastFetchedToken
+  // more details in src/index.js comments
+  // const { lastFetchedToken } = useSelector((state) => state.tokens)
+  const lastProcessedId = React.useRef(0)
+  const [latestTokenId, setLatestTokenId] = React.useState(null)
+  const api = useApi()
 
-  // This effect manages the polling for new tokens
-  // TODO refactor chain watcher
+  // a helper function to keep useEffect cleaner
+  const upsertToken = (token) => {
+    const { metadata: { type } } = token
+    if (tokenTypes.order === type) upsertOrder(token)
+    if (tokenTypes.powder === type) upsertPowder(token)
+    if (tokenTypes.powderTest === type) upsertLabTest(token) 
+  }
+
   useEffect(() => {
-    if (!isLoaded) {
-      dispatch(initTokens())
-      setIsLoaded(true)
-      console.log('finished loading state from local storage')
-    } else {
-      // will store the timeout id. This will be set for the first time lower down
-      // note when this is null it means the timer has been cancelled which is caused
-      // by a component render
-      const timerFn = async () => {
-        try {
-          if (!isFetching) {
-            dispatch(fetchTokens())
-          }
-        } catch (err) {
-          console.error(
-            `Error polling for blockchain state. Error was ${
-              `"${err.message}"` || JSON.stringify(err, null, 2)
-            }`
-          )
+    const pollFunction = async (lastProcessedId) => {
+      try {
+        if (latestTokenId === null) {
+          const latest = await api.latestToken()
+          setLatestTokenId(latest)
         }
-      }
-      const timer = setTimeout(timerFn, 3000)
+        if (lastProcessedId < latestTokenId) {
+          upsertToken(await api.tokenById(lastProcessedId))
+          return pollFunction(lastProcessedId + 1)
+        }
+        setLatestTokenId(null)
+        console.info(`Polling is complete.\nCurrent Index -> ${lastProcessedId}`)
 
-      // The clean-up function clears the timer (as expected) but also sets it to null to indicate to the
-      // `pollFunc` that this specific effect instantiation has been canceled
-      return () => {
-        clearTimeout(timer)
+        return setTimeout(pollFunction, 5000)
+      } catch (e) {
+        console.error('Error occured while fetching tokens: ', e)
       }
     }
-  }, [dispatch, isFetching, isLoaded]) // effect sensitivities.
+
+    setTimeout(pollFunction, 0)
+
+  }, [dispatch, api]) // effect sensitivities.
 
   return <>{children}</>
 }
