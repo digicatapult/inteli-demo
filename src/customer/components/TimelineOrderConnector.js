@@ -22,11 +22,9 @@ const TimelineOrderConnector = ({ latestStatus, rowStatus }) => {
   const rowStatusIndex = getTimelineStatusIndex(rowStatus)
 
   const getTimelineConnectorClassName = (latestStatusIndex, rowStatusIndex) => {
-    if (latestStatusIndex > rowStatusIndex) {
-      return classes.orangeLine
-    } else {
-      return classes.greyLine
-    }
+    return latestStatusIndex > rowStatusIndex
+      ? classes.orangeLine
+      : classes.greyLine
   }
 
   return (
