@@ -13,7 +13,7 @@ networks:
 
 services:
   node-alice:
-    image: ghcr.io/digicatapult/vitalam-node:v2.8.1
+    image: ghcr.io/digicatapult/vitalam-node:v2.9.3
     container_name: node-alice
     command:
       --base-path /data/
@@ -35,7 +35,7 @@ services:
     networks: ['chain', 'cust']
 
   ipfs-alice:
-    image: ghcr.io/digicatapult/vitalam-ipfs:v1.1.0
+    image: ghcr.io/digicatapult/vitalam-ipfs:v1.2.9
     container_name: ipfs-alice
     ports:
       - 5001:5001
@@ -48,7 +48,7 @@ services:
     networks: ['ipfs', 'cust']
 
   api-alice:
-    image: ghcr.io/digicatapult/vitalam-api:v2.8.0
+    image: ghcr.io/digicatapult/vitalam-api:v2.9.0
     container_name: api-alice
     ports:
       - 3001:3001
@@ -81,6 +81,6 @@ services:
         - REACT_APP_AUTH_CLIENT_ID=${REACT_API_AUTH_CLIENT_ID}
         - REACT_APP_AUTH_CLIENT_SECRET=${REACT_API_AUTH_CLIENT_SECRET}
     ports:
-      - 8001:3000
+      - 8001:80
     restart: on-failure
     networks: ['cust']
