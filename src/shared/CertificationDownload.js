@@ -43,7 +43,6 @@ const CertificationDownload = ({ name, downloadData }) => {
       </Typography>
       <a
         href={downloadData}
-        target="_blank"
         rel="noreferrer"
         download={name}
         className={classes.attachmentDownload}

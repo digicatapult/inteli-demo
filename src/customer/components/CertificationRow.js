@@ -5,10 +5,9 @@ import makeStyles from '@material-ui/core/styles/makeStyles'
 import tick from '../../images/tick.svg'
 import pending from '../../images/pending.svg'
 import CertificationDownload from '../../shared/CertificationDownload'
-import { orderStatus } from '../../utils/statuses'
 import { getMetadataTimestamp } from '../../utils/timeline'
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   root: {
     padding: '8px 0px',
     width: '100%',
@@ -41,20 +40,20 @@ const useStyles = makeStyles({
     textDecoration: 'underline',
   },
   greyText: {
-    color: '#868B92',
+    color: theme.palette.primary.grey,
   },
   dateTime: {
     justifyContent: 'flex-end',
     alignItems: 'flex-end',
     float: 'right',
-    color: '#868B92',
+    color: theme.palette.primary.grey,
     fontWeight: '350',
   },
   time: {
     textAlign: 'right',
     width: '100%',
   },
-})
+}))
 
 const CertificationRow = ({ order, requiredCert }) => {
   const { metadataKey, description } = requiredCert
@@ -81,7 +80,10 @@ const CertificationRow = ({ order, requiredCert }) => {
         </Grid>
         <Grid item xs={2} className={classes.rowItem}>
           {file ? (
-            <CertificationDownload name={file.name} downloadData={file.url} />
+            <CertificationDownload
+              name={file.fileName}
+              downloadData={file.url}
+            />
           ) : (
             <></>
           )}
@@ -93,11 +95,7 @@ const CertificationRow = ({ order, requiredCert }) => {
               variant="subtitle1"
               className={`${classes.dateTime} ${classes.time}`}
             >
-              {getMetadataTimestamp(
-                order.history,
-                requiredCert.metadataKey,
-                orderStatus.accepted // value???????
-              )}
+              {getMetadataTimestamp(order.history, requiredCert.metadataKey)}
             </Typography>
           )}
         </Grid>

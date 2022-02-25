@@ -11,6 +11,7 @@ const theme = createTheme({
   palette: {
     primary: {
       main: '#1f918b',
+      grey: '#868B92',
     },
     accept: {
       main: '#17AE93',

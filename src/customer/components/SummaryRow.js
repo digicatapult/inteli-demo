@@ -10,7 +10,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles'
 import { Link as RouterLink } from 'react-router-dom'
 import moment from 'moment'
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   maherStyle: {
     backgroundColor: '#0C74BB',
     color: '#ffff',
@@ -50,12 +50,12 @@ const useStyles = makeStyles({
     fontWeight: '350',
   },
   dateColour: {
-    color: '#868B92',
+    color: theme.palette.primary.grey,
   },
   maherPadding: {
     paddingLeft: '25px',
   },
-})
+}))
 
 const SummaryRow = ({ order, activeItem }) => {
   const {

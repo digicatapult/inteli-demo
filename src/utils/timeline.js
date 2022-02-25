@@ -22,10 +22,13 @@ const getStatusLabel = (orderStatus) => {
   return statusLabels[orderStatus]
 }
 
-const getMetadataTimestamp = (history, metadataKey, metadataValue) => {
-  const mostRecentHistory = history.find(
-    (h) => h.metadata[metadataKey] === metadataValue
-  )
+const getMetadataTimestamp = (history, metadataKey, metadataValue = null) => {
+  const mostRecentHistory = history.find((h) => {
+    // checks value matches if arg is given, otherwise checks any value (e.g. getting timestamps of files)
+    return metadataValue
+      ? h.metadata[metadataKey] === metadataValue
+      : metadataKey in h.metadata
+  })
 
   return mostRecentHistory
     ? getTokenTimestampFormattedDate(mostRecentHistory.timestamp)

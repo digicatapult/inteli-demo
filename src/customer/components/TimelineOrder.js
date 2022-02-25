@@ -19,12 +19,12 @@ import {
   getTimelineStatusIndex,
 } from '../../utils/timeline'
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   dateTime: {
     justifyContent: 'flex-end',
     alignItems: 'flex-end',
     float: 'right',
-    color: '#868B92',
+    color: theme.palette.primary.grey,
     fontWeight: '350',
   },
   time: {
@@ -36,7 +36,7 @@ const useStyles = makeStyles({
   timelineRowContent: {
     padding: '20px 0px 40px 0px',
   },
-})
+}))
 
 const TimelineOrder = ({ order }) => {
   const classes = useStyles()
