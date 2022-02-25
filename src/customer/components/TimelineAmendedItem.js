@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
     width: '125px',
   },
   proposalAcceptedContainer: {
-    margin: '10px 40px',
+    padding: '15px',
   },
   tick: {
     padding: '5px 10px',
