@@ -20,21 +20,16 @@ import {
 } from '../../utils/timeline'
 
 const useStyles = makeStyles((theme) => ({
-  dateTime: {
-    justifyContent: 'flex-end',
-    alignItems: 'flex-end',
+  timestamp: {
     float: 'right',
     color: theme.palette.primary.grey,
     fontWeight: '350',
-  },
-  time: {
-    paddingLeft: '20px',
   },
   timelineSeparator: {
     minHeight: '110px',
   },
   timelineRowContent: {
-    padding: '20px 0px 40px 0px',
+    marginBottom: '40px',
   },
 }))
 
@@ -62,7 +57,7 @@ const TimelineOrder = ({ order }) => {
               />
             </TimelineSeparator>
             <Grid item sm={12}>
-              <TimelineContent>
+              <TimelineContent className={classes.timelineRowContent}>
                 <Grid container alignItems="flex-start">
                   <Grid item xs={9}>
                     <Typography variant="h6">
@@ -72,7 +67,7 @@ const TimelineOrder = ({ order }) => {
                   <Grid item xs={3}>
                     <Typography
                       variant="subtitle1"
-                      className={`${classes.dateTime} ${classes.time}`}
+                      className={classes.timestamp}
                     >
                       {getMetadataTimestamp(
                         order.history,
@@ -80,12 +75,6 @@ const TimelineOrder = ({ order }) => {
                         orderStatus.submitted
                       )}
                     </Typography>
-                  </Grid>
-                  <Grid item xs={10}>
-                    <Typography
-                      className={classes.timelineRowContent}
-                      variant="subtitle1"
-                    ></Typography>
                   </Grid>
                 </Grid>
               </TimelineContent>
@@ -109,7 +98,7 @@ const TimelineOrder = ({ order }) => {
                 />
               </TimelineSeparator>
               <Grid item sm={12}>
-                <TimelineContent>
+                <TimelineContent className={classes.timelineRowContent}>
                   <Grid container alignItems="flex-start">
                     <Grid item xs={9}>
                       <Typography variant="h6">
@@ -119,7 +108,7 @@ const TimelineOrder = ({ order }) => {
                     <Grid item xs={3}>
                       <Typography
                         variant="subtitle1"
-                        className={`${classes.dateTime} ${classes.time}`}
+                        className={classes.timestamp}
                       >
                         {getMetadataTimestamp(
                           order.history,
@@ -146,7 +135,7 @@ const TimelineOrder = ({ order }) => {
               />
             </TimelineSeparator>
             <Grid item sm={12}>
-              <TimelineContent>
+              <TimelineContent className={classes.timelineRowContent}>
                 <Grid container alignItems="flex-start">
                   <Grid item xs={9}>
                     <Typography variant="h6">
@@ -156,7 +145,7 @@ const TimelineOrder = ({ order }) => {
                   <Grid item xs={3}>
                     <Typography
                       variant="subtitle1"
-                      className={`${classes.dateTime} ${classes.time}`}
+                      className={classes.timestamp}
                     >
                       {getMetadataTimestamp(
                         order.history,
@@ -170,12 +159,6 @@ const TimelineOrder = ({ order }) => {
                     getTimelineStatusIndex(orderStatus.accepted) && (
                     <Certification order={order} />
                   )}
-                  <Grid item xs={10}>
-                    <Typography
-                      className={classes.timelineRowContent}
-                      variant="subtitle1"
-                    ></Typography>
-                  </Grid>
                 </Grid>
               </TimelineContent>
               <TimelineOppositeContent />
@@ -193,7 +176,7 @@ const TimelineOrder = ({ order }) => {
               />
             </TimelineSeparator>
             <Grid item sm={12}>
-              <TimelineContent>
+              <TimelineContent className={classes.timelineRowContent}>
                 <Grid container alignItems="flex-start">
                   <Grid item xs={9}>
                     <Typography variant="h6">
@@ -203,7 +186,7 @@ const TimelineOrder = ({ order }) => {
                   <Grid item xs={3}>
                     <Typography
                       variant="subtitle1"
-                      className={`${classes.dateTime} ${classes.time}`}
+                      className={classes.timestamp}
                     >
                       {getMetadataTimestamp(
                         order.history,
@@ -211,12 +194,6 @@ const TimelineOrder = ({ order }) => {
                         orderStatus.manufacturing
                       )}
                     </Typography>
-                  </Grid>
-                  <Grid item xs={10}>
-                    <Typography
-                      className={classes.timelineRowContent}
-                      variant="subtitle1"
-                    ></Typography>
                   </Grid>
                 </Grid>
               </TimelineContent>
@@ -231,7 +208,7 @@ const TimelineOrder = ({ order }) => {
               />
             </TimelineSeparator>
             <Grid item sm={12}>
-              <TimelineContent>
+              <TimelineContent className={classes.timelineRowContent}>
                 <Grid container alignItems="flex-start">
                   <Grid item xs={9}>
                     <Typography variant="h6">
@@ -241,7 +218,7 @@ const TimelineOrder = ({ order }) => {
                   <Grid item xs={3}>
                     <Typography
                       variant="subtitle1"
-                      className={`${classes.dateTime} ${classes.time}`}
+                      className={classes.timestamp}
                     >
                       {getMetadataTimestamp(
                         order.history,
@@ -249,12 +226,6 @@ const TimelineOrder = ({ order }) => {
                         orderStatus.manufactured
                       )}
                     </Typography>
-                  </Grid>
-                  <Grid item xs={10}>
-                    <Typography
-                      className={classes.timelineRowContent}
-                      variant="subtitle1"
-                    ></Typography>
                   </Grid>
                 </Grid>
               </TimelineContent>

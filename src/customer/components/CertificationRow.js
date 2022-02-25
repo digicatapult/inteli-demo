@@ -17,39 +17,17 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     height: '36px',
   },
-  clickable: {
-    cursor: 'pointer',
-  },
   icon: {
-    display: 'block',
     margin: 'auto',
     width: '16px',
     height: '16px',
   },
-  dnd: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    cursor: 'pointer',
-    backgroundColor: '#F8F8F8',
-    border: '1px dashed #CCCCCC',
-    borderRadius: '4px',
-    height: '100%',
-  },
-  dndText: {
-    textDecoration: 'underline',
-  },
   greyText: {
     color: theme.palette.primary.grey,
   },
-  dateTime: {
-    justifyContent: 'flex-end',
-    alignItems: 'flex-end',
-    float: 'right',
+  timestamp: {
     color: theme.palette.primary.grey,
     fontWeight: '350',
-  },
-  time: {
     textAlign: 'right',
     width: '100%',
   },
@@ -91,10 +69,7 @@ const CertificationRow = ({ order, requiredCert }) => {
 
         <Grid item xs={2} className={classes.rowItem}>
           {file && (
-            <Typography
-              variant="subtitle1"
-              className={`${classes.dateTime} ${classes.time}`}
-            >
+            <Typography variant="subtitle1" className={classes.timestamp}>
               {getMetadataTimestamp(order.history, requiredCert.metadataKey)}
             </Typography>
           )}
