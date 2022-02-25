@@ -16,6 +16,9 @@ const theme = createTheme({
     accept: {
       main: '#17AE93',
     },
+    accept: {
+      main: '#17AE93',
+    },
   },
 })
 
