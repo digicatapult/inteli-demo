@@ -15,11 +15,7 @@ const Certification = ({ order }) => {
   const classes = useStyles()
 
   return (
-    <Grid
-      container
-      justifyContent="space-between"
-      className={classes.container}
-    >
+    <Grid container className={classes.container}>
       <Grid container direction="row">
         {order.metadata.requiredCerts.map((cert) => {
           return (

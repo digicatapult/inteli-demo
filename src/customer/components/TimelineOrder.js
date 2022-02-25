@@ -65,10 +65,7 @@ const TimelineOrder = ({ order }) => {
                     </Typography>
                   </Grid>
                   <Grid item xs={3}>
-                    <Typography
-                      variant="subtitle1"
-                      className={classes.timestamp}
-                    >
+                    <Typography className={classes.timestamp}>
                       {getMetadataTimestamp(
                         order.history,
                         'status',
@@ -106,10 +103,7 @@ const TimelineOrder = ({ order }) => {
                       </Typography>
                     </Grid>
                     <Grid item xs={3}>
-                      <Typography
-                        variant="subtitle1"
-                        className={classes.timestamp}
-                      >
+                      <Typography className={classes.timestamp}>
                         {getMetadataTimestamp(
                           order.history,
                           'status',
@@ -143,10 +137,7 @@ const TimelineOrder = ({ order }) => {
                     </Typography>
                   </Grid>
                   <Grid item xs={3}>
-                    <Typography
-                      variant="subtitle1"
-                      className={classes.timestamp}
-                    >
+                    <Typography className={classes.timestamp}>
                       {getMetadataTimestamp(
                         order.history,
                         'status',
@@ -184,10 +175,7 @@ const TimelineOrder = ({ order }) => {
                     </Typography>
                   </Grid>
                   <Grid item xs={3}>
-                    <Typography
-                      variant="subtitle1"
-                      className={classes.timestamp}
-                    >
+                    <Typography className={classes.timestamp}>
                       {getMetadataTimestamp(
                         order.history,
                         'status',
@@ -216,10 +204,7 @@ const TimelineOrder = ({ order }) => {
                     </Typography>
                   </Grid>
                   <Grid item xs={3}>
-                    <Typography
-                      variant="subtitle1"
-                      className={classes.timestamp}
-                    >
+                    <Typography className={classes.timestamp}>
                       {getMetadataTimestamp(
                         order.history,
                         'status',

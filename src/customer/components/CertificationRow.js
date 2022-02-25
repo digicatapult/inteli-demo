@@ -56,24 +56,21 @@ const CertificationRow = ({ order, requiredCert }) => {
         >
           <Typography>{description}</Typography>
         </Grid>
-        <Grid item xs={2} className={classes.rowItem}>
-          {file ? (
-            <CertificationDownload
-              name={file.fileName}
-              downloadData={file.url}
-            />
-          ) : (
-            <></>
-          )}
-        </Grid>
-
-        <Grid item xs={2} className={classes.rowItem}>
-          {file && (
-            <Typography variant="subtitle1" className={classes.timestamp}>
-              {getMetadataTimestamp(order.history, requiredCert.metadataKey)}
-            </Typography>
-          )}
-        </Grid>
+        {file && (
+          <>
+            <Grid item xs={2} className={classes.rowItem}>
+              <CertificationDownload
+                name={file.fileName}
+                downloadData={file.url}
+              />
+            </Grid>
+            <Grid item xs={2} className={classes.rowItem}>
+              <Typography className={classes.timestamp}>
+                {getMetadataTimestamp(order.history, requiredCert.metadataKey)}
+              </Typography>
+            </Grid>
+          </>
+        )}
       </Grid>
     </Paper>
   )
