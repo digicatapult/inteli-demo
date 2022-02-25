@@ -135,7 +135,10 @@ const TimelineOrder = ({ order }) => {
                 latestStatus={latestStatus}
                 rowStatus={orderStatus.accepted}
               />
-              <TimelineOrderConnector row={3} status={latestStatus} />
+              <TimelineOrderConnector
+                latestStatus={latestStatus}
+                rowStatus={orderStatus.accepted}
+              />
             </TimelineSeparator>
             <Grid item sm={12}>
               <TimelineContent>
@@ -174,7 +177,10 @@ const TimelineOrder = ({ order }) => {
                 latestStatus={latestStatus}
                 rowStatus={orderStatus.manufacturing}
               />
-              <TimelineOrderConnector row={4} status={latestStatus} />
+              <TimelineOrderConnector
+                latestStatus={latestStatus}
+                rowStatus={orderStatus.manufacturing}
+              />
             </TimelineSeparator>
             <Grid item sm={12}>
               <TimelineContent>
