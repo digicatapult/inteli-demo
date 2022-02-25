@@ -139,11 +139,9 @@ const TimelineOrder = ({ order }) => {
             </TimelineSeparator>
             <Grid item sm={12}>
               <TimelineContent>
-                {' '}
                 <Grid container alignItems="flex-start">
                   <Grid item xs={9}>
                     <Typography variant="h6">
-                      {' '}
                       {getStatusLabel(orderStatus.accepted)}
                     </Typography>
                   </Grid>
@@ -180,7 +178,6 @@ const TimelineOrder = ({ order }) => {
             </TimelineSeparator>
             <Grid item sm={12}>
               <TimelineContent>
-                {' '}
                 <Grid container alignItems="flex-start">
                   <Grid item xs={9}>
                     <Typography variant="h6">
@@ -222,7 +219,6 @@ const TimelineOrder = ({ order }) => {
                 <Grid container alignItems="flex-start">
                   <Grid item xs={9}>
                     <Typography variant="h6">
-                      {' '}
                       {getStatusLabel(orderStatus.manufactured)}
                     </Typography>
                   </Grid>

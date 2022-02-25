@@ -9,7 +9,7 @@ import pending from '../../../images/pending.svg'
 import cloud from '../../../images/cloud.svg'
 import CertificationDownload from './CertificationDownload'
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   root: {
     padding: '8px 0px',
     width: '100%',
@@ -42,9 +42,9 @@ const useStyles = makeStyles({
     textDecoration: 'underline',
   },
   greyText: {
-    color: '#868B92',
+    color: theme.palette.primary.grey,
   },
-})
+}))
 
 const CertificationRow = ({
   metadata,
