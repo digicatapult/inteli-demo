@@ -13,6 +13,7 @@ const theme = createTheme({
       main: '#8ec8c4',
       dark: '#0c75bb',
       contrastText: '#fff',
+      grey: '#868B92',
     },
     highlight: {
       main: '#ff9900',

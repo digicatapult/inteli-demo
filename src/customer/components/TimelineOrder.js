@@ -140,7 +140,10 @@ const TimelineOrder = ({ order }) => {
                 latestStatus={latestStatus}
                 rowStatus={orderStatus.accepted}
               />
-              <TimelineOrderConnector row={3} status={latestStatus} />
+              <TimelineOrderConnector
+                latestStatus={latestStatus}
+                rowStatus={orderStatus.accepted}
+              />
             </TimelineSeparator>
             <Grid item sm={12}>
               <TimelineContent>
@@ -184,11 +187,13 @@ const TimelineOrder = ({ order }) => {
                 latestStatus={latestStatus}
                 rowStatus={orderStatus.manufacturing}
               />
-              <TimelineOrderConnector row={4} status={latestStatus} />
+              <TimelineOrderConnector
+                latestStatus={latestStatus}
+                rowStatus={orderStatus.manufacturing}
+              />
             </TimelineSeparator>
             <Grid item sm={12}>
               <TimelineContent>
-                {' '}
                 <Grid container alignItems="flex-start">
                   <Grid item xs={9}>
                     <Typography variant="h6">
@@ -230,7 +235,6 @@ const TimelineOrder = ({ order }) => {
                 <Grid container alignItems="flex-start">
                   <Grid item xs={9}>
                     <Typography variant="h6">
-                      {' '}
                       {getStatusLabel(orderStatus.manufactured)}
                     </Typography>
                   </Grid>

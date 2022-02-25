@@ -30,8 +30,7 @@ const useFetchWrapper = () => {
         return response.text()
       case 'application/octet-stream': {
         const blob = await response.blob()
-        const appBlob = new Blob([blob], { type: 'application' })
-        const url = URL.createObjectURL(appBlob)
+        const url = URL.createObjectURL(blob)
         const fileName = response.headers
           .get('content-disposition')
           .split('filename=')[1]

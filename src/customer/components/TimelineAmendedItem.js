@@ -18,7 +18,7 @@ import {
 import { getAmendedDeliveryByFormattedDate } from '../../utils/timeline'
 import tick from '../../images/tick.svg'
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   actionRowWarning: {
     color: '#C5052B',
     fontWeight: '700',
@@ -45,7 +45,7 @@ const useStyles = makeStyles({
     paddingBottom: '8px',
   },
   acceptProposedButton: {
-    backgroundColor: '#17AE93',
+    backgroundColor: theme.palette.accept.main,
     color: '#fff',
     width: '125px',
     marginBottom: '15px',
@@ -59,17 +59,12 @@ const useStyles = makeStyles({
     margin: '10px 40px',
   },
   tick: {
-    display: 'block',
-    float: 'left',
     padding: '5px 10px',
-    height: '100%',
   },
   proposalAcceptedText: {
-    color: '#17AE93',
-    display: 'block',
-    float: 'right',
+    color: theme.palette.accept.main,
   },
-})
+}))
 
 const AmendedTimeLineItem = ({ order }) => {
   const {
@@ -180,12 +175,12 @@ const AmendedTimeLineItem = ({ order }) => {
       </Grid>
     </>
   ) : (
-    <div className={classes.proposalAcceptedContainer}>
+    <Grid container className={classes.proposalAcceptedContainer}>
       <img src={tick} className={classes.tick} />
       <Typography variant="subtitle2" className={classes.proposalAcceptedText}>
         Proposal accepted
       </Typography>
-    </div>
+    </Grid>
   )
 }
 
