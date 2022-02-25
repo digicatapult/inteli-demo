@@ -114,7 +114,10 @@ const CertificationRow = ({
         </Grid>
         <Grid item xs={2} className={classes.rowItem}>
           {file ? (
-            <CertificationDownload name={file.name} downloadData={file.url} />
+            <CertificationDownload
+              name={file.fileName}
+              downloadData={file.url}
+            />
           ) : (
             <Grid
               container
