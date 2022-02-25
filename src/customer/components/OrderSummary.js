@@ -43,10 +43,6 @@ const useStyles = makeStyles({
     borderRadius: '3px',
     marginRight: '20px',
   },
-  leftPadding: {
-    paddingLeft: '60px',
-    marginBottom: '20px',
-  },
   columnTwoPadding: {
     paddingLeft: '40px',
   },
@@ -57,7 +53,7 @@ const useStyles = makeStyles({
     paddingLeft: '10px',
   },
   orderStatus: {
-    paddingTop: '30px',
+    padding: '45px',
   },
   shippingPadding: {
     paddingBottom: '10px',
@@ -201,11 +197,7 @@ const OrderSummary = ({ order }) => {
       </Grid>
 
       <Grid item>
-        <Typography
-          style={{ color: '#494E56' }}
-          className={`${classes.leftPadding} ${classes.orderStatus}`}
-          variant="h5"
-        >
+        <Typography className={classes.orderStatus} variant="h5">
           Order Status
         </Typography>
         <Grid container>
