@@ -99,54 +99,56 @@ const CertificationRow = ({
     <Paper elevation={0} className={classes.root}>
       <Grid container>
         <Grid item xs={1} className={classes.rowItem}>
-          {file ? (
-            <img src={tick} className={classes.icon} />
-          ) : (
-            <img src={pending} className={classes.icon} />
-          )}
+          <img src={file ? tick : pending} className={classes.icon} />
         </Grid>
-        <Grid
-          item
-          xs={8}
-          className={`${file ? '' : classes.greyText} ${classes.rowItem}`}
-        >
-          <Typography>{description}</Typography>
-        </Grid>
-        <Grid item xs={2} className={classes.rowItem}>
-          {file ? (
-            <CertificationDownload
-              name={file.fileName}
-              downloadData={file.url}
-            />
-          ) : (
+        {file ? (
+          <>
+            <Grid item xs={8} className={classes.rowItem}>
+              <Typography>{description}</Typography>
+            </Grid>
+            <Grid item xs={2} className={classes.rowItem}>
+              <CertificationDownload
+                name={file.fileName}
+                downloadData={file.url}
+              />
+            </Grid>
+            <Grid item xs={1} className={classes.rowItem}>
+              <CardMedia
+                image={removeUploadX}
+                className={`${classes.icon} ${classes.clickable}`}
+                onClick={removeUpload}
+              />
+            </Grid>
+          </>
+        ) : (
+          <>
             <Grid
-              container
-              direction="column"
-              className={classes.dnd}
-              {...getRootProps()}
+              item
+              xs={8}
+              className={`${classes.greyText} ${classes.rowItem}`}
             >
-              <input {...getInputProps()} />
-              <Grid item xs={6}>
-                <img src={cloud} className={`${classes.icon}`} />
-              </Grid>
-              <Grid item xs={6}>
-                <Typography variant="subtitle2" className={classes.dndText}>
-                  {'Upload'}
-                </Typography>
+              <Typography>{description}</Typography>
+            </Grid>
+            <Grid item xs={2} className={classes.rowItem}>
+              <Grid
+                container
+                direction="column"
+                className={classes.dnd}
+                {...getRootProps()}
+              >
+                <input {...getInputProps()} />
+                <Grid item xs={6}>
+                  <img src={cloud} className={`${classes.icon}`} />
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography variant="subtitle2" className={classes.dndText}>
+                    Upload
+                  </Typography>
+                </Grid>
               </Grid>
             </Grid>
-          )}
-        </Grid>
-
-        <Grid item xs={1} className={classes.rowItem}>
-          {file && (
-            <CardMedia
-              image={removeUploadX}
-              className={`${classes.icon} ${classes.clickable}`}
-              onClick={removeUpload}
-            />
-          )}
-        </Grid>
+          </>
+        )}
       </Grid>
     </Paper>
   )

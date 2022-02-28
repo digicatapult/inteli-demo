@@ -43,21 +43,13 @@ const CertificationRow = ({ order, requiredCert }) => {
     <Paper elevation={0} className={classes.root}>
       <Grid container>
         <Grid item xs={1} className={classes.rowItem}>
-          {file ? (
-            <img src={tick} className={classes.icon} />
-          ) : (
-            <img src={pending} className={classes.icon} />
-          )}
+          <img src={file ? tick : pending} className={classes.icon} />
         </Grid>
-        <Grid
-          item
-          xs={7}
-          className={`${file ? '' : classes.greyText} ${classes.rowItem}`}
-        >
-          <Typography>{description}</Typography>
-        </Grid>
-        {file && (
+        {file ? (
           <>
+            <Grid item xs={7} className={classes.rowItem}>
+              <Typography>{description}</Typography>
+            </Grid>
             <Grid item xs={2} className={classes.rowItem}>
               <CertificationDownload
                 name={file.fileName}
@@ -70,6 +62,14 @@ const CertificationRow = ({ order, requiredCert }) => {
               </Typography>
             </Grid>
           </>
+        ) : (
+          <Grid
+            item
+            xs={7}
+            className={`${classes.greyText} ${classes.rowItem}`}
+          >
+            <Typography>{description}</Typography>
+          </Grid>
         )}
       </Grid>
     </Paper>
