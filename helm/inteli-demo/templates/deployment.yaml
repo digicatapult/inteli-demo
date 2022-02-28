@@ -42,5 +42,5 @@ spec:
               subPath: applicationConfig.json
       volumes:
         - name: application-config
-          ConfigMap:
+          configMap:
             name: {{ include "inteli-demo.fullname" . }}-config
