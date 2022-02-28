@@ -136,7 +136,7 @@ jobs:
       - name: Dependency Check
         run: npm run depcheck
   
-    check-version:
+  check-version:
     name: 'Check version'
     runs-on: ubuntu-latest
 
