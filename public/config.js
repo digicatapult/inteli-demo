@@ -1,5 +1,14 @@
 let config = {
-  persona: 'cust',
+  // authDomain
+  // clientID
+  // custAuthClientID
+  // t1AuthClientID
+  // authAudience
+  // apiHost
+  // apiPort
+  // substrateHost
+  // substratePort
+  // vitalamDemoPersona
 }
 
 if (!Window.config) {
