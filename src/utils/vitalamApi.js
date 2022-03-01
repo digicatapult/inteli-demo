@@ -1,8 +1,21 @@
 import { useAuth0 } from '@auth0/auth0-react'
 import { useDispatch } from 'react-redux'
 import { updateNetworkStatus } from '../features/networkStatusSlice'
+import { tokenTypes } from '.'
 
 import { AUTH_AUDIENCE, API_HOST, API_PORT } from './env.js'
+
+const toJSON = async (url) => {
+  const response = await fetch(url)
+  return response.json()
+}
+
+const svgMimeUrl = async (imageUrl) => {
+  const response = await fetch(imageUrl)
+  const oldBlob = await response.blob()
+  const blob = new Blob([oldBlob], { type: 'image/svg+xml' })
+  return URL.createObjectURL(blob)
+}
 
 const useFetchWrapper = () => {
   const dispatch = useDispatch()
@@ -90,10 +103,27 @@ const useApi = () => {
       }
     )
 
-    return {
+    const metadata = await getMetadata(token.id, token.metadata_keys)
+    const isOrder = metadata.type === tokenTypes.order
+    const enrichedToken = {
       ...token,
-      metadata: await getMetadata(token.id, token.metadata_keys),
+      metadata: {
+        ...metadata,
+        ...(metadata.orderImage && isOrder
+          ? {
+              orderImage: {
+                ...metadata.orderImage,
+                url: await svgMimeUrl(metadata.orderImage.url),
+              },
+            }
+          : undefined),
+        ...(metadata.requiredCerts && isOrder
+          ? { requiredCerts: await toJSON(metadata.requiredCerts.url) }
+          : {}),
+      },
     }
+
+    return enrichedToken
   }
 
   const getMetadata = async (id, metadataKeys) => {

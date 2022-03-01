@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "inteli-demo.fullname" . }}
+  labels:
+    {{- include "inteli-demo.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      name: {{ include "inteli-demo.fullname" . }}
+  replicas: {{ .Values.replicaCount }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+      labels:
+        name: {{ include "inteli-demo.fullname" . }}
+    spec:
+      {{- include "inteli-demo.imagePullSecrets" . | indent 6 }}
+      containers:
+        - name: {{ include "inteli-demo.fullname" . }}
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy | quote }}
+          ports:
+            - containerPort: {{ .Values.config.port }}
+              name: http
+              protocol: TCP
+          {{- if .Values.config.enableLivenessProbe }}
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 10
+            failureThreshold: 5
+            timeoutSeconds: 3
+            periodSeconds: 10
+          {{- end }}
+          volumeMounts:
+            - name: application-config
+              mountPath: /vitalam-demo-client/applicationConfig.json
+              subPath: applicationConfig.json
+      volumes:
+        - name: application-config
+          configMap:
+            name: {{ include "inteli-demo.fullname" . }}-config
