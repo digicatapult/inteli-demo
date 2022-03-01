@@ -5,4 +5,5 @@ metadata:
   labels:
     {{- include "inteli-demo.labels" . | nindent 4 }}
 data:
-  config.js: {{- tpl (.Files.Get "files/config.js.tpl") . }}
+  config.js: |-
+{{ tpl (.Files.Get "files/config.js.tpl") . | indent 4 }}
