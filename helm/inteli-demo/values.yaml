@@ -3,7 +3,9 @@ config:
   port: 80
   logLevel: info
   enableLivenessProbe: true
-  applicationConfig: {}
+  applicationConfig:
+    foo: bar
+    blah: reeeee
 ingress:
   # annotations: {}
   # className: ""

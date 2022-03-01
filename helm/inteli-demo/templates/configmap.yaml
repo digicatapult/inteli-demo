@@ -5,4 +5,4 @@ metadata:
   labels:
     {{- include "inteli-demo.labels" . | nindent 4 }}
 data:
-  applicationConfig.json: {{ .Values.config.applicationConfig }}
+  config.js: {{- tpl (.Files.Get "files/config.js.tpl") . }}
