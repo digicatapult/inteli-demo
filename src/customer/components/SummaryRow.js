@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
 const SummaryRow = ({ order, activeItem }) => {
   const {
     id: orderId,
-    metadata: { name, orderImage: image, quantity },
+    metadata: { name, orderImage, quantity },
     timestamp,
   } = order
 
@@ -84,10 +84,10 @@ const SummaryRow = ({ order, activeItem }) => {
           <Grid item xs={3}>
             <CardMedia
               component="img"
-              alt={image.filename}
+              alt={orderImage.filename}
               width="160"
-              image={image.url}
-              title={image.filename}
+              image={orderImage.url}
+              title={orderImage.filename}
             />
           </Grid>
           <Grid item xs={8}>

@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 import { CardMedia, Box, Grid, Paper, Typography } from '@material-ui/core'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import { useDispatch } from 'react-redux'
-
 import { markOrderRead } from '../../../features/readOrdersSlice'
 import { orderStatus } from '../../../utils'
 import OrderStatus from './Status'
@@ -97,7 +96,6 @@ const OrderDetail = ({ order }) => {
   const {
     metadata: {
       partId,
-      orderImage,
       name,
       material,
       alloy,
@@ -107,6 +105,7 @@ const OrderDetail = ({ order }) => {
       status,
       orderReference,
       requiredCerts,
+      orderImage,
     },
   } = order
 
