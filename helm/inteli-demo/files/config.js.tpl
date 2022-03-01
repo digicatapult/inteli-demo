@@ -11,4 +11,3 @@ let config = {{ $.Values.config.applicationConfig | toJson }}
   for (const [key, value] of Object.entries(config)) {
     Window.config.inteli[key] = value
   }
-  
