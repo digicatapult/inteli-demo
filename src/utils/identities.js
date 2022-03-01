@@ -1,3 +1,5 @@
+import { VITALAM_DEMO_PERSONA } from './env.js'
+
 // not sure these are correct. Placeholder for now
 const identities = {
   am: '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty',
@@ -6,6 +8,6 @@ const identities = {
   amlab: '5HGjWAeFDfFCWPsjFQdVV2Msvz2XtMktvgocEZcCj68kUMaw',
 }
 
-identities.current = identities[process.env.REACT_APP_VITALAM_DEMO_PERSONA]
+identities.current = identities[VITALAM_DEMO_PERSONA]
 
 export default identities
