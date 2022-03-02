@@ -38,8 +38,8 @@ spec:
           {{- end }}
           volumeMounts:
             - name: application-config
-              mountPath: /vitalam-demo-client/applicationConfig.json
-              subPath: applicationConfig.json
+              mountPath: /vitalam-demo-client/config.js
+              subPath: config.js
       volumes:
         - name: application-config
           configMap:

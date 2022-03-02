@@ -2,10 +2,9 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { CardMedia, makeStyles } from '@material-ui/core'
 
-import images from '../../images'
+import { SUBSTRATE_HOST, SUBSTRATE_PORT } from '../../utils/env.js'
 
-const substrateHost = process.env.REACT_APP_SUBSTRATE_HOST
-const substratePort = process.env.REACT_APP_SUBSTRATE_PORT
+import images from '../../images'
 
 const useStyles = makeStyles({
   statusImage: {
@@ -27,7 +26,7 @@ const NetworkStatusIndicator = () => {
       target="_blank"
       rel="noreferrer"
       href={`https://polkadot.js.org/apps/?rpc=${encodeURIComponent(
-        `ws://${substrateHost}:${substratePort}#`
+        `ws://${SUBSTRATE_HOST}:${SUBSTRATE_PORT}#`
       )}/explorer`}
       className={classes.statusImage}
     >
