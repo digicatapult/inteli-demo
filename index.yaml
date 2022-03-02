@@ -2,6 +2,20 @@ apiVersion: v1
 entries:
   inteli-demo:
   - apiVersion: v2
+    appVersion: 2.0.2
+    created: "2022-03-02T10:25:42.792895886Z"
+    description: A Helm chart for inteli-demo
+    digest: f782ca2d15dab9375d805e35c66bb6f7c8f60f5997c47665587c95068f5776c3
+    maintainers:
+    - email: opensource@digicatapult.org.uk
+      name: digicatapult
+      url: www.digicatapult.org.uk
+    name: inteli-demo
+    type: application
+    urls:
+    - https://digicatapult.github.io/inteli-demo/inteli-demo-2.0.2.tgz
+    version: 2.0.2
+  - apiVersion: v2
     appVersion: 2.0.1
     created: "2022-03-01T16:42:53.850614123Z"
     description: A Helm chart for inteli-demo
@@ -29,4 +43,4 @@ entries:
     urls:
     - https://digicatapult.github.io/inteli-demo/inteli-demo-2.0.0.tgz
     version: 2.0.0
-generated: "2022-03-01T16:42:53.850052416Z"
+generated: "2022-03-02T10:25:42.792286682Z"
