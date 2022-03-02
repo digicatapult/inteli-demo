@@ -10,6 +10,7 @@ import rootReducer from './reducers'
 import BlockchainWatcher from './shared/BlockchainWatcher.js'
 import { Auth0Provider } from '@auth0/auth0-react'
 import { getCurrentBaseUrl } from './utils/url'
+import { saveState, loadState } from './utils/localStorage'
 
 import {
   AUTH_AUDIENCE,
@@ -20,6 +21,11 @@ import {
 
 const store = configureStore({
   reducer: rootReducer,
+  preloadedState: loadState('app'),
+})
+
+store.subscribe(() => {
+  saveState(store.getState(), 'app')
 })
 
 let App = null

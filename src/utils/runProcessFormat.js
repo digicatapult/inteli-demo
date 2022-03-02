@@ -1,21 +1,28 @@
 import { metadataTypes } from './index'
 
 const filesToMetadata = (files) => {
-  return Object.entries(files).reduce((obj, [metadataKey, value]) => {
-    return {
-      ...obj,
-      [metadataKey]: { fileName: value.fileName, url: value.url },
-    }
-  }, {})
+  return Object.assign(
+    {},
+    ...Object.entries(files).map(([metadataKey, value]) => {
+      return {
+        [metadataKey]: {
+          fileName: value.fileName,
+          url: value.url,
+        },
+      }
+    })
+  )
 }
 
 const nonesToMetadata = (nones) => {
-  return nones.reduce((obj, metadataKey) => {
-    return {
-      ...obj,
-      [metadataKey]: '',
-    }
-  }, {})
+  return Object.assign(
+    {},
+    ...nones.map((metadataKey) => {
+      return {
+        [metadataKey]: '',
+      }
+    })
+  )
 }
 
 const literalsToFormData = (literals) => {
