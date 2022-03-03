@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { upsertOrder } from '../features/ordersSlice'
+import { upsertOrder, updateOrderImage } from '../features/ordersSlice'
 import { upsertPowder } from '../features/powdersSlice'
 import { upsertLabTest } from '../features/labTestsSlice'
 import {
@@ -9,29 +9,52 @@ import {
 } from '../features/referenceTokensSlice'
 
 import { useApi, tokenTypes } from '../utils'
+import { sanitizeOrderImage } from '../utils/vitalamApi'
 
 const BlockchainWatcher = ({ children }) => {
   const dispatch = useDispatch()
-  const { lastFetchedToken } = useSelector((state) => state.referenceTokens)
-  const lastProcessedId = useRef(lastFetchedToken.id)
+  const { referenceTokens, customerOrders } = useSelector((state) => state)
+  const [firstTime, setFirstTime] = React.useState(true)
+  const lastProcessedId = useRef(referenceTokens[LAST_TOKEN].id)
   const api = useApi()
 
   // This effect manages the polling for new tokens
   useEffect(() => {
     let timer = undefined
+    // This is temporary solution while we are going to update urls
+    // to not expire upon refresh, there is a story in the backlog
+    const refetchOrderImages = async () => {
+      customerOrders.map(async (order) => {
+        if (order.id === order.original_id) {
+          try {
+            const orderImage = await api.getMetadataValue(
+              order.id,
+              'orderImage'
+            )
+            dispatch(
+              updateOrderImage({
+                original_id: order.original_id,
+                ...(await sanitizeOrderImage({ orderImage }, true)),
+              })
+            )
+          } catch (e) {
+            console.log(e)
+          }
+        }
+      })
+      setFirstTime(false)
+    }
+
     const upsertToken = (token, type) => {
       if (tokenTypes.order === type) dispatch(upsertOrder(token))
       if (tokenTypes.powder === type) dispatch(upsertPowder(token))
       if (tokenTypes.labTests === type) dispatch(upsertLabTest(token))
-      if (token.id > lastFetchedToken.id) {
-        console.log(lastFetchedToken)
-        dispatch(
-          insertReferenceToken({
-            ...token,
-            type: LAST_TOKEN,
-          })
-        )
-      }
+      dispatch(
+        insertReferenceToken({
+          ...token,
+          type: LAST_TOKEN,
+        })
+      )
     }
 
     const pollFunc = async () => {
@@ -54,6 +77,9 @@ const BlockchainWatcher = ({ children }) => {
     // we should continue to loop. This is the general behaviour if there are no new tokens
     const timerFn = async () => {
       try {
+        if (firstTime) {
+          await refetchOrderImages()
+        }
         await pollFunc()
       } catch (err) {
         console.error(

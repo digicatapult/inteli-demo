@@ -3,8 +3,6 @@ import { createSlice } from '@reduxjs/toolkit'
 export const LAST_TOKEN = 'lastFetchedToken'
 export const REFERENCE_TOKEN = 'referenceToken'
 
-const removeProperty = (key, { [key]: val, ...rest }) => rest
-
 export const referenceTokensSlice = createSlice({
   name: 'referenceTokens',
   initialState: {
@@ -19,15 +17,11 @@ export const referenceTokensSlice = createSlice({
         [type]: token,
       }
     },
-    removeReferenceToken: (state, { payload }) => {
-      const { type } = payload
-      return removeProperty(type, state)
-    },
   },
 })
 
 export const { actions, reducer } = referenceTokensSlice
 
-export const { insertReferenceToken, removeReferenceToken } = actions
+export const { insertReferenceToken } = actions
 
 export default reducer

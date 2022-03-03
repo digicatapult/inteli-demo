@@ -10,11 +10,16 @@ const toJSON = async (url) => {
   return response.json()
 }
 
-const svgMimeUrl = async (imageUrl) => {
-  const response = await fetch(imageUrl)
-  const oldBlob = await response.blob()
-  const blob = new Blob([oldBlob], { type: 'image/svg+xml' })
-  return URL.createObjectURL(blob)
+export const sanitizeOrderImage = async (metadata, isOrder) => {
+  const { orderImage } = metadata
+  if (!isOrder || !orderImage) return undefined
+  const oldBlob = await fetch(orderImage.url).then((res) => res.blob())
+  return {
+    orderImage: {
+      ...orderImage,
+      url: URL.createObjectURL(new Blob([oldBlob], { type: 'image/svg+xml' })),
+    },
+  }
 }
 
 const useFetchWrapper = () => {
@@ -109,14 +114,7 @@ const useApi = () => {
       ...token,
       metadata: {
         ...metadata,
-        ...(metadata.orderImage && isOrder
-          ? {
-              orderImage: {
-                ...metadata.orderImage,
-                url: await svgMimeUrl(metadata.orderImage.url),
-              },
-            }
-          : undefined),
+        ...(await sanitizeOrderImage(metadata, isOrder)),
         ...(metadata.requiredCerts && isOrder
           ? { requiredCerts: await toJSON(metadata.requiredCerts.url) }
           : {}),
@@ -153,7 +151,7 @@ const useApi = () => {
     )
   }
 
-  return { runProcess, latestToken, tokenById }
+  return { runProcess, latestToken, tokenById, getMetadataValue }
 }
 
 export default useApi
