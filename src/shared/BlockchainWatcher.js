@@ -1,14 +1,19 @@
 import React, { useEffect, useRef } from 'react'
-import { useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { upsertOrder } from '../features/ordersSlice'
 import { upsertPowder } from '../features/powdersSlice'
 import { upsertLabTest } from '../features/labTestsSlice'
+import {
+  insertReferenceToken,
+  LAST_TOKEN,
+} from '../features/referenceTokensSlice'
 
 import { useApi, tokenTypes } from '../utils'
 
 const BlockchainWatcher = ({ children }) => {
   const dispatch = useDispatch()
-  const lastProcessedId = useRef(0)
+  const { lastFetchedToken } = useSelector((state) => state.referenceTokens)
+  const lastProcessedId = useRef(lastFetchedToken.id)
   const api = useApi()
 
   // This effect manages the polling for new tokens
@@ -18,11 +23,19 @@ const BlockchainWatcher = ({ children }) => {
       if (tokenTypes.order === type) dispatch(upsertOrder(token))
       if (tokenTypes.powder === type) dispatch(upsertPowder(token))
       if (tokenTypes.labTests === type) dispatch(upsertLabTest(token))
+      if (token.id > lastFetchedToken.id) {
+        console.log(lastFetchedToken)
+        dispatch(
+          insertReferenceToken({
+            ...token,
+            type: LAST_TOKEN,
+          })
+        )
+      }
     }
 
     const pollFunc = async () => {
       const { id: latestToken } = await api.latestToken()
-
       if (latestToken > lastProcessedId.current) {
         for (let i = lastProcessedId.current + 1; i <= latestToken; i++) {
           const token = await api.tokenById(i)
