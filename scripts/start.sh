@@ -1,25 +1,21 @@
 #!/bin/sh
-# RUN INIT DEFAULT (brings up cust, am, lab):
+# RUN INIT DEFAULT (brings up cust, am):
 # ./scripts/start.sh
 # RUN INIT ALL:
 # ./scripts/start.sh [all]
 # Where the argument is optional
 # OR RUN INIT OF INDIVIDUAL PERSONA:
-# ./scripts/start.sh [cust] [am] [lab] [amlab]
+# ./scripts/start.sh [cust] [am]
 # Where all three arguments are optional but minimum two should be present
 
 ARG1=$1;
 ARG2=$2;
-ARG3=$3;
-ARG4=$4;
 PROJECT="vitalam_demo";
 ENVPATH=".env"
 COMMONENVPATH="docker/docker.env";
 
 CUSTPATH="docker/docker-compose-cust.yml";
 AMPATH="docker/docker-compose-am.yml";
-LABPATH="docker/docker-compose-lab.yml";
-AMLABPATH="docker/docker-compose-am-lab.yml";
 
 assert_env() {
 	echo AssertEnv;
@@ -46,16 +42,12 @@ stop_all() {
 	echo StopAll;
 	[ "$(docker-compose -p $PROJECT -f $CUSTPATH ps -q|wc -l)" -gt 0 ] && docker-compose -p $PROJECT -f $CUSTPATH --env-file $COMBINEDENVPATH down --remove-orphans;
 	[ "$(docker-compose -p $PROJECT -f $AMPATH ps -q|wc -l)" -gt 0 ] && docker-compose -p $PROJECT -f $AMPATH --env-file $COMBINEDENVPATH down --remove-orphans;
-	[ "$(docker-compose -p $PROJECT -f $LABPATH ps -q|wc -l)" -gt 0 ] && docker-compose -p $PROJECT -f $LABPATH --env-file $COMBINEDENVPATH down --remove-orphans;
-	[ "$(docker-compose -p $PROJECT -f $AMLABPATH ps -q|wc -l)" -gt 0 ] && docker-compose -p $PROJECT -f $AMLABPATH --env-file $COMBINEDENVPATH down --remove-orphans;
 }
 
 init_all() {
 	echo StartAll;
 	ipfs_init $PWD/data/cust/ipfs
 	ipfs_init $PWD/data/am/ipfs
-	ipfs_init $PWD/data/lab/ipfs
-	ipfs_init $PWD/data/am-lab/ipfs
 	docker-compose -p $PROJECT -f $CUSTPATH -f $AMPATH -f $LABPATH -f $AMLABPATH --env-file $COMBINEDENVPATH up -d;
 }
 
@@ -63,15 +55,13 @@ stop_default() {
 	echo StopCust StopAM StopLab;
 	[ "$(docker-compose -p $PROJECT -f $CUSTPATH ps -q|wc -l)" -gt 0 ] && docker-compose -p $PROJECT -f $CUSTPATH --env-file $COMBINEDENVPATH down --remove-orphans;
 	[ "$(docker-compose -p $PROJECT -f $AMPATH ps -q|wc -l)" -gt 0 ] && docker-compose -p $PROJECT -f $AMPATH --env-file $COMBINEDENVPATH down --remove-orphans;
-	[ "$(docker-compose -p $PROJECT -f $LABPATH ps -q|wc -l)" -gt 0 ] && docker-compose -p $PROJECT -f $LABPATH --env-file $COMBINEDENVPATH down --remove-orphans;
 }
 
 init_default() {
 	echo StartCust StartAM StartLab;
 	ipfs_init $PWD/data/cust/ipfs
 	ipfs_init $PWD/data/am/ipfs
-	ipfs_init $PWD/data/lab/ipfs
-	docker-compose -p $PROJECT -f $CUSTPATH -f $AMPATH -f $LABPATH --env-file $COMBINEDENVPATH up -d;
+	docker-compose -p $PROJECT -f $CUSTPATH -f $AMPATH --env-file $COMBINEDENVPATH up -d;
 }
 
 stop_cust() {
@@ -94,28 +84,6 @@ init_am() {
 	echo StartAM;
 	ipfs_init $PWD/data/am/ipfs
 	docker-compose -p $PROJECT -f $AMPATH --env-file $COMBINEDENVPATH up -d;
-}
-
-stop_lab() {
-	echo StopLab;
-	[ "$(docker-compose -p $PROJECT -f $LABPATH ps -q|wc -l)" -gt 0 ] && docker-compose -p $PROJECT -f $LABPATH --env-file $COMBINEDENVPATH down;
-}
-
-init_lab() {
-	echo StartLab;
-	ipfs_init $PWD/data/lab/ipfs
-	docker-compose -p $PROJECT -f $LABPATH --env-file $COMBINEDENVPATH up -d;
-}
-
-stop_am_lab() {
-	echo StopAMLab;
-	[ "$(docker-compose -p $PROJECT -f $AMLABPATH ps -q|wc -l)" -gt 0 ] && docker-compose -p $PROJECT -f $AMLABPATH --env-file $COMBINEDENVPATH down;
-}
-
-init_am_lab() {
-	echo StartAMLab;
-	ipfs_init $PWD/data/am-lab/ipfs
-	docker-compose -p $PROJECT -f $AMLABPATH --env-file $COMBINEDENVPATH up -d;
 }
 
 check_health_node() {
@@ -193,24 +161,10 @@ elif [ "$ARG1" == "" ]; then
 else
 
 	if [ "$ARG1" == "cust" ] || \
-	[ "$ARG2" == "cust" ] || \
-	[ "$ARG3" == "cust" ] || \
-	[ "$ARG4" == "cust" ]; then stop_cust; init_cust; fi;
+	[ "$ARG2" == "cust" ]; then stop_cust; init_cust; fi;
 
 	if [ "$ARG1" == "am" ] || \
-	[ "$ARG2" == "am" ] || \
-	[ "$ARG3" == "am" ] || \
-	[ "$ARG4" == "am" ]; then stop_am; init_am; fi;
-
-	if [ "$ARG1" == "lab" ] || \
-	[ "$ARG2" == "lab" ] || \
-	[ "$ARG3" == "lab" ] || \
-	[ "$ARG4" == "lab" ]; then stop_lab; init_lab; fi;
-
-	if [ "$ARG1" == "amlab" ] || \
-	[ "$ARG2" == "amlab" ] || \
-	[ "$ARG3" == "amlab" ] || \
-	[ "$ARG4" == "amlab" ]; then stop_am_lab; init_am_lab; fi;
+	[ "$ARG2" == "am" ]; then stop_am; init_am; fi;
 
 fi;
 
@@ -220,31 +174,13 @@ if [ "$ARG1" == "all" ] || \
 fi;
 
 if [ "$ARG1" == "cust" ] || \
-[ "$ARG2" == "cust" ] || \
-[ "$ARG3" == "cust" ] || \
-[ "$ARG4" == "cust" ]; then
+[ "$ARG2" == "cust" ]; then
 	PORTNODE=9933; PORTIPFS=5001; PORTAPI=3001;
 fi;
 
 if [ "$ARG1" == "am" ] || \
-[ "$ARG2" == "am" ] || \
-[ "$ARG3" == "am" ] || \
-[ "$ARG4" == "am" ]; then
+[ "$ARG2" == "am" ]; then
 	PORTNODE=9934; PORTIPFS=5002; PORTAPI=3002;
-fi;
-
-if [ "$ARG1" == "lab" ] || \
-[ "$ARG2" == "lab" ] || \
-[ "$ARG3" == "lab" ] || \
-[ "$ARG4" == "lab" ]; then
-	PORTNODE=9935; PORTIPFS=5003; PORTAPI=3003;
-fi;
-
-if [ "$ARG1" == "amlab" ] || \
-[ "$ARG2" == "amlab" ] || \
-[ "$ARG3" == "amlab" ] || \
-[ "$ARG4" == "amlab" ]; then
-	PORTNODE=9936; PORTIPFS=5004; PORTAPI=3004;
 fi;
 
 echo "WaitingForNode (need at least one other peer)";

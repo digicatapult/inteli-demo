@@ -23,7 +23,7 @@ import {
   metadataTypes,
   orderStatus,
 } from '../../utils'
-import Attachment from '../../laboratory/components/Attachment'
+import Attachment from '../../am/components/Attachment'
 import OrderQuantityInput from '../../shared/OrderQuantityInput'
 import OrderDeliveryByDatePicker from '../../shared/OrderDeliveryByDatePicker'
 import { isDeliveryByInvalid, isQuantityInvalid } from '../../utils/forms'

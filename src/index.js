@@ -5,7 +5,6 @@ import { configureStore } from '@reduxjs/toolkit'
 
 import CustomerApp from './customer'
 import AdditiveManufacturerApp from './am'
-import LaboratoryApp from './laboratory'
 import rootReducer from './reducers'
 import BlockchainWatcher from './shared/BlockchainWatcher.js'
 import { Auth0Provider } from '@auth0/auth0-react'
@@ -45,18 +44,6 @@ switch (VITALAM_DEMO_PERSONA) {
     document.title = 'Maher | AM'
     authClientID = T1_AUTH_CLIENT_ID
     redirectPath = '/app/orders'
-    break
-  case 'lab':
-    App = LaboratoryApp
-    document.title = 'TruFORM | Lab'
-    props = { labType: 'lab' }
-    authClientID = T1_AUTH_CLIENT_ID
-    redirectPath = '/app/requests'
-    break
-  case 'amlab':
-    App = LaboratoryApp
-    document.title = 'Aero | Lab'
-    props = { labType: 'amlab' }
     break
   default:
     throw new Error('Invalid persona for VitalAM demo')

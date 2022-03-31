@@ -5,7 +5,7 @@ import { Toolbar, Typography, Box } from '@material-ui/core'
 import { useSelector } from 'react-redux'
 
 import logo from '../../images/maher.png'
-import { orderStatus, powderTestStatus } from '../../utils'
+import { orderStatus } from '../../utils'
 import { getCurrentBaseUrl } from '../../utils/url'
 import { useAuth0 } from '@auth0/auth0-react'
 
@@ -64,15 +64,7 @@ const useStyles = makeStyles((theme) => ({
 const Navigation = () => {
   const classes = useStyles()
   const readOrders = useSelector((state) => state.readOrders)
-  const readPowders = useSelector((state) => state.readPowders)
-  const readTests = useSelector((state) => state.readTests)
   const customerOrders = useSelector((state) => state.customerOrders)
-  const powders = useSelector((state) => state.powders)
-  const testResults = useSelector((state) =>
-    state.labTests.filter(
-      ({ metadata: { status } }) => status === powderTestStatus.result
-    )
-  )
   const { isAuthenticated, logout } = useAuth0()
 
   const hasNewOrder = customerOrders.some(
@@ -81,16 +73,6 @@ const Navigation = () => {
       !readOrders.find((id) => id === orderId)
   )
   const orderStatusClass = hasNewOrder ? classes.dotUnread : classes.dotOther
-
-  const hasNewPowder = powders.some(
-    (powder) => !readPowders.find((id) => id === powder.id)
-  )
-  const powderStatusClass = hasNewPowder ? classes.dotUnread : classes.dotOther
-
-  const hasNewTests = testResults.some(
-    (test) => !readTests.find((id) => id === test.id)
-  )
-  const testStatusClass = hasNewTests ? classes.dotUnread : classes.dotOther
 
   return (
     <Toolbar className={classes.root}>
@@ -106,30 +88,6 @@ const Navigation = () => {
           <Typography>Orders</Typography>
           <Typography variant="h5" className={orderStatusClass}>
             {hasNewOrder ? '·' : '\xa0'}
-          </Typography>
-        </Box>
-      </NavLink>
-      <NavLink
-        to="/app/powders"
-        className={`${classes.navButton}`}
-        activeclassname={classes.navActive}
-      >
-        <Box className={classes.navButtonWrapping}>
-          <Typography>Powder Inventory</Typography>
-          <Typography variant="h5" className={powderStatusClass}>
-            {hasNewPowder ? '·' : '\xa0'}
-          </Typography>
-        </Box>
-      </NavLink>
-      <NavLink
-        to="/app/tests"
-        className={classes.navButton}
-        activeclassname={classes.navActive}
-      >
-        <Box className={classes.navButtonWrapping}>
-          <Typography>Test Results</Typography>
-          <Typography variant="h5" className={testStatusClass}>
-            {hasNewTests ? '·' : '\xa0'}
           </Typography>
         </Box>
       </NavLink>

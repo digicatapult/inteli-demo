@@ -9,7 +9,7 @@ print_usage() {
   echo ""
   echo reconnect.sh [PERSONA]
   echo ""
-  echo "  PERSONA\tThe persona to reconnect [cust|am|lab]"
+  echo "  PERSONA\tThe persona to reconnect [cust|am]"
   echo ""
 }
 
@@ -17,8 +17,6 @@ if [ "$PERSONA" == "cust" ]; then
 	CONTAINER="node-alice";
 elif [ "$PERSONA" == "am" ]; then
 	CONTAINER="node-bob";
-elif [ "$PERSONA" == "lab" ]; then
-	CONTAINER="node-charlie";
 elif [ "$PERSONA" == "--help" ]; then
   print_usage;
   exit 0;

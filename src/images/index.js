@@ -1,5 +1,3 @@
-import avatarLab from './avatar-lab.svg'
-import dragAndDropBg from './drag-and-drop-bg.svg'
 import closeXIcon from './close-x-icon.svg'
 import part1 from './parts/part-1.svg'
 import part2 from './parts/part-2.svg'
@@ -10,7 +8,6 @@ import part6 from './parts/part-6.svg'
 import part7 from './parts/part-7.svg'
 import part8 from './parts/part-8.svg'
 import partDefault from './part-default.svg'
-import logoLab from './logo-lab.svg'
 import logoCust from './logo-cust.svg'
 import logoAM from './logo-am.svg'
 import attachmentClip from './attachmentClip.svg'
@@ -23,12 +20,9 @@ import networkGoodCustIcon from './networkGoodCust.svg'
 import networkBadCustIcon from './networkBadCust.svg'
 
 export default {
-  avatarLab,
-  dragAndDropBg,
   closeXIcon,
   parts: [part1, part2, part3, part4, part5, part6, part7, part8],
   partDefault,
-  logoLab,
   logoCust,
   logoAM,
   attachmentClip,

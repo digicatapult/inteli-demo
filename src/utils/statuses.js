@@ -1,8 +1,3 @@
-const powderTestStatus = {
-  result: 'result',
-  request: 'request',
-}
-
 const orderStatus = {
   submitted: 'submitted',
   amended: 'amended',
@@ -19,4 +14,4 @@ const statusLabels = {
   [orderStatus.manufactured]: 'Delivered',
 }
 
-export { powderTestStatus, orderStatus, statusLabels }
+export { orderStatus, statusLabels }

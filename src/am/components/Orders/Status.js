@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     background: theme.palette.statusRejected.main,
   },
   statusAccepted: {
-    background: theme.palette.statusAcceptedTested.main,
+    background: theme.palette.statusAccepted.main,
   },
   statusSent: {
     background: theme.palette.statusSent.main,

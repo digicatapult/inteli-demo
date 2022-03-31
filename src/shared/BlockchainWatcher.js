@@ -1,8 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import { useDispatch } from 'react-redux'
 import { upsertOrder } from '../features/ordersSlice'
-import { upsertPowder } from '../features/powdersSlice'
-import { upsertLabTest } from '../features/labTestsSlice'
 
 import { useApi, tokenTypes } from '../utils'
 
@@ -16,8 +14,6 @@ const BlockchainWatcher = ({ children }) => {
     let timer = undefined
     const upsertToken = (token, type) => {
       if (tokenTypes.order === type) dispatch(upsertOrder(token))
-      if (tokenTypes.powder === type) dispatch(upsertPowder(token))
-      if (tokenTypes.labTests === type) dispatch(upsertLabTest(token))
     }
 
     const pollFunc = async () => {

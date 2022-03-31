@@ -24,7 +24,7 @@ const theme = createTheme({
     statusRejected: {
       main: '#f55e66',
     },
-    statusAcceptedTested: {
+    statusAccepted: {
       main: '#8ec8c4',
     },
     statusSent: {

@@ -2,7 +2,7 @@
 
 ## Description
 
-This demo has been built to demonstrate the benefits of distributed systems to the additive-manufacturing industry within aerospace. It provides simple web clients that let you perform the actions of four different personas in the industry. The demo relies on technologies built during the VITALam project.
+This demo has been built to demonstrate the benefits of distributed systems to the additive-manufacturing industry within aerospace. It provides simple web clients that let you perform the actions of different personas in the industry. The demo relies on technologies built during the VITALam project.
 
 ## Getting started
 
@@ -12,7 +12,7 @@ This repository makes use of [git-lfs](https://git-lfs.github.com/) to track cer
 
 ### Managing the demo stack
 
-The demo stack consists of three base personas: the customer (`cust`), additive manufacturer (`am`) and the lab (`lab`). A fourth persona, the additive manufacturer's lab (`am-lab`), can also be brought up to demonstrate [network incorruptibility](#Demoing-Network-Incorruptibility).
+The demo stack consists of two base personas: the customer (`cust`) and the additive manufacturer (`am`).
 
 Each persona has four containers in its stack:
 
@@ -60,14 +60,14 @@ To rebuild all the different persona images, from the root directory of this rep
 To rebuild images for individual personas:
 
 ```sh
-./scripts/build.sh [cust] [am] [lab] [amlab]
+./scripts/build.sh [cust] [am]
 ```
 
 The other two images for this repo, `vitalam-node` and `vitalam-api`, are pulled automatically from GHCR when bringing up the full set of containers in the next step.
 
 ### Bringing up the demo containers
 
-In order to bring up the three main personas of the demo stack run:
+In order to bring up the two main personas of the demo stack run:
 
 ```sh
 ./scripts/start.sh
@@ -76,10 +76,10 @@ In order to bring up the three main personas of the demo stack run:
 Or to bring up individual personas:
 
 ```sh
-./scripts/start.sh [cust] [am] [lab] [amlab]
+./scripts/start.sh [cust] [am]
 ```
 
-To bring up a functioning chain, at least two of {`cust`, `am`, `lab`} should be running.
+To bring up a functioning chain, both {`cust`, `am`} should be running.
 
 ### Using the clients
 
@@ -94,8 +94,6 @@ To view each persona's client in your browser, use the following ports:
 
 - http://localhost:8001 for `customer`
 - http://localhost:8002 for `additive manufacturer`
-- http://localhost:8003 for `lab`
-- http://localhost:8004 for `additive lab`
 
 ### Stopping the demo containers
 
@@ -108,18 +106,8 @@ You can knock down all instances with the following (argument is optional):
 Or stop individual personas:
 
 ```sh
-./scripts/stop.sh [cust] [am] [lab] [amlab]
+./scripts/stop.sh [cust] [am]
 ```
-
-### Initializing seed data
-
-The scripts detailed above allow you to start/stop multiple personas easily, but to conduct the demo a small amount of seed data may be desired. To add seed data ensure that the `cust` persona is running as well as at least one of {`am`, `lab`} and then run:
-
-```sh
-./scripts/init.sh
-```
-
-This will add seed data including a couple of different `Powder` tokens to the blockchain. This script will NOT remove any existing data.
 
 ### Resetting the blockchain state
 
@@ -132,54 +120,54 @@ Reset the state of the blockchain and IPFS node with the following (argument is 
 Or run reset for individual personas:
 
 ```sh
-./scripts/reset.sh [cust] [am] [lab] [amlab]
+./scripts/reset.sh [cust] [am]
 ```
 
-Where all three arguments are optional.
+Where all arguments are optional.
 
 ### Checkpointing and restoring node state
 
 Two scripts exist which can be used for checkpointing a blockchain node. Note this will not checkpoint an IPFS node. First to checkpoint a node for a given persona run:
 
 ```sh
-./scripts/checkpoint.sh [cust|am|lab|amlab] [DIR]
+./scripts/checkpoint.sh [cust|am] [DIR]
 ```
 
-Where one of {`cust`, `am`, `lab`, `amlab`} must be provided as the first argument and `DIR` is a path to the backup destination. The script will manage the lifecycle of the node and take a backup of the node state.
+Where one of {`cust`, `am`} must be provided as the first argument and `DIR` is a path to the backup destination. The script will manage the lifecycle of the node and take a backup of the node state.
 
 To restore a backup similarly run:
 
 ```sh
-./scripts/restore.sh [cust|am|lab|amlab] [DIR]
+./scripts/restore.sh [cust|am] [DIR]
 ```
 
 ### Managing chain connections
 
-The final two scripts [`disconnect.sh`](scripts/disconnect.sh) and [`connect.sh`](scripts/connect.sh) allow the substrate node for the `cust`, `am` or `lab` to be disconnected from the others. To disconnect a node from the `chain` run
+The final two scripts [`disconnect.sh`](scripts/disconnect.sh) and [`connect.sh`](scripts/connect.sh) allow the substrate node for the `cust` or `am` to be disconnected from the others. To disconnect a node from the `chain` run
 
 ```sh
-./scripts/disconnect.sh [cust|am|lab]
+./scripts/disconnect.sh [cust|am]
 ```
 
 And to reconnect run:
 
 ```sh
-./scripts/connect.sh [cust|am|lab]
+./scripts/connect.sh [cust|am]
 ```
 
 This is generally used when [demoing network incorruptibility](#Demoing-Network-Incorruptibility).
 
 ## Demoing Network Resilience
 
-The goal of this demo is to specifically show that data is redundant and the network will cope with those changes. This would normally take place after a substantial amount of demoing has been done so there is plenty of state in the chain. You should have the core personas up (`cust`, `am` and `lab`) and you should have the ability to conduct changes whilst a persona is down, such that they will then be replicated. As such the following scenario is recommended:
+The goal of this demo is to specifically show that data is redundant and the network will cope with those changes. This would normally take place after a substantial amount of demoing has been done so there is plenty of state in the chain. You should have the core personas up (`cust` and `am`) and you should have the ability to conduct changes whilst a persona is down, such that they will then be replicated. As such the following scenario is recommended:
 
 > In our story the customer has placed an order with the additive manufacturer and they have accepted it. After that though the customer suffers a catastrophic IT failure and loses all of their system data. They have to rebuild their system from scratch.
 >
-> Meanwhile the additive manufacturer has the part built and the powder used tested. The system works as though nothing has happened to the customer and is resilient.
+> Meanwhile the additive manufacturer has the part built. The system works as though nothing has happened to the customer and is resilient.
 >
 > The customer brings up their blockchain and sees all the data restore; they lose nothing
 
-To start this demo we assume that the `cust`, `am` and `lab` personas are running and that at least one powder has never been tested. The following technical steps are then required:
+To start this demo we assume that the `cust` and `am` personas are running. The following technical steps are then required:
 
 1. In the browser:
    - `cust` creates an order
@@ -187,39 +175,6 @@ To start this demo we assume that the `cust`, `am` and `lab` personas are runnin
 2. [Stop](#Bringing-up-the-demo-containers) the `cust` persona
 3. [Reset](#Resetting-the-blockchain-state) the `cust` persona
 4. In the browser
-   - `am` sends the powder for testing at the `lab`
    - `am` send the order for manufacture
-   - `lab` uploads the test results
-   - `am` confirms the tests are fine
 5. [Start](#Bringing-up-the-demo-containers) the `cust` persona
 6. In the browser demonstrate that the customer persona has all the relevant data
-
-## Demoing Network Incorruptibility
-
-To demo incorruptibility we present a story whereby one of the personas wishes to go back on a statement that has been made by them on the chain. In this case we imagine the following:
-
-> In our story the customer has requested a part made from powder that confirms to a certain standard. The customer requests the order, the additive manufacturer accepts. Because the additive manufacturer thinks that their powder will pass the requirements, they manufacture the part at the same time as sending the powder off for testing. The part is made, but the powder fails the test. The additive manufacturer wishes to fake the test results.
->
-> The additive manufacturer however thinks they are clever and has backed up their database state prior to sending the powder for testing. They disconnect from the chain network and restore their state prior to sending the powder for testing. They then instead send the powder to their internal lab who will always approve their request. The request is approved and from the point-of-view of the additive manufacturer everything looks good.
->
-> The additive manufacturer then reconnects to the network to try to fool the other parties, but the system realises the config and restores the blockchain to the original state. Neither the honest lab nor the customer are fooled.
-
-To start this demo we assume that the `cust`, `am` and `lab` personas are running and that the `amlab` persona has never been brought up and is NOT running. The following technical steps are then required:
-
-1. In the browser:
-   - `cust` creates an order
-   - `am` approves the order
-   - `am` manufacturers the order
-2. [Checkpoint](#Checkpointing-and-restoring-node-state) the `am`
-3. In the browser:
-   - `am` sends the powder used in manufacturing for testing at the `lab`
-   - `lab` fails the test
-   - Demonstrate that this failed state is shown to the `cust` and `am`
-4. [Disconnect](#Managing-chain-connections) the `am`
-5. [Restore the checkpoint](#Checkpointing-and-restoring-node-state) for the `am`
-6. [Bring up](#Bringing-up-the-demo-containers) the `amlab`
-7. In the browser:
-   - `am` sends the powder used in manufacturing for testing at the `amlab`
-   - `amlab` passes the test
-   - Demonstrate that this passed state is shown to the `am`
-8. [Reconnect](#Managing-chain-connections) the `am`. Demonstrate that on refreshing the `am` that they see the failed test and that nothing has changed for the `cust` or `lab`.

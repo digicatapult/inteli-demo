@@ -9,7 +9,7 @@ print_usage() {
   echo ""
   echo checkpoint.sh [PERSONA] [DIR]
   echo ""
-  echo "  PERSONA\tThe persona to backup data for [cust|am|lab|amlab]"
+  echo "  PERSONA\tThe persona to backup data for [cust|am]"
   echo "  DIR\tThe directory to backup data to"
   echo ""
 }
@@ -18,10 +18,6 @@ if [ "$PERSONA" == "cust" ]; then
 	CONTAINER="node-alice"; NODE_DIR="./data/cust/node";
 elif [ "$PERSONA" == "am" ]; then
 	CONTAINER="node-bob"; NODE_DIR="./data/am/node";
-elif [ "$PERSONA" == "lab" ]; then
-	CONTAINER="node-charlie"; NODE_DIR="./data/lab/node";
-elif [ "$PERSONA" == "amlab" ]; then
-	CONTAINER="node-eve"; NODE_DIR="./data/amlab/node";
 elif [ "$PERSONA" == "--help" ]; then
   print_usage;
   exit 0;
