@@ -38,7 +38,7 @@ const BlockchainWatcher = ({ children }) => {
               })
             )
           } catch (e) {
-            console.log(e)
+            console.error('Error occured while re-fetching images', e)
           }
         }
       })
