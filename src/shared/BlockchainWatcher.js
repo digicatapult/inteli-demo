@@ -98,7 +98,7 @@ const BlockchainWatcher = ({ children }) => {
       clearTimeout(timer)
       timer = null
     }
-  }, [dispatch, api])
+  }, [dispatch, api, customerOrders, firstTime])
 
   return <>{children}</>
 }
