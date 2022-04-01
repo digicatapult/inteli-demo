@@ -63,7 +63,7 @@ To rebuild images for individual personas:
 ./scripts/build.sh [cust] [am]
 ```
 
-The other two images for this repo, `vitalam-node` and `vitalam-api`, are pulled automatically from GHCR when bringing up the full set of containers in the next step.
+The other three images for this repo, `vitalam-ipfs`, `vitalam-node` and `vitalam-api`, are pulled automatically from GHCR when bringing up the full set of containers in the next step.
 
 ### Bringing up the demo containers
 
