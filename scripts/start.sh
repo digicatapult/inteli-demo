@@ -52,13 +52,13 @@ init_all() {
 }
 
 stop_default() {
-	echo StopCust StopAM StopLab;
+	echo StopCust StopAM;
 	[ "$(docker-compose -p $PROJECT -f $CUSTPATH ps -q|wc -l)" -gt 0 ] && docker-compose -p $PROJECT -f $CUSTPATH --env-file $COMBINEDENVPATH down --remove-orphans;
 	[ "$(docker-compose -p $PROJECT -f $AMPATH ps -q|wc -l)" -gt 0 ] && docker-compose -p $PROJECT -f $AMPATH --env-file $COMBINEDENVPATH down --remove-orphans;
 }
 
 init_default() {
-	echo StartCust StartAM StartLab;
+	echo StartCust StartAM;
 	ipfs_init $PWD/data/cust/ipfs
 	ipfs_init $PWD/data/am/ipfs
 	docker-compose -p $PROJECT -f $CUSTPATH -f $AMPATH --env-file $COMBINEDENVPATH up -d;

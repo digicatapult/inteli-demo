@@ -20,7 +20,6 @@ services:
       --bob
       --node-key ${NODE_BOB_KEY}
       --bootnodes /dns4/node-alice/tcp/30333/p2p/${NODE_ALICE_PEERID}
-      --bootnodes /dns4/node-charlie/tcp/30333/p2p/${NODE_CHARLIE_PEERID}
       --chain local
       --unsafe-ws-external
       --unsafe-rpc-external
