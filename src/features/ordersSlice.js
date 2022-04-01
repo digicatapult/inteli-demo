@@ -4,6 +4,14 @@ export const ordersSlice = createSlice({
   name: 'customerOrders',
   initialState: [],
   reducers: {
+    updateOrderImage: {
+      reducer(state, { payload }) {
+        const order = state.find(
+          ({ original_id }) => original_id === payload.original_id
+        )
+        order.metadata.orderImage = payload.orderImage
+      },
+    },
     upsertOrder: {
       reducer(state, action) {
         const order = state.find(
@@ -46,6 +54,6 @@ const metadataHistory = (history = [], payload) => {
 
 export const { actions, reducer } = ordersSlice
 
-export const { upsertOrder } = actions
+export const { upsertOrder, updateOrderImage } = actions
 
 export default reducer

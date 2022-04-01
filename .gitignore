@@ -8,6 +8,9 @@
 
 # production
 /build
+/cypreess/videos
+/cypreess/screenshots
+/cypresss/downloads
 
 # misc
 .DS_Store

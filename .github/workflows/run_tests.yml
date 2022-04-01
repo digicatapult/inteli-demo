@@ -113,6 +113,21 @@ jobs:
         run: npm ci
       - name: Lint
         run: npm run lint
+  test:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set Node.js 16.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16.x
+      - name: Install dependencies
+        run: npm ci
+      - name: Run lint
+        run: npm run lint
+      - name: Run component tests
+        run: npm t
   dependency-check:
     name: Run dependency check
     runs-on: ubuntu-latest
