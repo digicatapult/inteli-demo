@@ -5,7 +5,7 @@ about: Create a report to help us improve
 
 <!--
 
-Have you read VITALam's Code of Conduct? By filing an Issue, you are expected to comply with it, including treating everyone with respect: https://github.com/digicatapult/inteli-demo/.github/blob/main/CODE_OF_CONDUCT.md
+Have you read INTELI's Code of Conduct? By filing an Issue, you are expected to comply with it, including treating everyone with respect: https://github.com/digicatapult/inteli-demo/.github/blob/main/CODE_OF_CONDUCT.md
 
 -->
 

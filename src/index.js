@@ -16,7 +16,7 @@ import {
   CUST_AUTH_CLIENT_ID,
   T1_AUTH_CLIENT_ID,
   AUTH_DOMAIN,
-  VITALAM_DEMO_PERSONA,
+  INTELI_DEMO_PERSONA,
 } from './utils/env.js'
 
 const store = configureStore({
@@ -32,7 +32,7 @@ let App = null
 let props = {}
 let authClientID,
   redirectPath = ''
-switch (VITALAM_DEMO_PERSONA) {
+switch (INTELI_DEMO_PERSONA) {
   case 'cust':
     App = CustomerApp
     document.title = 'BAE Systems | Customer'
@@ -46,7 +46,7 @@ switch (VITALAM_DEMO_PERSONA) {
     redirectPath = '/app/orders'
     break
   default:
-    throw new Error('Invalid persona for VitalAM demo')
+    throw new Error('Invalid persona for demo')
 }
 
 ReactDOM.render(

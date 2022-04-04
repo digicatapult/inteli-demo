@@ -7,7 +7,7 @@
 
 ARG1=$1;
 ARG2=$2;
-PROJECT="vitalam_demo";
+PROJECT="inteli_demo";
 ENVPATH=".env"
 COMMONENVPATH="docker/docker.env";
 CUSTPATH="docker/docker-compose-cust.yml";

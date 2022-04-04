@@ -35,6 +35,6 @@ export const SUBSTRATE_HOST =
 export const SUBSTRATE_PORT =
   process.env.REACT_APP_SUBSTRATE_PORT || Window.config.inteli.substratePort
 
-export const VITALAM_DEMO_PERSONA =
-  process.env.REACT_APP_VITALAM_DEMO_PERSONA ||
-  Window.config.inteli.vitalamDemoPersona
+export const INTELI_DEMO_PERSONA =
+  process.env.REACT_APP_INTELI_DEMO_PERSONA ||
+  Window.config.inteli.inteliDemoPersona

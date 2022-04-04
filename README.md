@@ -2,7 +2,7 @@
 
 ## Description
 
-This demo has been built to demonstrate the benefits of distributed systems to the additive-manufacturing industry within aerospace. It provides simple web clients that let you perform the actions of different personas in the industry. The demo relies on technologies built during the VITALam project.
+This demo has been built to demonstrate the benefits of distributed systems to the additive-manufacturing industry within aerospace. It provides simple web clients that let you perform the actions of different personas in the industry. The demo relies on technologies built during the DSCP project.
 
 ## Getting started
 
@@ -17,13 +17,13 @@ The demo stack consists of two base personas: the customer (`cust`) and the addi
 Each persona has four containers in its stack:
 
 - A React client for performing actions such as creating and approving orders.
-- A [Substrate-based blockchain](https://github.com/digicatapult/vitalam-node) node.
+- A [Substrate-based blockchain](https://github.com/digicatapult/dscp-node) node.
 - An [`IPFS`](https://ipfs.io/) node for distributed file storage.
-- An [API](https://github.com/digicatapult/vitalam-api) for communication between the client and the two nodes.
+- An [API](https://github.com/digicatapult/dscp-api) for communication between the client and the two nodes.
 
 ### Authentication
 
-The [API](https://github.com/digicatapult/vitalam-api) uses an [Auth0](https://auth0.com/) API to issue a JSON Web Token for authentication to our frontend and to our API. To use this, the Auth0 tenant will need configuring with the API and Applications, as well as the custom login page for styling. After that accounts for any users should be created which will then enable them to login to the frontend applications. Then, so that the React clients can successfully authenticate with their respective APIs you need to set the following environment variables in a `.env` saved at the root of the `inteli-demo` repository (or check/rely on the defaults in `./src/utils/env.js`).
+The [API](https://github.com/digicatapult/dscp-api) uses an [Auth0](https://auth0.com/) API to issue a JSON Web Token for authentication to our frontend and to our API. To use this, the Auth0 tenant will need configuring with the API and Applications, as well as the custom login page for styling. After that accounts for any users should be created which will then enable them to login to the frontend applications. Then, so that the React clients can successfully authenticate with their respective APIs you need to set the following environment variables in a `.env` saved at the root of the `inteli-demo` repository (or check/rely on the defaults in `./src/utils/env.js`).
 
 | variable                      | required |                       default                       | description                                                                 |
 | :---------------------------- | :------: | :-------------------------------------------------: | :-------------------------------------------------------------------------- |
@@ -63,7 +63,7 @@ To rebuild images for individual personas:
 ./scripts/build.sh [cust] [am]
 ```
 
-The other three images for this repo, `vitalam-ipfs`, `vitalam-node` and `vitalam-api`, are pulled automatically from GHCR when bringing up the full set of containers in the next step.
+The other three images for this repo, `dscp-ipfs`, `dscp-node` and `dscp-api`, are pulled automatically from GHCR when bringing up the full set of containers in the next step.
 
 ### Bringing up the demo containers
 

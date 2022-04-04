@@ -1,4 +1,4 @@
-import { VITALAM_DEMO_PERSONA } from './env.js'
+import { INTELI_DEMO_PERSONA } from './env.js'
 
 // not sure these are correct. Placeholder for now
 const identities = {
@@ -6,6 +6,6 @@ const identities = {
   cust: '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY',
 }
 
-identities.current = identities[VITALAM_DEMO_PERSONA]
+identities.current = identities[INTELI_DEMO_PERSONA]
 
 export default identities

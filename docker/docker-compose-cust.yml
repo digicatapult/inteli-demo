@@ -72,7 +72,7 @@ services:
       context: '../'
       dockerfile: 'Dockerfile'
       args:
-        - REACT_APP_VITALAM_DEMO_PERSONA=cust
+        - REACT_APP_INTELI_DEMO_PERSONA=cust
         - REACT_APP_API_HOST=${REACT_API_ALICE_HOST}
         - REACT_APP_API_PORT=${REACT_API_ALICE_PORT}
         - REACT_APP_SUBSTRATE_HOST=${REACT_API_ALICE_SUBSTRATE_HOST}

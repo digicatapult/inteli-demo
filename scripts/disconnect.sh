@@ -1,7 +1,7 @@
 #!/bin/sh
 
 PERSONA=$1;
-PROJECT="vitalam_demo";
+PROJECT="inteli_demo";
 
 print_usage() {
   echo ""

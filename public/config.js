@@ -8,7 +8,7 @@ let config = {
   apiPort: '3000',
   substrateHost: 'localhost',
   substratePort: '9944',
-  vitalamDemoPersona: 'cust',
+  inteliDemoPersona: 'cust',
 }
 
 if (!Window.config) {
