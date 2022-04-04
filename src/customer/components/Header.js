@@ -1,11 +1,11 @@
 import React from 'react'
 import Navigation from './Navigation'
 
-import { AppBar, makeStyles } from '@material-ui/core'
+import { AppBar, makeStyles, Grid } from '@material-ui/core'
 
 const useStyles = makeStyles({
   root: {
-    height: '60px',
+    minHeight: '60px',
     background: '#ff0033',
   },
 })
@@ -13,9 +13,13 @@ const useStyles = makeStyles({
 const Header = () => {
   const classes = useStyles()
   return (
-    <AppBar position="sticky" className={classes.root}>
-      <Navigation />
-    </AppBar>
+    <Grid container>
+      <Grid item xs={12}>
+        <AppBar position="sticky" className={classes.root}>
+          <Navigation />
+        </AppBar>
+      </Grid>
+    </Grid>
   )
 }
 

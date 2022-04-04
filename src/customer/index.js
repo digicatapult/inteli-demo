@@ -1,7 +1,7 @@
-import React from 'react'
 import 'reset-css'
+import React from 'react'
 import { createTheme, ThemeProvider } from '@material-ui/core/styles'
-import { makeStyles, Container } from '@material-ui/core'
+import { Container } from '@material-ui/core'
 import { BrowserRouter } from 'react-router-dom'
 
 import Header from './components/Header'
@@ -19,20 +19,12 @@ const theme = createTheme({
   },
 })
 
-const useStyles = makeStyles({
-  content: {
-    margin: '130px 187px 87px 187px',
-  },
-})
-
 const CustomerApp = () => {
-  const classes = useStyles()
-
   return (
     <BrowserRouter>
       <ThemeProvider theme={theme}>
         <Header />
-        <Container className={classes.content}>
+        <Container>
           <Router />
         </Container>
       </ThemeProvider>

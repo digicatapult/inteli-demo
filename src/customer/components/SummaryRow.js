@@ -23,19 +23,11 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: '20px',
   },
   listItemMargin: {
-    marginBottom: '60px',
+    marginBottom: '10px',
   },
   datePadding: {
     paddingLeft: '103px',
     paddingTop: '5px',
-  },
-  root: {
-    padding: 8,
-    width: '100%',
-    height: '100px',
-    marginBottom: '25px',
-    borderRadius: '8px',
-    textDecoration: 'none',
   },
   isNotActive: {
     background: '#f8f8f8',
@@ -71,9 +63,7 @@ const SummaryRow = ({ order, activeItem }) => {
     <Paper
       id={orderId}
       elevation={0}
-      className={`${classes.root} ${
-        activeItem ? classes.isActive : classes.isNotActive
-      }`}
+      className={`${activeItem ? classes.isActive : classes.isNotActive}`}
     >
       <CardActionArea
         onClick={() => {}}

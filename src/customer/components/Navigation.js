@@ -1,7 +1,7 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 import makeStyles from '@material-ui/core/styles/makeStyles'
-import { Toolbar, Typography, Box } from '@material-ui/core'
+import { Toolbar, Typography, Box, Grid } from '@material-ui/core'
 
 import NetworkStatusIndicator from './NetworkStatusIndicator'
 import images from '../../images'
@@ -10,11 +10,10 @@ import { useAuth0 } from '@auth0/auth0-react'
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    marginLeft: '100px',
-    marginRight: '100px',
+    marginLeft: '10px',
+    marginRight: '10px',
   },
   logo: {
-    marginRight: 'auto',
     height: '50px',
     display: 'grid',
     gridTemplateColumns: 'auto auto',
@@ -80,45 +79,61 @@ const Navigation = () => {
 
   return (
     <Toolbar className={classes.root}>
-      <div className={classes.logo}>
-        <img src={images.logoCust}></img>
-      </div>
-      <NavLink
-        to="/app/customer-parts"
-        className={`${classes.navButton} ${classes.navHover}`}
-        activeclassname={classes.navActive}
-      >
-        <Typography variant="subtitle2">Part inventory</Typography>
-      </NavLink>
-      <NavLink
-        to="/app/my-orders"
-        className={`${classes.navButton} ${classes.navHover}`}
-        activeclassname={classes.navActive}
-      >
-        <Typography variant="subtitle2">My orders</Typography>
-      </NavLink>
-      <NavLink
-        className={`${classes.accountNameWrapper} ${classes.navHover}`}
-        to="#"
-      >
-        <Typography variant="subtitle2">{name}</Typography>
-        <Typography className={classes.avatar}>
-          {name.substring(0, 1)}
-        </Typography>
-      </NavLink>
-      <Box className={classes.navButton}>
-        <NetworkStatusIndicator />
-      </Box>
-      {isAuthenticated && (
-        <Box
-          className={`${classes.navButtonWrapping} ${classes.logout} ${classes.navButton} ${classes.navHover}`}
-          onClick={() =>
-            logout({ returnTo: `${getCurrentBaseUrl()}/app/customer-parts` })
-          }
-        >
-          <Typography>Log Out</Typography>
-        </Box>
-      )}
+      <Grid container alignItems="center" justifyContent="center">
+        <Grid item>
+          <div className={classes.logo}>
+            <img src={images.logoCust}></img>
+          </div>
+        </Grid>
+        <Grid item md={2}>
+          <NavLink
+            to="/app/customer-parts"
+            className={`${classes.navButton} ${classes.navHover}`}
+            activeclassname={classes.navActive}
+          >
+            <Typography variant="subtitle2">Part inventory</Typography>
+          </NavLink>
+        </Grid>
+        <Grid item>
+          <NavLink
+            to="/app/my-orders"
+            className={`${classes.navButton} ${classes.navHover}`}
+            activeclassname={classes.navActive}
+          >
+            <Typography variant="subtitle2">My orders</Typography>
+          </NavLink>
+        </Grid>
+        <Grid item>
+          <NavLink
+            className={`${classes.accountNameWrapper} ${classes.navHover}`}
+            to="#"
+          >
+            <Typography variant="subtitle2">{name}</Typography>
+            <Typography className={classes.avatar}>
+              {name.substring(0, 1)}
+            </Typography>
+          </NavLink>
+        </Grid>
+        <Grid item xs={1}>
+          <Box className={classes.navButton}>
+            <NetworkStatusIndicator />
+          </Box>
+        </Grid>
+        <Grid>
+          {isAuthenticated && (
+            <Box
+              className={`${classes.navButtonWrapping} ${classes.logout} ${classes.navButton} ${classes.navHover}`}
+              onClick={() =>
+                logout({
+                  returnTo: `${getCurrentBaseUrl()}/app/customer-parts`,
+                })
+              }
+            >
+              <Typography>Log Out</Typography>
+            </Box>
+          )}
+        </Grid>
+      </Grid>
     </Toolbar>
   )
 }

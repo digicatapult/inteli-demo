@@ -1,24 +1,13 @@
 import React, { useState } from 'react'
-import { Box, Grid, Typography } from '@material-ui/core'
-import makeStyles from '@material-ui/core/styles/makeStyles'
+import { Grid, Typography } from '@material-ui/core'
 import { useSelector } from 'react-redux'
 
 import SearchField from './SearchField'
 import CustomerPartItems from './CustomerPartItems'
-
-const useStyles = makeStyles({
-  searchFieldContainer: {
-    marginBottom: 8,
-  },
-  searchResultsTotal: {
-    marginTop: 16,
-  },
-})
+import Spacer from '../../shared/Spacer'
 
 const CustomerParts = () => {
   const customerParts = useSelector((state) => state.customerParts)
-  const classes = useStyles()
-
   const [filteredParts, setFilteredParts] = useState(customerParts)
   const [searchReady, setSearchReady] = useState(false)
   const [search, setSearch] = useState('')
@@ -59,25 +48,24 @@ const CustomerParts = () => {
   }
 
   return (
-    <Box>
-      <Grid
-        container
-        direction="row"
-        className={classes.searchFieldContainer}
-        justifyContent="flex-start"
-      >
-        <Grid item xs={11}>
+    <Grid container direction="column" justiifyContent="center">
+      <Grid container direction="row" justifyContent="center">
+        <Spacer height={6} />
+        <Grid item xs={10}>
           <SearchField handleChange={searchBy} />
         </Grid>
-        <Grid item xs={1} className={classes.searchResultsTotal}>
+        <Grid item>
           <Typography color="textSecondary">
             {customerParts && customerParts.length ? filteredParts.length : 0}{' '}
             results
           </Typography>
         </Grid>
+        <Spacer />
+        <Grid container item xs={10} spacing={2}>
+          {getParts()}
+        </Grid>
       </Grid>
-      {getParts()}
-    </Box>
+    </Grid>
   )
 }
 
