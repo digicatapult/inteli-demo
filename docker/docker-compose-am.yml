@@ -13,7 +13,7 @@ networks:
 
 services:
   node-bob:
-    image: ghcr.io/digicatapult/dscp-node:v3.0.0
+    image: ghcr.io/digicatapult/dscp-node:v3.0.1
     container_name: node-bob
     command:
       --base-path /data/

@@ -13,7 +13,7 @@ networks:
 
 services:
   node-alice:
-    image: ghcr.io/digicatapult/dscp-node:v3.0.0
+    image: ghcr.io/digicatapult/dscp-node:v3.0.1
     container_name: node-alice
     command:
       --base-path /data/
