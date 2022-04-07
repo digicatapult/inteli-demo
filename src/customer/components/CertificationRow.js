@@ -57,7 +57,7 @@ const CertificationRow = ({ order, requiredCert }) => {
               />
             </Grid>
             <Grid item xs={2} className={classes.rowItem}>
-              <Typography className={classes.timestamp}>
+              <Typography variant="subtitle2" className={classes.timestamp}>
                 {getMetadataTimestamp(order.history, requiredCert.metadataKey)}
               </Typography>
             </Grid>

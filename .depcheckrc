@@ -1,1 +1,6 @@
-ignores: ["@babel/preset-react"]
+ignores: [
+  "buffer",
+  "process",
+  "webpack",
+  "@babel/preset-react"
+]

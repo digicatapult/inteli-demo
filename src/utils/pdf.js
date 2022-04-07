@@ -1,14 +1,17 @@
 import jsPDF from 'jspdf'
+import PDFMerger from 'pdf-merger-js/browser'
+
 import images from '../images'
 
 export default class PDFGenerator {
   constructor(font, type = 'a4') {
+    this.merger = new PDFMerger()
+    this.doc = new jsPDF('p', 'px', type) // A4
     this.font = font
     this.pageWidth = 495 // A4
     this.pageHeight = 842 // A4
     this.lineSpacing = 2
     this.margin = 40
-    this.doc = new jsPDF('p', 'px', type) // A4
     this.pos = {
       x: this.margin,
       y: 70,
@@ -55,22 +58,34 @@ export default class PDFGenerator {
     this.doc.line(x1, this.pos.y, x2, this.pos.y)
   }
 
-  generateOrderHeader(order) {
+  generateOrderHeader({ original_id, metadata }) {
     this.doc.setFont(this.font)
     this.#renderImage(images.logoCustLogin, 45)
     this.#updatePos(0, 275)
     this.#renderSimpleText('Certificates Pack', { fontSize: 38, bold: true })
     this.#updatePos(0, 5)
-    this.#renderSimpleText(`Order Number ${order.number}`, {
+    this.#renderSimpleText(`Order Number ${original_id}`, {
       fontSize: 24,
       color: '#d3d3d3',
       bold: true,
     })
     this.#renderLine()
     this.#updatePos(0, 50)
-    this.#renderTitleText('Part Name: ', order.name)
-    this.#renderTitleText('Part Number: ', order.number)
-    this.#renderTitleText('Material: ', order.material)
-    this.doc.save('testing.pdf')
+    this.#renderTitleText('Part Name: ', metadata.name)
+    this.#renderTitleText('Part Number: ', metadata.partId)
+    this.#renderTitleText('Material: ', metadata.material)
+    const blob = new Blob([this.doc.output('blob')], {
+      type: 'application/pdf',
+    })
+    return URL.createObjectURL(blob)
+  }
+
+  async mergePDFs(files) {
+    for (const file of files) {
+      await this.merger.add(file)
+    }
+
+    const mergedPdf = await this.merger.saveAsBlob()
+    return URL.createObjectURL(mergedPdf)
   }
 }

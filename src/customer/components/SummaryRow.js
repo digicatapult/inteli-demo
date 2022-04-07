@@ -9,6 +9,7 @@ import {
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import { Link as RouterLink } from 'react-router-dom'
 import moment from 'moment'
+import Spacer from '../../shared/Spacer'
 
 const useStyles = makeStyles((theme) => ({
   maherStyle: {
@@ -50,14 +51,15 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const SummaryRow = ({ order, activeItem }) => {
+  const classes = useStyles()
   const {
     id: orderId,
     metadata: { name, orderImage, quantity },
     timestamp,
+    forecastDate,
   } = order
-
-  const classes = useStyles()
   const tokenTimestampFormattedDate = moment(timestamp).format('DD MMM YYYY')
+  const isForecastLate = moment(forecastDate).diff(timestamp, 'days') > 7
 
   return (
     <Paper
@@ -104,13 +106,39 @@ const SummaryRow = ({ order, activeItem }) => {
             >
               Qnt: {quantity}
             </Typography>
-            <Typography
-              variant="subtitle2"
-              component="h6"
-              className={`${classes.datePadding} ${classes.threeFiftyFont} ${classes.dateColour} `}
-            >
-              {tokenTimestampFormattedDate}
-            </Typography>
+            <Spacer height={1} />
+            <Grid container direction="row" alignItems="center">
+              <Grid item xs={6}>
+                <Typography variant="subtitle2" component="h6">
+                  Order Date:
+                </Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography
+                  style={{ color: '#a1a1a1' }}
+                  variant="subtitle2"
+                  component="h6"
+                >
+                  {tokenTimestampFormattedDate}
+                </Typography>
+              </Grid>
+            </Grid>
+            <Grid container direction="row" alignItems="center">
+              <Grid item xs={6}>
+                <Typography variant="subtitle2" component="h6">
+                  Forecast:
+                </Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography
+                  style={{ color: isForecastLate ? 'red' : '#a1a1a1' }}
+                  variant="subtitle2"
+                  component="h6"
+                >
+                  {forecastDate}
+                </Typography>
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
       </CardActionArea>
