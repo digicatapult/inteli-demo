@@ -3,12 +3,6 @@ import React from 'react'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 
 const useStyles = makeStyles({
-  quantityContainer: {
-    margin: '0px 0px',
-    padding: '0px',
-    display: 'grid',
-    gridTemplateColumns: '1fr',
-  },
   quantityLabel: {
     margin: '12px 0px 12px 0px',
     fontWeight: '600',
@@ -41,7 +35,7 @@ const OrderQuantityInput = ({
   const classes = useStyles()
 
   return (
-    <Grid item xs={4} className={classes.quantityContainer}>
+    <Grid item xs={4}>
       <Typography variant="subtitle1" className={classes.quantityLabel}>
         {label}
       </Typography>

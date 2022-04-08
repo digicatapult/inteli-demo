@@ -3,11 +3,6 @@ import React from 'react'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 
 const useStyles = makeStyles({
-  deliveryByContainer: {
-    padding: '0px',
-    display: 'grid',
-    gridTemplateColumns: '4fr',
-  },
   deliveryByLabel: {
     margin: '12px 0px 12px 0px',
     fontWeight: '600',
@@ -28,7 +23,7 @@ const OrderDeliveryByDatePicker = ({ handleChange, label, errorMessage }) => {
   const classes = useStyles()
 
   return (
-    <Grid className={classes.deliveryByContainer}>
+    <Grid>
       <Typography variant="subtitle1" className={classes.deliveryByLabel}>
         {label}
       </Typography>
