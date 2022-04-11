@@ -40,7 +40,9 @@ const partIds = [
   '10-874236-1',
   '13-143583-2',
   '14-143463-1',
+  '15-143463-1',
   '10-045623-3',
+  '17-075673-3',
 ]
 
 export const partsSlice = createSlice({
@@ -108,8 +110,18 @@ export const partsSlice = createSlice({
     },
     {
       partId: partIds[6],
-      name: 'Steering axle',
+      name: 'Canister',
       image: images.parts[6],
+      material: 'Aluminium',
+      alloy: '2014',
+      price: '48',
+      requiredCerts,
+      supplier: 'Maher',
+    },
+    {
+      partId: partIds[7],
+      name: 'Steering axle',
+      image: images.parts[7],
       material: 'Steel',
       alloy: '304L',
       price: 680,
@@ -117,9 +129,9 @@ export const partsSlice = createSlice({
       supplier: 'Maher',
     },
     {
-      partId: partIds[7],
+      partId: partIds[8],
       name: 'Wing rib',
-      image: images.parts[7],
+      image: images.parts[8],
       material: 'Aluminium',
       alloy: '2014',
       price: 3210,

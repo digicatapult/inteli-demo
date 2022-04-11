@@ -7,6 +7,7 @@ import part4 from './parts/part-5.svg'
 import part6 from './parts/part-6.svg'
 import part7 from './parts/part-7.svg'
 import part8 from './parts/part-8.svg'
+import part9 from './parts/part-9.svg'
 import partDefault from './part-default.svg'
 import logoCust from './logo-cust.svg'
 import logoCustLogin from './logo-cust-login.png'
@@ -22,7 +23,7 @@ import networkBadCustIcon from './networkBadCust.svg'
 
 export default {
   closeXIcon,
-  parts: [part1, part2, part3, part4, part5, part6, part7, part8],
+  parts: [part1, part2, part3, part4, part5, part6, part7, part8, part9],
   partDefault,
   logoCust,
   logoCustLogin,
