@@ -25,4 +25,4 @@ replicaCount: 1
 image:
   repository: ghcr.io/digicatapult/inteli-demo
   pullPolicy: IfNotPresent
-  tag: 'v3.0.0'
+  tag: 'v3.0.1'
