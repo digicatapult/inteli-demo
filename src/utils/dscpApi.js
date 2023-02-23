@@ -1,9 +1,8 @@
-import { useAuth0 } from '@auth0/auth0-react'
 import { useDispatch } from 'react-redux'
 import { updateNetworkStatus } from '../features/networkStatusSlice'
 import { tokenTypes } from '.'
 
-import { AUTH_AUDIENCE, API_HOST, API_PORT } from './env.js'
+import { API_HOST, API_PORT } from './env.js'
 
 const toJSON = async (url) => {
   const response = await fetch(url)
@@ -14,7 +13,14 @@ const svgMimeUrl = async (imageUrl) => {
   const response = await fetch(imageUrl)
   const oldBlob = await response.blob()
   const blob = new Blob([oldBlob], { type: 'image/svg+xml' })
-  return URL.createObjectURL(blob)
+  const url = await new Promise((resolve) => {
+    const reader = new FileReader()
+    reader.addEventListener('loadend', () => {
+      resolve(reader.result)
+    })
+    reader.readAsDataURL(blob)
+  })
+  return url
 }
 
 const useFetchWrapper = () => {
@@ -61,13 +67,6 @@ const useFetchWrapper = () => {
 }
 
 const useApi = () => {
-  const { getAccessTokenSilently } = useAuth0()
-
-  const getAuthToken = async () => {
-    return await getAccessTokenSilently({
-      audience: AUTH_AUDIENCE,
-    })
-  }
   const wrappedFetch = useFetchWrapper()
 
   const runProcess = async (body) =>
@@ -75,9 +74,6 @@ const useApi = () => {
       method: 'POST',
       mode: 'cors',
       body,
-      headers: {
-        Authorization: `Bearer ${await getAuthToken()}`,
-      },
     })
 
   const latestToken = async () => {
@@ -85,9 +81,6 @@ const useApi = () => {
       method: 'GET',
       mode: 'cors',
       cache: 'no-cache',
-      headers: {
-        Authorization: `Bearer ${await getAuthToken()}`,
-      },
     })
   }
   const tokenById = async (id) => {
@@ -97,9 +90,6 @@ const useApi = () => {
         method: 'GET',
         mode: 'cors',
         cache: 'no-cache',
-        headers: {
-          Authorization: `Bearer ${await getAuthToken()}`,
-        },
       }
     )
 
@@ -146,9 +136,6 @@ const useApi = () => {
         method: 'GET',
         mode: 'cors',
         cache: 'no-cache',
-        headers: {
-          Authorization: `Bearer ${await getAuthToken()}`,
-        },
       }
     )
   }

@@ -6,8 +6,6 @@ import { useSelector } from 'react-redux'
 
 import logo from '../../images/maher.png'
 import { orderStatus } from '../../utils'
-import { getCurrentBaseUrl } from '../../utils/url'
-import { useAuth0 } from '@auth0/auth0-react'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -65,7 +63,6 @@ const Navigation = () => {
   const classes = useStyles()
   const readOrders = useSelector((state) => state.readOrders)
   const customerOrders = useSelector((state) => state.customerOrders)
-  const { isAuthenticated, logout } = useAuth0()
 
   const hasNewOrder = customerOrders.some(
     ({ id: orderId, metadata: { status } }) =>
@@ -91,16 +88,9 @@ const Navigation = () => {
           </Typography>
         </Box>
       </NavLink>
-      {isAuthenticated && (
-        <Box
-          className={`${classes.navButtonWrapping} ${classes.logout}`}
-          onClick={() =>
-            logout({ returnTo: `${getCurrentBaseUrl()}/app/orders` })
-          }
-        >
-          <Typography>Log Out</Typography>
-        </Box>
-      )}
+      <Box className={`${classes.navButtonWrapping} ${classes.logout}`}>
+        <Typography>Log Out</Typography>
+      </Box>
     </Toolbar>
   )
 }

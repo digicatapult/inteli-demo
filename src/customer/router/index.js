@@ -1,44 +1,18 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Route, Routes, Navigate } from 'react-router-dom'
 
 import CustomerPart from '../components/CustomerPart'
 import CustomerParts from '../components/CustomerParts'
 import MyOrders from '../components/MyOrders'
-import PrivateRoute from '../../shared/PrivateRoute'
-import { useAuth0 } from '@auth0/auth0-react'
 
 const Routing = () => {
-  const { isAuthenticated, isLoading, loginWithRedirect, user } = useAuth0()
-
-  useEffect(() => {
-    if (!isAuthenticated && !isLoading && !user) {
-      loginWithRedirect()
-    }
-  }, [isAuthenticated, isLoading, user, loginWithRedirect])
-
-  if (isLoading) {
-    return <h1>Loading...</h1>
-  }
-
   return (
     <Routes>
       <Route path="/" element={<Navigate to="/app/customer-parts" />} />
-      <Route
-        path="/app/my-orders"
-        element={<PrivateRoute component={MyOrders} />}
-      />
-      <Route
-        path="/app/my-orders/:orderId"
-        element={<PrivateRoute component={MyOrders} />}
-      />
-      <Route
-        path="/app/customer-part/:partId"
-        element={<PrivateRoute component={CustomerPart} />}
-      />
-      <Route
-        path="/app/customer-parts"
-        element={<PrivateRoute component={CustomerParts} />}
-      />
+      <Route path="/app/my-orders" element={<MyOrders />} />
+      <Route path="/app/my-orders/:orderId" element={<MyOrders />} />
+      <Route path="/app/customer-part/:partId" element={<CustomerPart />} />
+      <Route path="/app/customer-parts" element={<CustomerParts />} />
     </Routes>
   )
 }

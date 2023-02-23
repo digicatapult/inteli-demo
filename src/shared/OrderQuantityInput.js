@@ -35,7 +35,7 @@ const OrderQuantityInput = ({
   const classes = useStyles()
 
   return (
-    <Grid item xs={4}>
+    <Grid>
       <Typography variant="subtitle1" className={classes.quantityLabel}>
         {label}
       </Typography>

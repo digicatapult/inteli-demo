@@ -1,6 +1,6 @@
 {
   "name": "inteli-demo",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "Demo for INTELI",
   "author": "Digital Catapult (https://www.digicatapult.org.uk/)",
   "license": "Apache-2.0",
@@ -22,7 +22,6 @@
     "eject": "react-scripts eject"
   },
   "dependencies": {
-    "@auth0/auth0-react": "^1.9.0",
     "@material-ui/core": "^4.11.0",
     "@material-ui/lab": "^4.0.0-alpha.60",
     "@reduxjs/toolkit": "^1.7.1",

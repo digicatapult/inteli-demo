@@ -1,12 +1,13 @@
 import React, { useEffect, useRef } from 'react'
 import { useDispatch } from 'react-redux'
-import { upsertOrder } from '../features/ordersSlice'
+import { upsertOrder, resetOrders } from '../features/ordersSlice'
+import { resetReadOrders } from '../features/readOrdersSlice'
 
 import { useApi, tokenTypes } from '../utils'
 
-const BlockchainWatcher = ({ children }) => {
+const BlockchainWatcher = ({ latestToken, children }) => {
   const dispatch = useDispatch()
-  const lastProcessedId = useRef(0)
+  const lastProcessedId = useRef(latestToken)
   const api = useApi()
 
   // This effect manages the polling for new tokens
@@ -19,6 +20,10 @@ const BlockchainWatcher = ({ children }) => {
     const pollFunc = async () => {
       const { id: latestToken } = await api.latestToken()
 
+      if (latestToken === lastProcessedId.current) {
+        return
+      }
+
       if (latestToken > lastProcessedId.current) {
         for (let i = lastProcessedId.current + 1; i <= latestToken; i++) {
           const token = await api.tokenById(i)
@@ -30,7 +35,13 @@ const BlockchainWatcher = ({ children }) => {
           upsertToken(token, token.metadata.type)
           lastProcessedId.current = i
         }
+
+        return
       }
+
+      dispatch(resetOrders())
+      dispatch(resetReadOrders())
+      lastProcessedId.current = 0
     }
 
     // poll the blockchain. If after the pollFunc the timer has not been set to null
@@ -46,7 +57,7 @@ const BlockchainWatcher = ({ children }) => {
         )
       }
       if (timer !== null) {
-        timer = setTimeout(timerFn, 3000)
+        timer = setTimeout(timerFn, 500)
       }
     }
     timer = setTimeout(timerFn, 0)

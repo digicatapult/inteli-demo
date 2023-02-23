@@ -10,7 +10,8 @@
 
 ARG1=$1;
 ARG2=$2;
-PROJECT="inteli_demo";
+PROJECT_ALICE="inteli_demo_alice";
+PROJECT_BOB="inteli_demo_bob";
 ENVPATH=".env"
 COMMONENVPATH="docker/docker.env";
 CUSTPATH="docker/docker-compose-cust.yml";
@@ -25,12 +26,12 @@ assert_env() {
 
 build_cust() {
 	echo BuildCust;
-	docker-compose -p $PROJECT -f $CUSTPATH --env-file $COMBINEDENVPATH build;
+	docker-compose -p $PROJECT_ALICE -f $CUSTPATH --env-file $COMBINEDENVPATH build;
 }
 
 build_am() {
 	echo BuildAM;
-	docker-compose -p $PROJECT -f $AMPATH --env-file $COMBINEDENVPATH build;
+	docker-compose -p $PROJECT_BOB -f $AMPATH --env-file $COMBINEDENVPATH build;
 }
 
 assert_env;

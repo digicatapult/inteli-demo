@@ -168,8 +168,17 @@ const CustomerPart = () => {
 
   const createOrderImageFile = async (image) => {
     const response = await fetch(image)
-    const blob = await response.blob()
-    const url = URL.createObjectURL(blob)
+    const blob = new Blob([await response.blob()], {
+      type: 'image/svg+xml',
+    })
+    const url = await new Promise((resolve) => {
+      const reader = new FileReader()
+      reader.addEventListener('loadend', () => {
+        resolve(reader.result)
+      })
+      reader.readAsDataURL(blob)
+    })
+
     return {
       blob,
       fileName: 'orderImage.svg',
@@ -230,7 +239,14 @@ const CustomerPart = () => {
         id: response[0],
         original_id: response[0],
         roles,
-        metadata,
+        orderImage: {
+          fileName: orderImageFile.fileName,
+          url: orderImageFile.blob.b,
+        },
+        metadata: {
+          ...metadata,
+          requiredCerts,
+        },
       }
 
       dispatch(upsertOrder(token))

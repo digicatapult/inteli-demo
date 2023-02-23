@@ -14,22 +14,35 @@ export const ordersSlice = createSlice({
         if (action.payload.id === action.payload.original_id && !order) {
           action.payload.history = metadataHistory([], action.payload)
           state.push(action.payload)
+          return state
         } else {
-          if (order) {
-            order.id = action.payload.id
-            Object.assign(order.roles, action.payload.roles)
-            Object.assign(order.metadata, action.payload.metadata)
-
-            if (action.payload.timestamp) {
-              order.history = metadataHistory(order.history, action.payload)
-              order.timestamp = action.payload.timestamp
-            }
-          } else {
+          if (!order) {
             console.error(
               `Error cannot find order with original id ${action.payload.original_id}`
             )
+            return state
           }
+
+          if (order.id >= action.payload.id) {
+            return state
+          }
+
+          order.id = action.payload.id
+          Object.assign(order.roles, action.payload.roles)
+          Object.assign(order.metadata, action.payload.metadata)
+
+          if (action.payload.timestamp) {
+            order.history = metadataHistory(order.history, action.payload)
+            order.timestamp = action.payload.timestamp
+          }
+
+          return state
         }
+      },
+    },
+    resetOrders: {
+      reducer() {
+        return []
       },
     },
   },
@@ -46,6 +59,6 @@ const metadataHistory = (history = [], payload) => {
 
 export const { actions, reducer } = ordersSlice
 
-export const { upsertOrder } = actions
+export const { upsertOrder, resetOrders } = actions
 
 export default reducer
