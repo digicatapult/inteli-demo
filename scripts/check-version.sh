@@ -4,28 +4,10 @@
 set -e
 
 function check_versions_consistent () {
-<<<<<<< Updated upstream
-  local PACKAGE_VERSION=$(yq eval '.version' ./package.json)
-  local PACKAGE_LOCK_VERSION=$(yq eval '.version' ./package-lock.json)
-<<<<<<< Updated upstream
-
-  if [ "$PACKAGE_VERSION" != "$PACKAGE_LOCK_VERSION" ]; then
-=======
-  local HELM_VALUES_TAG_VERSION=$(yq eval '.image.tag' ./helm/inteli-demo/values.yaml)
-  local HELM_CHART_VERSION=$(yq eval '.version' ./helm/inteli-demo/Chart.yaml)
-  local HELM_CHART_APP_VERSION=$(yq eval '.appVersion' ./helm/inteli-demo/Chart.yaml)
-  
-  if [ "$PACKAGE_VERSION" != "$PACKAGE_LOCK_VERSION" ] ||
-     [ "v$PACKAGE_VERSION" != "$HELM_VALUES_TAG_VERSION" ] ||
-     [ "$PACKAGE_VERSION" != "$HELM_CHART_VERSION" ] ||
-     [ "$PACKAGE_VERSION" != "$HELM_CHART_APP_VERSION" ]; then
-=======
   local PACKAGE_VERSION=$(yq eval -o y '.version' ./package.json)
   local PACKAGE_LOCK_VERSION=$(yq eval -o y '.version' ./package-lock.json)
 
   if [ "$PACKAGE_VERSION" != "$PACKAGE_LOCK_VERSION" ]; then
->>>>>>> Stashed changes
->>>>>>> Stashed changes
     echo "Inconsistent versions detected"
     echo "PACKAGE_VERSION: $PACKAGE_VERSION"
     echo "PACKAGE_LOCK_VERSION: $PACKAGE_LOCK_VERSION"
