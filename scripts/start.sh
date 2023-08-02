@@ -10,7 +10,8 @@
 
 ARG1=$1;
 ARG2=$2;
-PROJECT="inteli_demo";
+PROJECT_ALICE="inteli_demo_alice";
+PROJECT_BOB="inteli_demo_bob";
 ENVPATH=".env"
 COMMONENVPATH="docker/docker.env";
 
@@ -28,7 +29,7 @@ assert_env() {
 ipfs_init() {
 	IPFS_PATH=$1;
 	mkdir -p $IPFS_PATH;
-	docker run --mount type=bind,src=$IPFS_PATH,dst=/ipfs --rm --entrypoint='' ghcr.io/digicatapult/dscp-ipfs:v2.0.0 /bin/sh -c "\
+	docker run --mount type=bind,src=$IPFS_PATH,dst=/ipfs --rm --entrypoint='' ghcr.io/digicatapult/dscp-ipfs:v2.9.1 /bin/sh -c "\
 	set -ex; \
 	ipfs init; \
 	ipfs config Addresses.API /ip4/0.0.0.0/tcp/5001; \
@@ -40,50 +41,52 @@ ipfs_init() {
 
 stop_all() {
 	echo StopAll;
-	[ "$(docker-compose -p $PROJECT -f $CUSTPATH ps -q|wc -l)" -gt 0 ] && docker-compose -p $PROJECT -f $CUSTPATH --env-file $COMBINEDENVPATH down --remove-orphans;
-	[ "$(docker-compose -p $PROJECT -f $AMPATH ps -q|wc -l)" -gt 0 ] && docker-compose -p $PROJECT -f $AMPATH --env-file $COMBINEDENVPATH down --remove-orphans;
+	[ "$(docker-compose -p $PROJECT_ALICE -f $CUSTPATH ps -q|wc -l)" -gt 0 ] && docker-compose -p $PROJECT_ALICE -f $CUSTPATH --env-file $COMBINEDENVPATH down --remove-orphans;
+	[ "$(docker-compose -p $PROJECT_BOB -f $AMPATH ps -q|wc -l)" -gt 0 ] && docker-compose -p $PROJECT_BOB -f $AMPATH --env-file $COMBINEDENVPATH down --remove-orphans;
 }
 
 init_all() {
 	echo StartAll;
 	ipfs_init $PWD/data/cust/ipfs
 	ipfs_init $PWD/data/am/ipfs
-	docker-compose -p $PROJECT -f $CUSTPATH -f $AMPATH -f $LABPATH -f $AMLABPATH --env-file $COMBINEDENVPATH up -d;
+	docker-compose -p $PROJECT_ALICE -f $CUSTPATH --env-file $COMBINEDENVPATH up -d;
+	docker-compose -p $PROJECT_BOB -f $AMPATH --env-file $COMBINEDENVPATH up -d;
 }
 
 stop_default() {
 	echo StopCust StopAM;
-	[ "$(docker-compose -p $PROJECT -f $CUSTPATH ps -q|wc -l)" -gt 0 ] && docker-compose -p $PROJECT -f $CUSTPATH --env-file $COMBINEDENVPATH down --remove-orphans;
-	[ "$(docker-compose -p $PROJECT -f $AMPATH ps -q|wc -l)" -gt 0 ] && docker-compose -p $PROJECT -f $AMPATH --env-file $COMBINEDENVPATH down --remove-orphans;
+	[ "$(docker-compose -p $PROJECT_ALICE -f $CUSTPATH ps -q|wc -l)" -gt 0 ] && docker-compose -p $PROJECT_ALICE -f $CUSTPATH --env-file $COMBINEDENVPATH down --remove-orphans;
+	[ "$(docker-compose -p $PROJECT_BOB -f $AMPATH ps -q|wc -l)" -gt 0 ] && docker-compose -p $PROJECT_BOB -f $AMPATH --env-file $COMBINEDENVPATH down --remove-orphans;
 }
 
 init_default() {
 	echo StartCust StartAM;
 	ipfs_init $PWD/data/cust/ipfs
 	ipfs_init $PWD/data/am/ipfs
-	docker-compose -p $PROJECT -f $CUSTPATH -f $AMPATH --env-file $COMBINEDENVPATH up -d;
+	docker-compose -p $PROJECT_ALICE -f $CUSTPATH --env-file $COMBINEDENVPATH up -d;
+	docker-compose -p $PROJECT_BOB -f $AMPATH --env-file $COMBINEDENVPATH up -d;
 }
 
 stop_cust() {
 	echo StopCust;
-	[ "$(docker-compose -p $PROJECT -f $CUSTPATH ps -q|wc -l)" -gt 0 ] && docker-compose -p $PROJECT -f $CUSTPATH --env-file $COMBINEDENVPATH down;
+	[ "$(docker-compose -p $PROJECT_ALICE -f $CUSTPATH ps -q|wc -l)" -gt 0 ] && docker-compose -p $PROJECT_ALICE -f $CUSTPATH --env-file $COMBINEDENVPATH down;
 }
 
 init_cust() {
 	echo StartCust;
 	ipfs_init $PWD/data/cust/ipfs
-	docker-compose -p $PROJECT -f $CUSTPATH --env-file $COMBINEDENVPATH up -d;
+	docker-compose -p $PROJECT_ALICE -f $CUSTPATH --env-file $COMBINEDENVPATH up -d;
 }
 
 stop_am() {
 	echo StopAM;
-	[ "$(docker-compose -p $PROJECT -f $AMPATH ps -q|wc -l)" -gt 0 ] && docker-compose -p $PROJECT -f $AMPATH --env-file $COMBINEDENVPATH down;
+	[ "$(docker-compose -p $PROJECT_BOB -f $AMPATH ps -q|wc -l)" -gt 0 ] && docker-compose -p $PROJECT_BOB -f $AMPATH --env-file $COMBINEDENVPATH down;
 }
 
 init_am() {
 	echo StartAM;
 	ipfs_init $PWD/data/am/ipfs
-	docker-compose -p $PROJECT -f $AMPATH --env-file $COMBINEDENVPATH up -d;
+	docker-compose -p $PROJECT_BOB -f $AMPATH --env-file $COMBINEDENVPATH up -d;
 }
 
 check_health_node() {
@@ -98,7 +101,7 @@ check_health_node() {
 		echo ErrorConnecting;
 		return 0;
 	else
-		PEERS=$(echo $HEALTHRAW|tr "," "\n"|head -n3|tail -n1);
+		PEERS=$(echo $HEALTHRAW|tr "," "\n"|head -n2|tail -n1);
 		PEERSCOUNT=$(echo $PEERS|tr ":" "\n"|tail -n1);
 		if [ $PEERSCOUNT -ge 0 ]; then
 			echo HealthOK;

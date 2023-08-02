@@ -2,24 +2,28 @@ version: '3'
 
 networks:
   chain:
+    name: chain
     ipam:
       driver: default
   ipfs:
+    name: ipfs
     ipam:
       driver: default
   cust:
+    name: cust
     ipam:
       driver: default
 
 services:
   node-alice:
-    image: ghcr.io/digicatapult/dscp-node:v3.0.1
+    image: ghcr.io/digicatapult/dscp-node:v4.5.1
     container_name: node-alice
     command:
       --base-path /data/
       --alice
       --node-key ${NODE_ALICE_KEY}
       --bootnodes /dns4/node-bob/tcp/30333/p2p/${NODE_BOB_PEERID}
+      --bootnodes /dns4/node-charlie/tcp/30333/p2p/${NODE_CHARLIE_PEERID}
       --chain local
       --unsafe-ws-external
       --unsafe-rpc-external
@@ -34,7 +38,7 @@ services:
     networks: ['chain', 'cust']
 
   ipfs-alice:
-    image: ghcr.io/digicatapult/dscp-ipfs:v2.0.0
+    image: ghcr.io/digicatapult/dscp-ipfs:v2.9.1
     container_name: ipfs-alice
     ports:
       - 5001:5001
@@ -43,11 +47,12 @@ services:
       - ../data/cust/ipfs:/ipfs
     environment:
       - NODE_HOST=node-alice
+      - IPFS_API_HOST=localhost
     restart: on-failure
     networks: ['ipfs', 'cust']
 
   api-alice:
-    image: ghcr.io/digicatapult/dscp-api:v4.0.0
+    image: ghcr.io/digicatapult/dscp-api:v4.8.2
     container_name: api-alice
     ports:
       - 3001:3001
@@ -59,6 +64,7 @@ services:
       - IPFS_HOST=ipfs-alice
       - IPFS_PORT=5001
       - LOG_LEVEL=trace
+      - AUTH_TYPE=NONE
       - AUTH_JWKS_URI=${API_JWKS_URI}
       - AUTH_AUDIENCE=${API_AUTH_AUDIENCE}
       - AUTH_ISSUER=${API_AUTH_ISSUER}
@@ -82,3 +88,23 @@ services:
       - 8001:80
     restart: on-failure
     networks: ['cust']
+
+  node-charlie:
+    image: ghcr.io/digicatapult/dscp-node:v4.5.1
+    container_name: node-charlie
+    command:
+      --base-path /data/
+      --charlie
+      --node-key ${NODE_CHARLIE_KEY}
+      --bootnodes /dns4/node-alice/tcp/30333/p2p/${NODE_ALICE_PEERID}
+      --bootnodes /dns4/node-bob/tcp/30333/p2p/${NODE_BOB_PEERID}
+      --chain local
+      --unsafe-ws-external
+      --unsafe-rpc-external
+      --rpc-cors all
+    ports:
+      - 30335:30333
+      - 9946:9944
+      - 9935:9933
+    restart: on-failure
+    networks: ['chain', 'cust']

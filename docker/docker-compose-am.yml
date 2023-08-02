@@ -2,24 +2,28 @@ version: '3'
 
 networks:
   chain:
+    name: chain
     ipam:
       driver: default
   ipfs:
+    name: ipfs
     ipam:
       driver: default
   am:
+    name: am
     ipam:
       driver: default
 
 services:
   node-bob:
-    image: ghcr.io/digicatapult/dscp-node:v3.0.1
+    image: ghcr.io/digicatapult/dscp-node:v4.5.1
     container_name: node-bob
     command:
       --base-path /data/
       --bob
       --node-key ${NODE_BOB_KEY}
       --bootnodes /dns4/node-alice/tcp/30333/p2p/${NODE_ALICE_PEERID}
+      --bootnodes /dns4/node-charlie/tcp/30333/p2p/${NODE_CHARLIE_PEERID}
       --chain local
       --unsafe-ws-external
       --unsafe-rpc-external
@@ -34,7 +38,7 @@ services:
     networks: ['chain', 'am']
 
   ipfs-bob:
-    image: ghcr.io/digicatapult/dscp-ipfs:v2.0.0
+    image: ghcr.io/digicatapult/dscp-ipfs:v2.9.1
     container_name: ipfs-bob
     ports:
       - 5002:5001
@@ -43,11 +47,12 @@ services:
       - ../data/am/ipfs:/ipfs
     environment:
       - NODE_HOST=node-bob
+      - IPFS_API_HOST=localhost
     restart: on-failure
     networks: ['ipfs', 'am']
 
   api-bob:
-    image: ghcr.io/digicatapult/dscp-api:v4.0.0
+    image: ghcr.io/digicatapult/dscp-api:v4.8.2
     container_name: api-bob
     ports:
       - 3002:3001
@@ -59,6 +64,7 @@ services:
       - IPFS_HOST=ipfs-bob
       - IPFS_PORT=5001
       - LOG_LEVEL=debug
+      - AUTH_TYPE=NONE
       - AUTH_JWKS_URI=${API_JWKS_URI}
       - AUTH_AUDIENCE=${API_AUTH_AUDIENCE}
       - AUTH_ISSUER=${API_AUTH_ISSUER}

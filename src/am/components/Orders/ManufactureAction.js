@@ -135,7 +135,7 @@ const ManufactureOrderAction = ({ order }) => {
 
     setTimeout(async () => {
       await mintManufacturedToken(response[0])
-    }, 10000)
+    }, 3000)
 
     navigate('/app/orders')
   }

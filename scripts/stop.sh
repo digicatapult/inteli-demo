@@ -7,7 +7,8 @@
 
 ARG1=$1;
 ARG2=$2;
-PROJECT="inteli_demo";
+PROJECT_ALICE="inteli_demo_alice";
+PROJECT_BOB="inteli_demo_bob";
 ENVPATH=".env"
 COMMONENVPATH="docker/docker.env";
 CUSTPATH="docker/docker-compose-cust.yml";
@@ -22,18 +23,18 @@ assert_env() {
 
 stop_all() {
 	echo StopAll;
-	docker-compose -p $PROJECT -f $CUSTPATH --env-file $COMBINEDENVPATH down --remove-orphans;
-	docker-compose -p $PROJECT -f $AMPATH --env-file $COMBINEDENVPATH down --remove-orphans;
+	docker-compose -p $PROJECT_ALICE -f $CUSTPATH --env-file $COMBINEDENVPATH down --remove-orphans;
+	docker-compose -p $PROJECT_BOB -f $AMPATH --env-file $COMBINEDENVPATH down --remove-orphans;
 }
 
 stop_cust() {
 	echo StopCust;
-	docker-compose -p $PROJECT -f $CUSTPATH --env-file $COMBINEDENVPATH down;
+	docker-compose -p $PROJECT_ALICE -f $CUSTPATH --env-file $COMBINEDENVPATH down;
 }
 
 stop_am() {
 	echo StopAM;
-	docker-compose -p $PROJECT -f $AMPATH --env-file $COMBINEDENVPATH down;
+	docker-compose -p $PROJECT_BOB -f $AMPATH --env-file $COMBINEDENVPATH down;
 }
 
 assert_env;

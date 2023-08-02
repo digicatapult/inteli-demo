@@ -1,4 +1,0 @@
-image:
-  repository: 'inteli-demo'
-  tag: 'latest'
-  PullPolicy: Never

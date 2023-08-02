@@ -11,11 +11,16 @@ export const ordersSlice = createSlice({
         }
       },
     },
+    resetReadOrders: {
+      reducer() {
+        return []
+      },
+    },
   },
 })
 
 export const { actions, reducer } = ordersSlice
 
-export const { markOrderRead } = actions
+export const { markOrderRead, resetReadOrders } = actions
 
 export default reducer
