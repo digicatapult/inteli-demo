@@ -1,5 +1,9 @@
 # INTELI Demo
 
+## Deprecation Notice
+This application was deprecated on March 14th 2024, there will be no further dependency or security updates.
+---
+
 ## Description
 
 This demo has been built to demonstrate the benefits of distributed systems to the additive-manufacturing industry within aerospace. It provides simple web clients that let you perform the actions of different personas in the industry. The demo relies on technologies built during the DSCP project.
